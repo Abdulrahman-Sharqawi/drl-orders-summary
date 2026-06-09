@@ -155,6 +155,27 @@
   .kpi-value { font-size: 2rem; font-weight: 800; margin: 6px 0 2px; color: var(--primary); line-height: 1; }
   .kpi-sub { font-size: 0.78rem; color: var(--muted); }
 
+  svg.riyal {
+    display: inline-block;
+    width: 0.82em;
+    height: 0.92em;
+    vertical-align: -0.1em;
+    margin-left: 0.12em;
+    fill: currentColor;
+    flex-shrink: 0;
+  }
+  svg.riyal.riyal--lg {
+    width: 1.05em;
+    height: 1.18em;
+    vertical-align: -0.12em;
+  }
+  .riyal-amount {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.2em;
+    white-space: nowrap;
+  }
+
   /* CARDS */
   .card { background: var(--card); border-radius: 14px; border: 1px solid var(--border); padding: 24px; }
   .card-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
@@ -267,6 +288,13 @@
 })();
 </script>
 
+<svg xmlns="http://www.w3.org/2000/svg" style="display:none" aria-hidden="true">
+  <symbol id="riyal-symbol" viewBox="0 0 1124.14 1256.39">
+    <path d="M699.62,1113.02h0c-20.06,44.48-33.32,92.75-38.4,143.37l424.51-90.24c20.06-44.47,33.31-92.75,38.4-143.37l-424.51,90.24Z"/>
+    <path d="M1085.73,895.8c20.06-44.47,33.32-92.75,38.4-143.37l-330.68,70.33v-135.2l292.27-62.11c20.06-44.47,33.32-92.75,38.4-143.37l-330.68,70.27V66.13c-50.67,28.45-95.67,66.32-132.25,110.99v403.35l-132.25,28.11V0c-50.67,28.44-95.67,66.32-132.25,110.99v525.69l-295.91,62.88c-20.06,44.47-33.33,92.75-38.42,143.37l334.33-71.05v170.26l-358.3,76.14c-20.06,44.47-33.32,92.75-38.4,143.37l375.04-79.7c30.53-6.35,56.77-24.4,73.83-49.24l68.78-101.97v-.02c7.14-10.55,11.3-23.27,11.3-36.97v-149.98l132.25-28.11v270.4l424.53-90.28Z"/>
+  </symbol>
+</svg>
+
 <div class="report-header">
   <svg class="header-pattern header-pattern--left" viewBox="0 0 640 168" xmlns="http://www.w3.org/2000/svg" fill="none" preserveAspectRatio="xMaxYMin slice" aria-hidden="true">
     <path class="hp-line" d="M640 28 L380 28 L358 50 L358 168" stroke="#3CBFB8" stroke-width="18" stroke-linecap="square" style="--len:520;--d:0ms;--op:0.85"/>
@@ -305,7 +333,7 @@
       <div class="accent-bar" style="background: linear-gradient(90deg,#2bb5a0,#3dd9c2);"></div>
       <div class="kpi-label">Total Revenue</div>
       <div class="kpi-value">186,556</div>
-      <div class="kpi-sub">SAR (3D Printing + Consultations)</div>
+      <div class="kpi-sub"><svg class="riyal" aria-hidden="true" focusable="false"><use href="#riyal-symbol"/></svg> (3D Printing + Consultations)</div>
     </div>
     <div class="kpi-card">
       <div class="accent-bar" style="background: linear-gradient(90deg,#f07d00,#f5a840);"></div>
@@ -317,7 +345,7 @@
       <div class="accent-bar" style="background: linear-gradient(90deg,#2bb5a0,#5ecfc1);"></div>
       <div class="kpi-label">Avg. Order Value</div>
       <div class="kpi-value">906</div>
-      <div class="kpi-sub">SAR per order (with amount)</div>
+      <div class="kpi-sub"><svg class="riyal" aria-hidden="true" focusable="false"><use href="#riyal-symbol"/></svg> per order (with amount)</div>
     </div>
     <div class="kpi-card">
       <div class="accent-bar" style="background: linear-gradient(90deg,#f07d00,#f5a840);"></div>
@@ -453,8 +481,8 @@
       <div class="kpi-sub">69.1% of all orders</div>
       <div style="margin-top:12px;padding-top:12px;border-top:1px solid var(--border);">
         <div style="font-size:0.72rem;color:var(--muted);">Total Revenue</div>
-        <div style="font-weight:800;font-size:1.1rem;color:var(--primary);">112,956 SAR</div>
-        <div style="font-size:0.72rem;color:var(--muted);margin-top:4px;">Avg per order: <strong>818.52 SAR</strong></div>
+        <div style="font-weight:800;font-size:1.1rem;color:var(--primary);"><span class="riyal-amount">112,956 <svg class="riyal" aria-hidden="true" focusable="false"><use href="#riyal-symbol"/></svg></span></div>
+        <div style="font-size:0.72rem;color:var(--muted);margin-top:4px;">Avg per order: <strong><span class="riyal-amount">818.52 <svg class="riyal" aria-hidden="true" focusable="false"><use href="#riyal-symbol"/></svg></span></strong></div>
       </div>
     </div>
 
@@ -501,8 +529,8 @@
       <div class="kpi-sub">3D design, PCB, embedded, etc.</div>
       <div style="margin-top:12px;padding-top:12px;border-top:1px solid var(--border);">
         <div style="font-size:0.72rem;color:var(--muted);">Total Revenue</div>
-        <div style="font-weight:800;font-size:1.1rem;color:var(--primary);">73,600 SAR</div>
-        <div style="font-size:0.72rem;color:var(--muted);margin-top:4px;">Avg per order: <strong>1,150 SAR</strong></div>
+        <div style="font-weight:800;font-size:1.1rem;color:var(--primary);"><span class="riyal-amount">73,600 <svg class="riyal" aria-hidden="true" focusable="false"><use href="#riyal-symbol"/></svg></span></div>
+        <div style="font-size:0.72rem;color:var(--muted);margin-top:4px;">Avg per order: <strong><span class="riyal-amount">1,150 <svg class="riyal" aria-hidden="true" focusable="false"><use href="#riyal-symbol"/></svg></span></strong></div>
       </div>
     </div>
 
@@ -991,24 +1019,24 @@
       <div class="bar-chart">
         <div class="bar-row">
           <div class="bar-label">3D Printing</div>
-          <div class="bar-track"><div class="bar-fill" style="width:100%;background:#224796;">112,956 SAR</div></div>
+          <div class="bar-track"><div class="bar-fill" style="width:100%;background:#224796;"><span class="riyal-amount">112,956 <svg class="riyal" aria-hidden="true" focusable="false"><use href="#riyal-symbol"/></svg></span></div></div>
         </div>
         <div class="bar-row">
           <div class="bar-label">Consultations</div>
-          <div class="bar-track"><div class="bar-fill" style="width:65.2%;background:#2bb5a0;">73,600 SAR</div></div>
+          <div class="bar-track"><div class="bar-fill" style="width:65.2%;background:#2bb5a0;"><span class="riyal-amount">73,600 <svg class="riyal" aria-hidden="true" focusable="false"><use href="#riyal-symbol"/></svg></span></div></div>
         </div>
         <div class="bar-row">
           <div class="bar-label">PCB Fabrication</div>
           <div class="bar-track"><div class="bar-fill" style="width:10%;background:#94a3b8;min-width:80px;">Pending</div></div>
         </div>
       </div>
-      <p style="font-size:0.72rem;color:var(--muted);margin-top:12px;">PCB revenue not yet recorded. 3D Printing + Consultations = <strong>186,556 SAR</strong> combined.</p>
+      <p style="font-size:0.72rem;color:var(--muted);margin-top:12px;">PCB revenue not yet recorded. 3D Printing + Consultations = <strong><span class="riyal-amount">186,556 <svg class="riyal" aria-hidden="true" focusable="false"><use href="#riyal-symbol"/></svg></span></strong> combined.</p>
     </div>
     <div class="card" style="display:flex;flex-direction:column;justify-content:center;gap:14px;">
       <div style="text-align:center;padding:20px;background:linear-gradient(135deg,#224796,#1a316e);border-radius:12px;">
         <div style="font-size:0.75rem;font-weight:700;color:#2bb5a0;text-transform:uppercase;letter-spacing:0.5px;">Confirmed Revenue (3D + Consultations)</div>
         <div style="font-size:2.8rem;font-weight:900;color:#ffffff;margin:8px 0;">186,556</div>
-        <div style="font-size:0.85rem;color:#9dd8d0;">Saudi Riyals (SAR)</div>
+        <div style="font-size:0.85rem;color:#9dd8d0;"><span class="riyal-amount">Saudi Riyals <svg class="riyal" aria-hidden="true" focusable="false"><use href="#riyal-symbol"/></svg></span></div>
       </div>
       <div style="text-align:center;font-size:0.78rem;color:var(--muted);">
         PCB Fabrication revenue (46 orders) pending pricing entry
