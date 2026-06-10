@@ -246,7 +246,7 @@
 
     <div class="loader-brand">
       <img class="loader-logo" src="drl_logo.png" alt="DTV Ventures">
-      <span class="loader-sub">DTV &nbsp;·&nbsp; DRL Summary</span>
+      <span class="loader-sub">DTV &nbsp;·&nbsp; Student Clubs Governance Model</span>
       <button id="loader-enter-btn" class="loader-enter-btn" type="button">
         Enter
         <svg width="18" height="18" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -271,7 +271,7 @@
       function hideLoader() {
         if (leaving) return;
         leaving = true;
-        try { sessionStorage.setItem('dtv-from-loader', '1'); } catch (e) {}
+        try { sessionStorage.setItem('dtv-from-clubs-loader', '1'); } catch (e) {}
 
         var logo = loader.querySelector('.loader-logo');
         var sub = loader.querySelector('.loader-sub');
@@ -306,7 +306,7 @@
         setTimeout(function () { loader.classList.add('exit-screen'); }, 1480);
         setTimeout(function () {
           loader.classList.add('gone');
-          window.location.href = 'index.html';
+          window.location.href = 'KFUPM_Student_Clubs_Governance.html';
         }, 2000);
       }
 

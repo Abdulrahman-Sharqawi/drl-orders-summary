@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>Student Clubs Governance Model — KFUPM DRL</title>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 <style>
@@ -21,8 +21,8 @@
   --ease:       cubic-bezier(0.22,1,0.36,1);
 }
 *{box-sizing:border-box;margin:0;padding:0}
-html{scroll-behavior:smooth}
-body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(--text);-webkit-font-smoothing:antialiased}
+html{scroll-behavior:smooth;overflow-x:hidden}
+body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(--text);-webkit-font-smoothing:antialiased;overflow-x:hidden}
 
 /* ── SCROLL PROGRESS ── */
 #prog{position:fixed;top:0;left:0;height:3px;background:linear-gradient(90deg,var(--dtv-teal),var(--dtv-orange));width:0;z-index:9999;transition:width .08s linear}
@@ -232,8 +232,10 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(-
 .tier-icon{font-size:1.8rem;margin-bottom:.5rem}
 .tier-name{font-size:.95rem;font-weight:900;letter-spacing:.1em;text-transform:uppercase;margin-bottom:2px}
 .tc-ti .tier-name{color:#90b8e8}.tc-pl .tier-name{color:#2bb5a0}.tc-go .tier-name{color:#f07d00}.tc-si .tier-name{color:#9999cc}
-.tier-amount{font-size:.73rem;opacity:.55;color:#fff;margin-bottom:.7rem}
-.tier-badge{font-size:.6rem;font-weight:700;padding:2px 9px;border-radius:20px;display:inline-block;margin-bottom:.8rem}
+.tier-amount{font-size:.73rem;opacity:.55;color:#fff;margin-bottom:.35rem}
+.tier-badge{font-size:.6rem;font-weight:700;padding:2px 9px;border-radius:20px;display:inline-block;margin-bottom:.55rem}
+.tier-desc{font-size:.68rem;color:rgba(255,255,255,.48);line-height:1.45;margin-bottom:.75rem}
+.tier-note{font-size:.63rem;color:rgba(255,255,255,.4);font-style:italic;margin-top:.55rem;line-height:1.4}
 .tc-ti .tier-badge{background:rgba(90,140,200,.15);color:#90b8e8}
 .tc-pl .tier-badge{background:rgba(43,181,160,.15);color:#2bb5a0}
 .tc-go .tier-badge{background:rgba(240,125,0,.15);color:#f07d00}
@@ -328,6 +330,50 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(-
 .cat-default{background:rgba(255,255,255,.1);color:rgba(255,255,255,.7)}
 .comp-team{font-weight:700;color:#fff}
 .comp-time{color:var(--dtv-teal);font-weight:600;white-space:nowrap}
+.comp-spotlight{
+  margin-top:1.2rem;margin-bottom:.2rem;padding:1.35rem 1.4rem;border-radius:16px;
+  background:linear-gradient(135deg,rgba(43,181,160,.18),rgba(34,71,150,.22));
+  border:1px solid rgba(43,181,160,.45);
+  box-shadow:0 12px 36px rgba(43,181,160,.12);
+  position:relative;overflow:hidden;
+}
+.comp-spotlight::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:3px;
+  background:linear-gradient(90deg,var(--dtv-teal),var(--dtv-orange));
+}
+.comp-spotlight-badge{
+  display:inline-block;font-size:.62rem;font-weight:800;letter-spacing:.14em;text-transform:uppercase;
+  color:#9dd8d0;background:rgba(43,181,160,.2);border:1px solid rgba(43,181,160,.35);
+  border-radius:999px;padding:3px 10px;margin-bottom:.65rem;
+}
+.comp-spotlight-title{font-size:1.15rem;font-weight:900;color:#fff;letter-spacing:-.02em;margin-bottom:.35rem}
+.comp-spotlight-sub{font-size:.78rem;color:rgba(255,255,255,.72);line-height:1.55;max-width:820px;margin-bottom:.75rem}
+.comp-spotlight-meta{display:flex;flex-wrap:wrap;gap:.45rem}
+.comp-spotlight-pill{
+  font-size:.66rem;font-weight:700;padding:3px 10px;border-radius:999px;
+  background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.14);color:rgba(255,255,255,.85);
+}
+.comp-table tbody tr.comp-row-featured{background:rgba(43,181,160,.12)}
+.comp-table tbody tr.comp-row-featured:hover{background:rgba(43,181,160,.18)}
+.comp-host-tag{
+  display:inline-block;margin-left:.35rem;font-size:.58rem;font-weight:800;letter-spacing:.06em;text-transform:uppercase;
+  color:#0a5c52;background:rgba(43,181,160,.28);border:1px solid rgba(43,181,160,.45);
+  border-radius:999px;padding:1px 7px;vertical-align:middle;
+}
+.domain-card-featured{
+  grid-column:1/-1;border-color:rgba(43,181,160,.45)!important;
+  box-shadow:0 10px 32px rgba(43,181,160,.15);
+  background:linear-gradient(145deg,rgba(43,181,160,.08),rgba(255,255,255,.02));
+}
+.domain-card-featured .domain-body{position:relative}
+.domain-host-badge{
+  display:inline-block;font-size:.58rem;font-weight:800;letter-spacing:.1em;text-transform:uppercase;
+  color:#9dd8d0;background:rgba(43,181,160,.22);border:1px solid rgba(43,181,160,.35);
+  border-radius:999px;padding:2px 8px;margin-bottom:.45rem;
+}
+@media(min-width:700px){
+  .domain-card-featured{grid-column:span 2}
+}
 .comp-empty{padding:2rem;text-align:center;color:rgba(255,255,255,.35);font-size:.8rem}
 
 /* ══════════════ CREATING VALUE ══════════════ */
@@ -437,6 +483,33 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(-
 .flow-sub{font-size:.67rem;color:var(--muted);margin-top:2px}
 .flow-arrow{color:var(--dtv-teal);font-size:1.2rem;padding:0 .4rem;flex-shrink:0;opacity:.5}
 
+/* team establishment funnel */
+.team-entry-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:0}
+.est-funnel{margin:.25rem 0 1.1rem;height:52px}
+.est-funnel svg{width:100%;height:100%;display:block}
+.est-gateway{
+  background:linear-gradient(135deg,var(--dtv-navy) 0%,#1a316e 58%,rgba(43,181,160,.22) 100%);
+  border:1px solid rgba(43,181,160,.38);border-radius:16px;
+  padding:1.35rem 1.5rem;margin-bottom:1.6rem;color:#fff;
+  box-shadow:0 12px 34px rgba(34,71,150,.18);position:relative;overflow:hidden;
+}
+.est-gateway::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:3px;
+  background:linear-gradient(90deg,var(--dtv-teal),var(--dtv-orange),var(--dtv-teal));
+}
+.est-gw-tag{
+  font-size:.62rem;font-weight:800;letter-spacing:.16em;text-transform:uppercase;
+  color:var(--dtv-teal);margin-bottom:.45rem;
+}
+.est-gw-title{font-size:clamp(1.05rem,2.2vw,1.3rem);font-weight:900;margin-bottom:.55rem;letter-spacing:-.02em}
+.est-gw-body{font-size:.78rem;color:rgba(255,255,255,.78);line-height:1.65;max-width:920px}
+.est-gw-points{margin-top:.75rem;display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:.55rem}
+.est-gw-point{
+  font-size:.73rem;line-height:1.5;color:rgba(255,255,255,.88);
+  padding:.55rem .7rem;border-radius:10px;
+  background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);
+}
+
 /* ══════════════ KPI TABS ══════════════ */
 .kpi-tabs{display:flex;gap:.5rem;flex-wrap:wrap;margin-bottom:1.2rem}
 .ktab{
@@ -489,12 +562,16 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(-
 .issue-card.i4{border-top-color:#7c3aed}
 .issue-card.i5{border-top-color:#c2410c}
 .issue-card.i6{border-top-color:#0e7490}
+.issue-card.i7{border-top-color:#b45309}
+.issue-card.i8{border-top-color:#be123c}
 .issue-num{font-size:.6rem;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--dtv-orange);margin-bottom:5px}
 .issue-card.i2 .issue-num{color:var(--dtv-navy)}
 .issue-card.i3 .issue-num{color:var(--dtv-teal)}
 .issue-card.i4 .issue-num{color:#7c3aed}
 .issue-card.i5 .issue-num{color:#c2410c}
 .issue-card.i6 .issue-num{color:#0e7490}
+.issue-card.i7 .issue-num{color:#b45309}
+.issue-card.i8 .issue-num{color:#be123c}
 .issue-name{font-size:.84rem;font-weight:800;color:var(--dtv-navy);margin-bottom:6px;line-height:1.35}
 .issue-desc{font-size:.72rem;color:#444;line-height:1.55;margin-bottom:.65rem}
 .issue-solves{font-size:.6rem;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:5px}
@@ -513,22 +590,42 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(-
 .feat-issue.fi-4{background:rgba(124,58,237,.08);border-color:rgba(124,58,237,.2);color:#5b21b6}
 .feat-issue.fi-5{background:rgba(194,65,12,.08);border-color:rgba(194,65,12,.22);color:#9a3412}
 .feat-issue.fi-6{background:rgba(14,116,144,.08);border-color:rgba(14,116,144,.22);color:#0e7490}
+.feat-issue.fi-7{background:rgba(180,83,9,.09);border-color:rgba(180,83,9,.24);color:#92400e}
+.feat-issue.fi-8{background:rgba(190,18,60,.08);border-color:rgba(190,18,60,.22);color:#9f1239}
 
 .platform-demo-wrap{
+  position:relative;
   display:flex;justify-content:center;
-  margin:1.4rem 0 2.2rem;padding:1rem 0;
+  margin:1.4rem 0 2.2rem;padding:1.6rem 0;
+}
+.platform-demo-reveal{
+  opacity:0;transform:translateY(48px) scale(.9);
+  filter:blur(6px);
+  transition:opacity .85s var(--ease),transform .95s cubic-bezier(.22,1,.36,1),filter .85s var(--ease);
+}
+.platform-demo-reveal.on{opacity:1;transform:none;filter:none}
+.platform-demo-reveal.on::before{
+  content:'';position:absolute;left:50%;top:50%;
+  width:min(420px,92vw);height:88px;
+  border-radius:999px;border:2px solid rgba(43,181,160,.45);
+  pointer-events:none;z-index:0;
+  animation:platform-ring-burst 1.1s cubic-bezier(.22,1,.36,1) .12s both;
+}
+.platform-demo-reveal.on .platform-demo-btn{
+  animation:platform-btn-pop .85s cubic-bezier(.34,1.45,.64,1) .18s both,
+             platform-btn-attn 2.8s ease-in-out 1.15s infinite;
 }
 .platform-demo-btn{
   position:relative;overflow:hidden;
   display:inline-flex;align-items:center;gap:.75rem;
-  padding:.9rem 1.85rem .9rem 1.5rem;border-radius:999px;
+  padding:1rem 2.1rem 1rem 1.65rem;border-radius:999px;
   background:linear-gradient(135deg,var(--dtv-navy),#1a316e);
-  border:1px solid rgba(43,181,160,.4);
-  color:#fff;font-family:inherit;font-size:.88rem;font-weight:700;
+  border:1px solid rgba(43,181,160,.5);
+  color:#fff;font-family:inherit;font-size:.95rem;font-weight:700;
   text-decoration:none;letter-spacing:.03em;
   box-shadow:0 8px 28px rgba(34,71,150,.2);
   transition:transform .25s var(--ease),box-shadow .25s,border-color .25s;
-  isolation:isolate;
+  isolation:isolate;z-index:1;
 }
 .platform-demo-btn::before{
   content:'';position:absolute;inset:0;border-radius:inherit;
@@ -573,22 +670,100 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(-
   0%,100%{opacity:.4;transform:scale(1)}
   50%{opacity:.75;transform:scale(1.12)}
 }
+@keyframes platform-ring-burst{
+  0%{opacity:0;transform:translate(-50%,-50%) scale(.75)}
+  40%{opacity:.9;transform:translate(-50%,-50%) scale(1.02)}
+  100%{opacity:0;transform:translate(-50%,-50%) scale(1.18)}
+}
+@keyframes platform-btn-pop{
+  0%{transform:scale(.82);box-shadow:0 0 0 rgba(43,181,160,0)}
+  55%{transform:scale(1.06)}
+  100%{transform:scale(1);box-shadow:0 10px 32px rgba(34,71,150,.26),0 0 36px rgba(43,181,160,.22)}
+}
+@keyframes platform-btn-attn{
+  0%,100%{box-shadow:0 10px 32px rgba(34,71,150,.26),0 0 28px rgba(43,181,160,.18);border-color:rgba(43,181,160,.5)}
+  50%{box-shadow:0 14px 40px rgba(34,71,150,.34),0 0 52px rgba(43,181,160,.38);border-color:rgba(43,181,160,.85)}
+}
+@media (prefers-reduced-motion:reduce){
+  .platform-demo-reveal{filter:none;transition:opacity .4s ease}
+  .platform-demo-reveal.on::before,.platform-demo-reveal.on .platform-demo-btn{animation:none}
+}
 
 @media(max-width:900px){
-  .kpi-grid,.tier-grid{grid-template-columns:1fr}
+  .kpi-grid{grid-template-columns:repeat(2,1fr)}
+  .tier-grid{grid-template-columns:1fr 1fr}
   .improve-row{flex-wrap:wrap}
-  .step{min-width:33%}
+  .step{min-width:calc(50% - 1px)}
+  .hier-row{flex-wrap:wrap}
+  .role-card{max-width:100%!important;min-width:0!important}
 }
-@media(max-width:600px){
-  .tier-grid{grid-template-columns:repeat(2,1fr)}
-  .hier-row{flex-wrap:wrap;justify-content:center}
-  .hero-glass{padding:1.8rem 1.4rem}
-  .mem-flow{flex-direction:column;align-items:flex-start}
-  .flow-arrow{transform:rotate(90deg)}
+@media(max-width:640px){
+  .sec{padding:3rem 1rem}
+  .hero{min-height:auto;padding-bottom:3rem}
+  .hero-inner{padding:2rem 1rem}
+  .hero-glass{padding:1.5rem 1.1rem;border-radius:18px}
+  .hero h1{font-size:1.65rem}
+  .hero-sub{font-size:.85rem}
+  .sec-title{font-size:1.35rem}
+  .sec-sub{font-size:.82rem;margin-bottom:1.6rem}
+  .kpi-grid,.tier-grid,.ov-grid,.issues-grid,.mem-grid,.init-grid,.domain-grid,.value-grid,.team-entry-grid,.kpi-role-grid,.mem-kpi-grid{grid-template-columns:1fr}
+  .improve-row{flex-direction:column}
+  .step{min-width:100%;border-right:none;border-bottom:1px solid var(--border)}
+  .step:last-child{border-bottom:none}
+  .mem-flow{flex-direction:column;align-items:stretch}
+  .flow-node{min-width:0;width:100%}
+  .flow-arrow{transform:rotate(90deg);align-self:center}
+  .hier-row{flex-direction:column;align-items:stretch}
+  .h-connector{display:none}
+  .role-card{flex:1 1 auto!important;width:100%}
+  .comp-preview-head{flex-direction:column;align-items:stretch}
+  .comp-search{min-width:0;width:100%;max-width:none}
+  .comp-table{font-size:.68rem}
+  .comp-table th,.comp-table td{padding:.55rem .6rem}
+  .comp-table th:nth-child(5),.comp-table td:nth-child(5){min-width:140px}
+  .kpi-tabs{flex-wrap:nowrap;overflow-x:auto;-webkit-overflow-scrolling:touch;gap:.35rem;padding-bottom:.45rem}
+  .ktab{flex-shrink:0;font-size:.72rem;padding:.45rem .7rem;white-space:nowrap}
+  .platform-demo-wrap{padding:.6rem 0 1.2rem}
+  .platform-demo-btn{width:100%;justify-content:center;font-size:.85rem;padding:.85rem 1.1rem}
+  .platform-demo-label{padding-left:1.5rem}
+  .why-bar{flex-direction:column;align-items:flex-start;gap:.55rem;padding:.85rem 1rem}
+  .ref-card{max-width:100%;flex-direction:column;text-align:center}
+  .consultant-band{flex-direction:column;align-items:flex-start}
+  .est-gw-points{grid-template-columns:1fr}
+  .tier-card{padding:1.1rem}
+  .tier-list{font-size:.7rem}
+  .closing{padding:3.5rem 1rem}
+  .closing-pills{gap:.45rem}
+  .cpill{font-size:.68rem;padding:.35rem .7rem}
+  .cycle-scroll{margin:0 -.15rem;padding:0 .15rem 8px}
+  .report-footer{padding:1.2rem 1rem;font-size:.7rem}
+  .scroll-hint{bottom:1rem}
+}
+@media(max-width:400px){
+  .hero-logos{gap:.5rem}
+  .logo-pill{font-size:.66rem;padding:.32rem .7rem}
+  .compete-banner{font-size:.74rem;padding:.75rem 1rem}
 }
 </style>
 </head>
 <body>
+<script>
+(function () {
+  var fromLoader = false;
+  try {
+    fromLoader = sessionStorage.getItem('dtv-from-clubs-loader') === '1';
+    if (fromLoader) sessionStorage.removeItem('dtv-from-clubs-loader');
+  } catch (e) {}
+  if (fromLoader) return;
+
+  var nav = performance.getEntriesByType('navigation')[0];
+  if (nav && nav.type === 'reload') {
+    window.location.replace('loader2.html');
+    return;
+  }
+  window.location.replace('loader2.html');
+})();
+</script>
 
 <div id="prog"></div>
 
@@ -619,7 +794,7 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(-
       <h1>Student Clubs<br><em>Governance Model</em></h1>
       <p class="hero-sub">King Fahd University of Petroleum &amp; Minerals</p>
       <p class="hero-meta">Abdulrahman Sharqawi &nbsp;·&nbsp; May 2026</p>
-      <div class="hero-badge">Classification: Internal</div>
+      <div class="hero-badge">Classification: Confedintal</div>
     </div>
   </div>
 
@@ -642,7 +817,7 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(-
   <p class="sec-sub r">Engineering Excellence Clubs — formal, industry-modeled organizations at KFUPM preparing students for Job Creation</p>
   <img src="https://images.unsplash.com/photo-1581092921461-eab62e97a780?w=1100&q=55&auto=format&fit=crop" alt="" style="width:100%;height:220px;object-fit:cover;border-radius:14px;border:1px solid var(--border);margin-bottom:1.4rem;opacity:.85" class="r">
   <div class="ov-grid">
-    <div class="ov-card c-blue r"><div class="ov-icon ic-blue">👥</div><div><div class="ov-label">Leadership</div><div class="ov-text">8-role hierarchy modeled on aerospace engineering orgs</div></div></div>
+    <div class="ov-card c-blue r"><div class="ov-icon ic-blue">👥</div><div><div class="ov-label">Leadership</div><div class="ov-text">Executive trio — President over Finance &amp; Sponsorship</div></div></div>
     <div class="ov-card c-teal r r1"><div class="ov-icon ic-teal">⚙️</div><div><div class="ov-label">Operations</div><div class="ov-text">Annual cycle synchronized Sep–Aug across all clubs</div></div></div>
     <div class="ov-card c-orange r r2"><div class="ov-icon ic-orange">📊</div><div><div class="ov-label">KPI Platform</div><div class="ov-text">One unified platform — visibility &amp; accountability</div></div></div>
     <div class="ov-card c-teal r r3"><div class="ov-icon ic-teal">🤝</div><div><div class="ov-label">Sponsorship</div><div class="ov-text">4-tier model: funding, equipment &amp; recruitment</div></div></div>
@@ -652,177 +827,98 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(-
 </div>
 </section>
 
-<!-- wave -->
-<div class="wave" style="background:#f0f4f8"><svg viewBox="0 0 1440 70" preserveAspectRatio="none"><path d="M0,35 C360,0 1080,70 1440,35 L1440,70 L0,70Z" fill="#2f2f30"/></svg></div>
-
 <!-- ══════════════════════════════════════
-     02 LEADERSHIP
+     02 WHY THIS PLATFORM EXISTS
 ══════════════════════════════════════ -->
-<section class="sec sec-dark" id="leadership">
+<section class="sec sec-white" id="why-platform">
 <div class="container">
   <p class="sec-label r">02</p>
-  <h2 class="sec-title r">Eight-Role Leadership Structure</h2>
-  <p class="sec-sub r">Formal hierarchy modeled on aerospace engineering organizations</p>
-
-  <div class="hier-legend r">
-    <div class="hl-item"><div class="hl-dot" style="background:#224796"></div> Strategic &amp; Technical</div>
-    <div class="hl-item"><div class="hl-dot" style="background:#2bb5a0"></div> Operations &amp; Delivery</div>
-    <div class="hl-item"><div class="hl-dot" style="background:#7c3aed"></div> Programs &amp; Knowledge</div>
-    <div class="hl-item"><div class="hl-dot" style="background:#f07d00"></div> People &amp; Manufacturing</div>
-  </div>
-
-  <div class="hier r">
-    <!-- L1: Team Director + Training Director (side by side) -->
-    <div class="hier-row" style="max-width:680px">
-      <div class="role-card st top-card" style="text-align:center">
-        <div class="rc-cat">Strategic &amp; Technical · President</div>
-        <div class="rc-name" style="font-size:1.05rem">Team Director</div>
-        <div class="rc-sub">Overall leadership &amp; strategy</div>
-        <ul class="rc-tasks" style="text-align:left">
-          <li>Vision &amp; roadmap</li>
-          <li>Sponsor relations &amp; faculty liaison</li>
-          <li>Competition strategy</li>
-        </ul>
-      </div>
-      <div class="role-card pm top-card" style="text-align:center;border-color:rgba(240,125,0,.35)">
-        <div class="rc-cat">People &amp; Manufacturing · Recruitment &amp; Dev</div>
-        <div class="rc-name" style="font-size:1.05rem">Training Director</div>
-        <div class="rc-sub">People pipeline &amp; culture</div>
-        <ul class="rc-tasks" style="text-align:left">
-          <li>Recruitment &amp; selection</li>
-          <li>Workshop curriculum &amp; mentorship</li>
-          <li>Performance reviews</li>
-        </ul>
-      </div>
-    </div>
-
-    <!-- connector L1→L2 -->
-    <div class="h-connector h-connector-wide" style="max-width:680px"></div>
-
-    <!-- L2: Chief Engineer + Program Manager -->
-    <div class="hier-row" style="max-width:580px">
-      <div class="role-card od">
-        <div class="rc-cat">Operations &amp; Delivery</div>
-        <div class="rc-name">Chief Engineer</div>
-        <div class="rc-sub">VP Technical</div>
-        <ul class="rc-tasks">
-          <li>Systems integration</li>
-          <li>Design reviews &amp; oversight</li>
-          <li>Technical risk mgmt</li>
-        </ul>
-      </div>
-      <div class="role-card pk">
-        <div class="rc-cat">Programs &amp; Knowledge</div>
-        <div class="rc-name">Program Manager</div>
-        <div class="rc-sub">Operations &amp; Schedule</div>
-        <ul class="rc-tasks">
-          <li>Gantt &amp; milestones</li>
-          <li>Budget admin &amp; risk register</li>
-          <li>Meeting facilitation</li>
-        </ul>
-      </div>
-    </div>
-
-    <!-- connector L2→L3 -->
-    <div class="h-connector h-connector-4" style="max-width:100%"></div>
-
-    <!-- L3: Four specialist roles -->
-    <div class="hier-row">
-      <div class="role-card st">
-        <div class="rc-cat">Strategic &amp; Technical</div>
-        <div class="rc-name">Software &amp; Systems</div>
-        <div class="rc-sub">GitHub org &amp; Firmware</div>
-        <ul class="rc-tasks">
-          <li>Software architecture</li>
-          <li>Code review &amp; testing</li>
-        </ul>
-      </div>
-      <div class="role-card od">
-        <div class="rc-cat">Operations &amp; Delivery</div>
-        <div class="rc-name">Business Dev Lead</div>
-        <div class="rc-sub">Sponsorship &amp; Grants</div>
-        <ul class="rc-tasks">
-          <li>Sponsorship pipeline</li>
-          <li>Grant applications &amp; media</li>
-        </ul>
-      </div>
-      <div class="role-card pk">
-        <div class="rc-cat">Programs &amp; Knowledge</div>
-        <div class="rc-name">Knowledge Manager</div>
-        <div class="rc-sub">Docs &amp; Memory</div>
-        <ul class="rc-tasks">
-          <li>Technical wiki &amp; IP docs</li>
-          <li>Design review records</li>
-        </ul>
-      </div>
-      <div class="role-card pm">
-        <div class="rc-cat">People &amp; Manufacturing</div>
-        <div class="rc-name">Manufacturing Lead</div>
-        <div class="rc-sub">DRL &amp; Fabrication</div>
-        <ul class="rc-tasks">
-          <li>DRL slot booking</li>
-          <li>Build sequencing &amp; QC</li>
-        </ul>
-      </div>
-    </div>
-
-    <!-- connector L3→Members -->
-    <div class="h-connector h-connector-wide" style="max-width:100%"></div>
-
-    <!-- L5: Members row -->
-    <div class="hier-row" style="max-width:100%">
-      <div class="role-card" style="border-color:rgba(255,255,255,.12);background:rgba(255,255,255,.04);max-width:200px;text-align:center">
-        <div class="rc-cat" style="color:rgba(255,255,255,.4)">Division</div>
-        <div class="rc-name" style="color:#fff">Sub-Team Lead</div>
-        <div class="rc-sub" style="color:rgba(255,255,255,.35)">Per-project accountability</div>
-        <ul class="rc-tasks">
-          <li style="color:rgba(255,255,255,.45)">Assign tasks to members</li>
-          <li style="color:rgba(255,255,255,.45)">Weekly progress reports</li>
-        </ul>
-      </div>
-      <div class="role-card" style="border-color:rgba(255,255,255,.12);background:rgba(255,255,255,.04);max-width:200px;text-align:center">
-        <div class="rc-cat" style="color:rgba(255,255,255,.4)">Core</div>
-        <div class="rc-name" style="color:#fff">Active Member</div>
-        <div class="rc-sub" style="color:rgba(255,255,255,.35)">Tracked &amp; credited contributor</div>
-        <ul class="rc-tasks">
-          <li style="color:rgba(255,255,255,.45)">QR attendance per session</li>
-          <li style="color:rgba(255,255,255,.45)">Deliverables &amp; portfolio</li>
-        </ul>
-      </div>
-      <div class="role-card" style="border-color:rgba(255,255,255,.12);background:rgba(255,255,255,.04);max-width:200px;text-align:center">
-        <div class="rc-cat" style="color:rgba(255,255,255,.4)">Open</div>
-        <div class="rc-name" style="color:#fff">Associate Member</div>
-        <div class="rc-sub" style="color:rgba(255,255,255,.35)">Event &amp; activity participant</div>
-        <ul class="rc-tasks">
-          <li style="color:rgba(255,255,255,.45)">Attends open events</li>
-          <li style="color:rgba(255,255,255,.45)">Path to Core membership</li>
-        </ul>
-      </div>
-    </div>
-  </div>
-
-  <!-- Consultant Band -->
-  <div style="margin-top:2rem" class="r">
-    <div style="font-size:.7rem;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--dtv-orange);margin-bottom:.7rem">Project Consultants — Every Project Gets One</div>
-    <div class="consultant-band">
-      <div class="consultant-icon">🧭</div>
-      <div style="flex:1;min-width:200px">
-        <div class="consultant-title">Assigned Consultant</div>
-        <div class="consultant-desc">Every active club project must have a named consultant from the DRL team or KFUPM faculty. The consultant guides technical direction, reviews milestones, connects students to resources, and signs off on design reviews — ensuring no project drifts without expert oversight.</div>
-        <div class="consultant-types">
-          <div class="ctag">DRL Engineer</div>
-          <div class="ctag">KFUPM Professor</div>
-          <div class="ctag">Industry Expert (Guest)</div>
+  <h2 class="sec-title r">Why This Platform Exists</h2>
+  <p class="sec-sub r">Eight real problems. Twelve platform ideas. One integrated solution.</p>
+  <div class="issues-block r">
+    <div class="issues-sub">Every platform feature was designed to fix a specific failure mode in how KFUPM clubs operate today — not as a nice-to-have tool, but as a direct response to a problem leaders, members, sponsors, and DRL face every semester.</div>
+    <div class="issues-grid">
+      <div class="issue-card i1">
+        <div class="issue-num">Problem 01</div>
+        <div class="issue-name">The club dies when members graduate.</div>
+        <div class="issue-desc">Every year a new team starts from scratch because nothing was documented or preserved — institutional knowledge walks out the door with every graduating class.</div>
+        <div class="issue-solves">Platform ideas that fix it</div>
+        <div class="issue-tags">
+          <span class="issue-tag">Knowledge Wiki</span>
+          <span class="issue-tag">Member Portfolio</span>
+          <span class="issue-tag">Club Micro-Website</span>
         </div>
       </div>
-      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:.6rem;flex:1;min-width:260px">
-        <div style="background:rgba(255,255,255,.04);border-radius:8px;padding:.7rem .9rem;border:1px solid rgba(255,255,255,.07)">
-          <div style="font-size:.68rem;font-weight:700;color:var(--dtv-teal);margin-bottom:3px">Responsibilities</div>
-          <div style="font-size:.7rem;color:rgba(255,255,255,.45);line-height:1.5">Weekly check-in · Milestone sign-off · Risk flag to DRL · IP guidance</div>
+      <div class="issue-card i2">
+        <div class="issue-num">Problem 02</div>
+        <div class="issue-name">Nobody knows what anyone is actually doing.</div>
+        <div class="issue-desc">Leaders can't manage what they can't see, and DRL can't support clubs they have no data on — activity, attendance, and spend all happen off the record.</div>
+        <div class="issue-solves">Platform ideas that fix it</div>
+        <div class="issue-tags">
+          <span class="issue-tag">KPI Dashboard</span>
+          <span class="issue-tag">Attendance &amp; QR Tracking</span>
+          <span class="issue-tag">Budgeting &amp; Invoicing</span>
         </div>
-        <div style="background:rgba(255,255,255,.04);border-radius:8px;padding:.7rem .9rem;border:1px solid rgba(255,255,255,.07)">
-          <div style="font-size:.68rem;font-weight:700;color:var(--dtv-orange);margin-bottom:3px">Accountability</div>
-          <div style="font-size:.7rem;color:rgba(255,255,255,.45);line-height:1.5">Consultant report submitted per semester · Co-signs annual project report</div>
+      </div>
+      <div class="issue-card i3">
+        <div class="issue-num">Problem 03</div>
+        <div class="issue-name">Good work goes unrecognized.</div>
+        <div class="issue-desc">Students do real engineering work that never shows up on a resume or gets acknowledged by anyone — effort disappears into the semester with no lasting record.</div>
+        <div class="issue-solves">Platform ideas that fix it</div>
+        <div class="issue-tags">
+          <span class="issue-tag">Rewards &amp; LPI</span>
+          <span class="issue-tag">Member Portfolio</span>
+        </div>
+      </div>
+      <div class="issue-card i4">
+        <div class="issue-num">Problem 04</div>
+        <div class="issue-name">Finding and joining a club is chaotic.</div>
+        <div class="issue-desc">Students don't know what clubs exist, what roles are open, or when anything is happening — discovery is word-of-mouth and onboarding is inconsistent.</div>
+        <div class="issue-solves">Platform ideas that fix it</div>
+        <div class="issue-tags">
+          <span class="issue-tag">Club Directory</span>
+          <span class="issue-tag">Registration &amp; Onboarding</span>
+          <span class="issue-tag">KFUPM Calendar Integration</span>
+        </div>
+      </div>
+      <div class="issue-card i5">
+        <div class="issue-num">Problem 05</div>
+        <div class="issue-name">Sponsors get nothing after writing a check.</div>
+        <div class="issue-desc">Companies get no visibility into how their money is being used or what impact it had — which is exactly why sponsorships don't renew.</div>
+        <div class="issue-solves">Platform ideas that fix it</div>
+        <div class="issue-tags">
+          <span class="issue-tag">Sponsor Visibility Portal</span>
+        </div>
+      </div>
+      <div class="issue-card i6">
+        <div class="issue-num">Problem 06</div>
+        <div class="issue-name">Consultants and mentors are disconnected.</div>
+        <div class="issue-desc">Expert oversight is informal and invisible — check-ins happen but nothing is logged, risks get flagged verbally and then forgotten.</div>
+        <div class="issue-solves">Platform ideas that fix it</div>
+        <div class="issue-tags">
+          <span class="issue-tag">Consultant &amp; Mentor Hub</span>
+        </div>
+      </div>
+      <div class="issue-card i7">
+        <div class="issue-num">Problem 07</div>
+        <div class="issue-name">Club money goes to waste without engineering oversight.</div>
+        <div class="issue-desc">Purchases get approved without an advisor who understands the work — wrong parts, duplicate orders, and unmonitored budgets drain club funds every semester because nobody with engineering judgment is in the approval loop.</div>
+        <div class="issue-solves">Platform ideas that fix it</div>
+        <div class="issue-tags">
+          <span class="issue-tag">Budgeting &amp; Invoicing</span>
+          <span class="issue-tag">Consultant &amp; Mentor Hub</span>
+          <span class="issue-tag">KPI Dashboard</span>
+        </div>
+      </div>
+      <div class="issue-card i8">
+        <div class="issue-num">Problem 08</div>
+        <div class="issue-name">Rewards go to students who didn't commit.</div>
+        <div class="issue-desc">Members disappear mid-semester, reappear at the end, and still collect recognition — while students who showed up every week and delivered real output get lumped in with everyone else. Disappearing for three months and showing up at the finish line doesn't count.</div>
+        <div class="issue-solves">Platform ideas that fix it</div>
+        <div class="issue-tags">
+          <span class="issue-tag">Rewards &amp; LPI</span>
+          <span class="issue-tag">Attendance &amp; QR Tracking</span>
+          <span class="issue-tag">KPI Dashboard</span>
         </div>
       </div>
     </div>
@@ -830,77 +926,70 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(-
 </div>
 </section>
 
-<!-- wave -->
-<div class="wave" style="background:#2f2f30"><svg viewBox="0 0 1440 70" preserveAspectRatio="none"><path d="M0,35 C360,70 1080,0 1440,35 L1440,70 L0,70Z" fill="#f0f4f8"/></svg></div>
-
 <!-- ══════════════════════════════════════
-     03 MEMBER ECOSYSTEM
+     03 TEAM ESTABLISHMENT
 ══════════════════════════════════════ -->
-<section class="sec sec-white" id="members">
+<section class="sec sec-white" id="team-establishment">
 <div class="container">
   <p class="sec-label r">03</p>
-  <h2 class="sec-title r">Member Ecosystem</h2>
-  <p class="sec-sub r">How every member creates, earns credit, and grows — tracked, visible, and rewarded</p>
+  <h2 class="sec-title r">Team Establishment</h2>
+  <p class="sec-sub r">Three entry paths · one competitive gateway · five steps to a fully registered club</p>
 
-  <!-- Member Journey Flow -->
-  <div style="font-size:.7rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--dtv-teal);margin-bottom:.8rem" class="r">Member Journey</div>
+  <div style="font-size:.7rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--dtv-orange);margin-bottom:.8rem" class="r">Entry Paths</div>
+  <div class="team-entry-grid r">
+    <div class="init-card">
+      <div class="init-icon">📋</div>
+      <div class="init-name">Path 1 — Register Interest</div>
+      <div class="init-desc">Browse the Club Directory, submit an interest profile (skills, availability, domain), and join the <strong style="color:rgba(255,255,255,.75)">existing-club candidate pool</strong> — for students applying to established clubs with open roles, not for founding a new club.</div>
+      <div class="init-badge ib-teal">Existing Clubs · Candidate Pool</div>
+    </div>
+    <div class="init-card">
+      <div class="init-icon">🚀</div>
+      <div class="init-name">Path 2 — Propose a New Club</div>
+      <div class="init-desc">Submit a one-page Formation Proposal to DRL — domain, target competition, and 3–5 founding members. DRL validates no duplication; proposal is accepted or redirected.</div>
+      <div class="init-badge ib-orange">Formation Proposal</div>
+    </div>
+    <div class="init-card">
+      <div class="init-icon">📣</div>
+      <div class="init-name">Path 3 — DRL Opens a Call</div>
+      <div class="init-desc">DRL identifies a strategic need or sponsor request, publishes a Club Formation Call on the platform, and students apply to be founding members.</div>
+      <div class="init-badge ib-blue">Formation Call</div>
+    </div>
+  </div>
+
+  <div class="est-funnel r" aria-hidden="true">
+    <svg viewBox="0 0 900 56" preserveAspectRatio="none" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M150 4 L150 30 L450 50" stroke="#2bb5a0" stroke-width="2.5" stroke-linecap="round" opacity=".55"/>
+      <path d="M450 4 L450 46" stroke="#2bb5a0" stroke-width="2.5" stroke-linecap="round" opacity=".7"/>
+      <path d="M750 4 L750 30 L450 50" stroke="#2bb5a0" stroke-width="2.5" stroke-linecap="round" opacity=".55"/>
+      <circle cx="450" cy="50" r="4" fill="#2bb5a0" opacity=".85"/>
+    </svg>
+  </div>
+
+  <div class="est-gateway r">
+    <div class="est-gw-tag">Competitive Gateway</div>
+    <div class="est-gw-title">Leadership Pitch — Compete for Your Role</div>
+    <div class="est-gw-body">All candidates from every entry path converge here. Each pitcher submits a vision: what they would build, how they would recruit, and what the club achieves in Year 1.</div>
+    <div class="est-gw-points">
+      <div class="est-gw-point"><strong style="color:#fff">Selection panel</strong> — one DRL advisor + one faculty member choose the founding Team President, Finance Leader, and Sponsorship Leader.</div>
+      <div class="est-gw-point"><strong style="color:#fff">Everyone else pitches forward</strong> — all other candidates remain in the pool for sub-team lead and core member roles.</div>
+    </div>
+  </div>
+
+  <div style="font-size:.7rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--dtv-teal);margin-bottom:.8rem" class="r">Post-Selection Steps</div>
   <div class="mem-flow r">
-    <div class="flow-node"><div class="flow-num">Join</div><div class="flow-label">Apply &amp; Onboard</div><div class="flow-sub">Assessment · Division placement</div></div>
+    <div class="flow-node"><div class="flow-num">Step 1</div><div class="flow-label">Advisory Assignment</div><div class="flow-sub">DRL engineer, professor, or industry guest · within one week</div></div>
     <div class="flow-arrow">›</div>
-    <div class="flow-node"><div class="flow-num">Attend</div><div class="flow-label">Show Up</div><div class="flow-sub">QR check-in · Every session logged</div></div>
+    <div class="flow-node"><div class="flow-num">Step 2</div><div class="flow-label">Team Assembly</div><div class="flow-sub">2-week recruitment sprint · assigning sub-leadership roles + core slots</div></div>
     <div class="flow-arrow">›</div>
-    <div class="flow-node"><div class="flow-num">Contribute</div><div class="flow-label">Deliver Work</div><div class="flow-sub">Tasks · Designs · Reports</div></div>
+    <div class="flow-node"><div class="flow-num">Step 3</div><div class="flow-label">Provisional Semester</div><div class="flow-sub">Min. attendance · one design review · semester showcase</div></div>
     <div class="flow-arrow">›</div>
-    <div class="flow-node"><div class="flow-num">Showcase</div><div class="flow-label">Portfolio &amp; Credits</div><div class="flow-sub">Public profile · Project record</div></div>
+    <div class="flow-node"><div class="flow-num">Step 4</div><div class="flow-label">Budget &amp; KPI Setup</div><div class="flow-sub">Budget allocation · goals &amp; KPIs per member · future mini-role targets</div></div>
     <div class="flow-arrow">›</div>
-    <div class="flow-node"><div class="flow-num">Earn</div><div class="flow-label">Rewards &amp; LPI</div><div class="flow-sub">Badges · Certs · Machine access</div></div>
-    <div class="flow-arrow">›</div>
-    <div class="flow-node" style="border-color:rgba(43,181,160,.35)"><div class="flow-num" style="color:var(--dtv-orange)">Lead</div><div class="flow-label" style="color:var(--dtv-navy)">Step Up</div><div class="flow-sub">Sub-team lead → Leadership role</div></div>
+    <div class="flow-node" style="border-color:rgba(43,181,160,.35)"><div class="flow-num" style="color:var(--dtv-orange)">Step 5</div><div class="flow-label" style="color:var(--dtv-navy)">Full Registration</div><div class="flow-sub">Live on platform · micro-website · sponsors · annual cycle</div></div>
   </div>
 
-  <!-- How members engage -->
-  <div style="font-size:.7rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--dtv-teal);margin-bottom:.8rem" class="r">How Members Create Value</div>
-  <div class="mem-grid">
-    <div class="mem-card r">
-      <div class="mem-icon">📍</div>
-      <div class="mem-title">Attendance Tracking</div>
-      <div class="mem-desc">Every session, meeting, and event is logged via QR check-in. Streaks and consistency build a visible attendance record on the platform.</div>
-      <div class="mem-tags"><span class="mtag teal">QR per session</span><span class="mtag teal">Streak badges</span><span class="mtag">Monthly report</span></div>
-    </div>
-    <div class="mem-card r r1">
-      <div class="mem-icon">🗂️</div>
-      <div class="mem-title">Work Portfolio</div>
-      <div class="mem-desc">Each member maintains a live portfolio: CAD files, code commits, test reports, and design contributions — all timestamped and credited.</div>
-      <div class="mem-tags"><span class="mtag">GitHub commits</span><span class="mtag teal">Design files</span><span class="mtag">Test reports</span></div>
-    </div>
-    <div class="mem-card r r2">
-      <div class="mem-icon">📊</div>
-      <div class="mem-title">KPI Credit System</div>
-      <div class="mem-desc">Member KPIs are tracked on the platform — task completion, review participation, DRL machine hours, and initiative points all build the LPI Score.</div>
-      <div class="mem-tags"><span class="mtag teal">LPI Score</span><span class="mtag">Task completion %</span><span class="mtag orange">Initiative points</span></div>
-    </div>
-    <div class="mem-card r r3">
-      <div class="mem-icon">🏅</div>
-      <div class="mem-title">Recognition &amp; Certificates</div>
-      <div class="mem-desc">Top contributors receive DRL-issued LPI certificates, annual awards, machine access upgrades, and sponsor-backed internship pathways.</div>
-      <div class="mem-tags"><span class="mtag orange">LPI-1/2/3 certs</span><span class="mtag teal">Excellence award</span><span class="mtag">Internship track</span></div>
-    </div>
-    <div class="mem-card r">
-      <div class="mem-icon">📣</div>
-      <div class="mem-title">Knowledge Sharing</div>
-      <div class="mem-desc">Members earn initiative credit by running internal workshops, writing technical docs, or presenting at club showcase events each semester.</div>
-      <div class="mem-tags"><span class="mtag teal">Workshop credit</span><span class="mtag">Wiki contribution</span><span class="mtag orange">Showcase</span></div>
-    </div>
-    <div class="mem-card r r1">
-      <div class="mem-icon">🤝</div>
-      <div class="mem-title">Social &amp; Community Events</div>
-      <div class="mem-desc">Club culture is built through team-building days, inter-club mixers, industry visits, and community outreach — all attendance-tracked and credited.</div>
-      <div class="mem-tags"><span class="mtag">Team-building</span><span class="mtag teal">Industry visits</span><span class="mtag orange">Outreach</span></div>
-    </div>
-  </div>
-
-  <!-- Initiatives -->
-  <div style="font-size:.7rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--dtv-orange);margin-bottom:.8rem" class="r">Encouraged Initiatives — Members Always Have a Path to Contribute</div>
+  <div style="font-size:.7rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--dtv-orange);margin:1.8rem 0 .8rem" class="r">Encouraged Initiatives — Members Always Have a Path to Contribute</div>
   <div class="init-grid r">
     <div class="init-card">
       <div class="init-icon">🏁</div>
@@ -938,6 +1027,235 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(-
       <div class="init-desc">Submit GitHub contributions, write technical guides, or document a build. Open-source work is logged and credited in the portfolio.</div>
       <div class="init-badge ib-blue">Portfolio Credit</div>
     </div>
+    <div class="init-card">
+      <div class="init-icon">🔗</div>
+      <div class="init-name">Cross-Club Contribution</div>
+      <div class="init-desc">A member who helps another club solve a problem — a software member debugging for the robotics team, a materials member advising the energy club — is building exactly the kind of ecosystem thinking DRL wants. This should be a named, creditable activity, not invisible goodwill.</div>
+      <div class="init-badge ib-teal">Ecosystem Credit</div>
+    </div>
+    <div class="init-card">
+      <div class="init-icon">🚩</div>
+      <div class="init-name">Raising a Flag Early</div>
+      <div class="init-desc">A member who identifies a technical risk, a budget issue, or a team problem and formally logs it before it becomes a crisis is doing some of the most valuable work in a club. Most governance models only reward output. This one should reward early, honest problem-raising too.</div>
+      <div class="init-badge ib-orange">Governance Credit</div>
+    </div>
+  </div>
+
+  <div class="compete-banner r">EARN YOUR SEAT &nbsp;<span>·</span>&nbsp; BUILD YOUR TEAM &nbsp;<span>·</span>&nbsp; <span>PROVE YOUR CLUB</span></div>
+</div>
+</section>
+
+<!-- wave -->
+<div class="wave" style="background:#f0f4f8"><svg viewBox="0 0 1440 70" preserveAspectRatio="none"><path d="M0,35 C360,0 1080,70 1440,35 L1440,70 L0,70Z" fill="#2f2f30"/></svg></div>
+
+<!-- ══════════════════════════════════════
+     04 LEADERSHIP
+══════════════════════════════════════ -->
+<section class="sec sec-dark" id="leadership">
+<div class="container">
+  <p class="sec-label r">04</p>
+  <h2 class="sec-title r">Role Leadership Structure</h2>
+  <p class="sec-sub r">Team President at the apex · Finance &amp; Sponsorship Leaders report through the Executive Committee · live succession when leaders step back</p>
+
+  <div class="hier-legend r">
+    <div class="hl-item"><div class="hl-dot" style="background:#224796"></div> Strategic &amp; Technical</div>
+    <div class="hl-item"><div class="hl-dot" style="background:#2bb5a0"></div> Operations &amp; Delivery</div>
+  </div>
+
+  <div class="hier r">
+    <!-- Apex: Team President -->
+    <div class="hier-row" style="max-width:320px">
+      <div class="role-card st top-card" style="text-align:center;max-width:320px;box-shadow:0 8px 28px rgba(43,181,160,.18)">
+        <div class="rc-cat">Strategic &amp; Technical · President</div>
+        <div class="rc-name" style="font-size:1.12rem">Team President</div>
+        <div class="rc-sub">Overall accountability &amp; club direction</div>
+        <ul class="rc-tasks" style="text-align:left">
+          <li>Vision &amp; roadmap</li>
+          <li>Competition strategy</li>
+          <li>Advisor relations &amp; external representation</li>
+          <li>Chairs the Executive Committee</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="h-connector h-connector-wide" style="max-width:320px"></div>
+
+    <!-- Deputies: Finance + Sponsorship -->
+    <div class="hier-row" style="max-width:620px">
+      <div class="role-card st top-card" style="text-align:center;border-color:rgba(43,181,160,.35)">
+        <div class="rc-cat">Strategic &amp; Technical · Executive</div>
+        <div class="rc-name" style="font-size:1.05rem">Finance Leader</div>
+        <div class="rc-sub">Budget ownership &amp; financial integrity</div>
+        <ul class="rc-tasks" style="text-align:left">
+          <li>Full budget lifecycle on platform</li>
+          <li>Sponsor fund management &amp; ring-fencing</li>
+          <li>Expenditure sign-off with Assigned Advisor</li>
+          <li>Semester financial reports</li>
+        </ul>
+      </div>
+      <div class="role-card od top-card" style="text-align:center;border-color:rgba(240,125,0,.35)">
+        <div class="rc-cat">Operations &amp; Delivery · Executive</div>
+        <div class="rc-name" style="font-size:1.05rem">Sponsorship Leader</div>
+        <div class="rc-sub">External partnerships &amp; visibility</div>
+        <ul class="rc-tasks" style="text-align:left">
+          <li>Sponsor proposal pipeline</li>
+          <li>Grant applications</li>
+          <li>Media presence &amp; social posts</li>
+          <li>Quarterly sponsor impact reports</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="consultant-band r" style="margin-top:1.2rem;margin-bottom:.2rem;background:rgba(34,71,150,.14);border-color:rgba(34,71,150,.38)">
+      <div class="consultant-icon" style="background:rgba(34,71,150,.22);border-color:rgba(34,71,150,.45)">⚡</div>
+      <div style="flex:1;min-width:200px">
+        <div class="consultant-title" style="color:#9cb4e8">Executive Committee</div>
+        <div class="consultant-desc" style="color:rgba(255,255,255,.62)">Team President · Finance Leader · Sponsorship Leader · Assigned Advisor — meet weekly, the only group that can commit the club externally.</div>
+      </div>
+    </div>
+
+    <!-- connector Executive → Members -->
+    <div class="h-connector h-connector-wide" style="max-width:100%"></div>
+
+    <!-- L5: Members row -->
+    <div class="hier-row" style="max-width:100%">
+      <div class="role-card" style="border-color:rgba(255,255,255,.12);background:rgba(255,255,255,.04);max-width:200px;text-align:center">
+        <div class="rc-cat" style="color:rgba(255,255,255,.4)">Division</div>
+        <div class="rc-name" style="color:#fff">Sub-Team Lead</div>
+        <div class="rc-sub" style="color:rgba(255,255,255,.35)">Per-project accountability</div>
+        <ul class="rc-tasks">
+          <li style="color:rgba(255,255,255,.45)">Assign tasks to members</li>
+          <li style="color:rgba(255,255,255,.45)">Weekly progress reports</li>
+        </ul>
+      </div>
+      <div class="role-card" style="border-color:rgba(255,255,255,.12);background:rgba(255,255,255,.04);max-width:200px;text-align:center">
+        <div class="rc-cat" style="color:rgba(255,255,255,.4)">Core</div>
+        <div class="rc-name" style="color:#fff">Active Member</div>
+        <div class="rc-sub" style="color:rgba(255,255,255,.35)">Tracked &amp; credited contributor</div>
+        <ul class="rc-tasks">
+          <li style="color:rgba(255,255,255,.45)">QR attendance per session</li>
+          <li style="color:rgba(255,255,255,.45)">Deliverables &amp; portfolio</li>
+        </ul>
+      </div>
+      <div class="role-card" style="border-color:rgba(255,255,255,.12);background:rgba(255,255,255,.04);max-width:200px;text-align:center">
+        <div class="rc-cat" style="color:rgba(255,255,255,.4)">Open</div>
+        <div class="rc-name" style="color:#fff">Associate Member</div>
+        <div class="rc-sub" style="color:rgba(255,255,255,.35)">Event &amp; activity participant</div>
+        <ul class="rc-tasks">
+          <li style="color:rgba(255,255,255,.45)">Attends open events</li>
+          <li style="color:rgba(255,255,255,.45)">Path to Core membership</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div style="margin-top:1.6rem;padding:1rem 1.2rem;background:rgba(43,181,160,.08);border:1px solid rgba(43,181,160,.22);border-radius:12px;font-size:.78rem;color:rgba(255,255,255,.72);line-height:1.65" class="r">
+    <strong style="color:var(--dtv-teal)">Leadership succession —</strong> At any point in the year, a promising team member can step into a leadership role if an incumbent starts retracting from their responsibilities. Disengagement is tracked on the platform; succession is proposed by the club, validated by the DRL advisor, and recorded before the handover is official.
+  </div>
+
+  <!-- Advisory Structure -->
+  <div style="margin-top:2rem" class="r">
+    <div style="font-size:.7rem;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--dtv-orange);margin-bottom:.7rem">Advisory Structure</div>
+    <div class="consultant-band" style="margin-bottom:1rem">
+      <div class="consultant-icon">🧭</div>
+      <div style="flex:1;min-width:200px">
+        <div class="consultant-title">Assigned Advisor — One Per Club, Always an Engineer</div>
+        <div class="consultant-desc">A practicing DRL or industry engineer. Primary accountability partner. Attends Executive Committee weekly, signs off on design reviews and semester reports, co-signs the annual report, flags risks to DRL leadership. Engineering background required — this is an active named partner, not occasional feedback.</div>
+        <div class="consultant-types">
+          <div class="ctag">DRL Engineer</div>
+          <div class="ctag">Industry Engineer</div>
+        </div>
+      </div>
+    </div>
+    <div class="consultant-band">
+      <div class="consultant-icon">🎓</div>
+      <div style="flex:1;min-width:200px">
+        <div class="consultant-title">Consultant Pool — Called When Needed</div>
+        <div class="consultant-desc">KFUPM faculty or industry experts who have expressed interest in the club's domain and are available when specific challenges arise. Not on the weekly cadence — contacted by the President when a specialist is needed. Listed publicly on the club micro-website.</div>
+        <div class="consultant-types">
+          <div class="ctag">KFUPM Faculty</div>
+          <div class="ctag">Domain Specialist</div>
+          <div class="ctag">Industry Expert</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- wave -->
+<div class="wave" style="background:#2f2f30"><svg viewBox="0 0 1440 70" preserveAspectRatio="none"><path d="M0,35 C360,70 1080,0 1440,35 L1440,70 L0,70Z" fill="#f0f4f8"/></svg></div>
+
+<!-- ══════════════════════════════════════
+     05 MEMBER ECOSYSTEM
+══════════════════════════════════════ -->
+<section class="sec sec-white" id="members">
+<div class="container">
+  <p class="sec-label r">05</p>
+  <h2 class="sec-title r">Member Ecosystem</h2>
+  <p class="sec-sub r">How every member creates, earns credit, and grows — tracked, visible, and rewarded</p>
+
+  <!-- Member Journey Flow -->
+  <div style="font-size:.7rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--dtv-teal);margin-bottom:.8rem" class="r">Member Journey</div>
+  <div class="mem-flow r">
+    <div class="flow-node"><div class="flow-num">Join</div><div class="flow-label">Apply &amp; Onboard</div><div class="flow-sub">Assessment · Division placement</div></div>
+    <div class="flow-arrow">›</div>
+    <div class="flow-node"><div class="flow-num">Attend</div><div class="flow-label">Show Up</div><div class="flow-sub">QR check-in · Every session logged</div></div>
+    <div class="flow-arrow">›</div>
+    <div class="flow-node"><div class="flow-num">Contribute</div><div class="flow-label">Deliver Work</div><div class="flow-sub">Tasks · Designs · Reports</div></div>
+    <div class="flow-arrow">›</div>
+    <div class="flow-node"><div class="flow-num">Showcase</div><div class="flow-label">Portfolio &amp; Credits</div><div class="flow-sub">Public profile · Project record</div></div>
+    <div class="flow-arrow">›</div>
+    <div class="flow-node"><div class="flow-num">Earn</div><div class="flow-label">Rewards &amp; LPI</div><div class="flow-sub">Badges · Certs · Machine access</div></div>
+    <div class="flow-arrow">›</div>
+    <div class="flow-node" style="border-color:rgba(43,181,160,.35)"><div class="flow-num" style="color:var(--dtv-orange)">Lead</div><div class="flow-label" style="color:var(--dtv-navy)">Step Up</div><div class="flow-sub">Sub-team lead → Leadership role</div></div>
+  </div>
+
+  <!-- How members engage -->
+  <div style="font-size:.7rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--dtv-teal);margin-bottom:.8rem" class="r">How Members Create Value</div>
+  <div class="mem-grid">
+    <div class="mem-card r">
+      <div class="mem-icon">📣</div>
+      <div class="mem-title">Knowledge Sharing</div>
+      <div class="mem-desc">Members earn initiative credit by running internal workshops, writing technical docs, or presenting at club showcase events each semester.</div>
+      <div class="mem-tags"><span class="mtag teal">Workshop credit</span><span class="mtag">Wiki contribution</span><span class="mtag orange">Showcase</span></div>
+    </div>
+    <div class="mem-card r r1">
+      <div class="mem-icon">🗂️</div>
+      <div class="mem-title">Work Portfolio</div>
+      <div class="mem-desc">Each member maintains a live portfolio: CAD files, code commits, test reports, and design contributions — all timestamped and credited.</div>
+      <div class="mem-tags"><span class="mtag">GitHub commits</span><span class="mtag teal">Design files</span><span class="mtag">Test reports</span></div>
+    </div>
+    <div class="mem-card r r2">
+      <div class="mem-icon">🤝</div>
+      <div class="mem-title">Social &amp; Community Events</div>
+      <div class="mem-desc">Club culture is built through team-building days, inter-club mixers, industry visits, and community outreach — all attendance-tracked and credited.</div>
+      <div class="mem-tags"><span class="mtag">Team-building</span><span class="mtag teal">Industry visits</span><span class="mtag orange">Outreach</span></div>
+    </div>
+    <div class="mem-card r r3">
+      <div class="mem-icon">📊</div>
+      <div class="mem-title">KPI Credit System</div>
+      <div class="mem-desc">Member KPIs are tracked on the platform — task completion, review participation, DRL machine hours, and initiative points all build the LPI Score.</div>
+      <div class="mem-tags"><span class="mtag teal">LPI Score</span><span class="mtag">Task completion %</span><span class="mtag orange">Initiative points</span></div>
+    </div>
+    <div class="mem-card r">
+      <div class="mem-icon">🏅</div>
+      <div class="mem-title">Recognition &amp; Certificates</div>
+      <div class="mem-desc">Top contributors receive DRL-issued LPI certificates, annual awards, machine access upgrades, and sponsor-backed internship pathways.</div>
+      <div class="mem-tags"><span class="mtag orange">LPI-1/2/3 certs</span><span class="mtag teal">Excellence award</span><span class="mtag">Internship track</span></div>
+    </div>
+    <div class="mem-card r r1">
+      <div class="mem-icon">📍</div>
+      <div class="mem-title">Attendance Creditation</div>
+      <div class="mem-desc">Every session, meeting, and event attended is credited to your record — not just logged. Streaks, consistency, and presence build a visible creditation history that counts toward your LPI Score.</div>
+      <div class="mem-tags"><span class="mtag teal">Credited per session</span><span class="mtag teal">Streak badges</span><span class="mtag">Monthly report</span></div>
+    </div>
+    <div class="mem-card r r2">
+      <div class="mem-icon">🎓</div>
+      <div class="mem-title">Mentoring Junior Members</div>
+      <div class="mem-desc">A second or third year member who actively mentors a new recruit is creating institutional value that's hard to replace. This should be tracked and credited — not just encouraged informally. Pair it with a badge and it becomes something people want to do.</div>
+      <div class="mem-tags"><span class="mtag teal">Mentor badge</span><span class="mtag">Paired recruit</span><span class="mtag orange">Mentorship credit</span></div>
+    </div>
   </div>
 </div>
 </section>
@@ -946,24 +1264,24 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(-
 <div class="wave" style="background:#f0f4f8"><svg viewBox="0 0 1440 70" preserveAspectRatio="none"><path d="M0,35 C360,0 1080,70 1440,35 L1440,70 L0,70Z" fill="#2f2f30"/></svg></div>
 
 <!-- ══════════════════════════════════════
-     04 ANNUAL CYCLE
+     06 ANNUAL CYCLE
 ══════════════════════════════════════ -->
 <section class="sec sec-white" id="cycle">
 <div class="container">
-  <p class="sec-label r">04</p>
+  <p class="sec-label r">06</p>
   <h2 class="sec-title r">Annual Operational Cycle</h2>
   <p class="sec-sub r">8 phases &nbsp;·&nbsp; Continuous Growth, Innovation &amp; Impact</p>
   <img src="https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=1100&q=55&auto=format&fit=crop" alt="" style="width:100%;height:200px;object-fit:cover;border-radius:14px;border:1px solid var(--border);margin-bottom:1.4rem;opacity:.8" class="r">
   <div class="cycle-scroll r">
     <div class="cycle-track" style="background:linear-gradient(145deg,#2f2f30,#3a3a3b)">
-      <div class="phase"><div class="ph-num">01</div><div class="ph-month">September</div><div class="ph-name">Recruitment &amp; Orientation</div><div class="ph-items">Open house · Assessments<br>Division placement · Onboarding</div><div class="ph-theme">Build the Team</div></div>
-      <div class="phase"><div class="ph-num">02</div><div class="ph-month">October</div><div class="ph-name">Training &amp; Skill-Building</div><div class="ph-items">CAD/CAE workshops<br>DRL cert · Project kickoff</div><div class="ph-theme">Empower &amp; Equip</div></div>
-      <div class="phase"><div class="ph-num">03</div><div class="ph-month">Nov – Dec</div><div class="ph-name">Concept Design</div><div class="ph-items">Requirements · Selection<br>System architecture</div><div class="ph-theme">Ideate &amp; Plan</div></div>
-      <div class="phase"><div class="ph-num">04</div><div class="ph-month">Jan – Feb</div><div class="ph-name">Detailed Design &amp; Sim</div><div class="ph-items">Full CAD · FEA/CFD<br>Critical design review</div><div class="ph-theme">Design &amp; Analyze</div></div>
-      <div class="phase"><div class="ph-num">05</div><div class="ph-month">Feb – Mar</div><div class="ph-name">Manufacturing &amp; Build</div><div class="ph-items">DRL fabrication<br>Electronics · Software</div><div class="ph-theme">Build &amp; Create</div></div>
-      <div class="phase"><div class="ph-num">06</div><div class="ph-month">Apr – May</div><div class="ph-name">Integration &amp; Testing</div><div class="ph-items">System integration<br>Safety review · Comp prep</div><div class="ph-theme">Test &amp; Validate</div></div>
-      <div class="phase"><div class="ph-num">07</div><div class="ph-month">May – Jun</div><div class="ph-name">Competition Season</div><div class="ph-items">Regional &amp; international<br>Design reports · Debrief</div><div class="ph-theme">Compete &amp; Excel</div></div>
-      <div class="phase ph-last"><div class="ph-num">08</div><div class="ph-month">Jul – Aug</div><div class="ph-name">Knowledge Transfer</div><div class="ph-items">Lessons learned<br>Roadmap · IP filing</div><div class="ph-theme">Learn &amp; Lead</div></div>
+      <div class="phase"><div class="ph-num">01</div><div class="ph-name">Recruitment &amp; Orientation</div><div class="ph-items">Open house · Assessments<br>Division placement · Onboarding</div><div class="ph-theme">Build the Team</div></div>
+      <div class="phase"><div class="ph-num">02</div><div class="ph-name">Training &amp; Skill-Building</div><div class="ph-items">CAD/CAE workshops<br>DRL cert · Project kickoff</div><div class="ph-theme">Empower &amp; Equip</div></div>
+      <div class="phase"><div class="ph-num">03</div><div class="ph-name">Concept Design</div><div class="ph-items">Requirements · Selection<br>System architecture</div><div class="ph-theme">Ideate &amp; Plan</div></div>
+      <div class="phase"><div class="ph-num">04</div><div class="ph-name">Detailed Design &amp; Sim</div><div class="ph-items">Full CAD · FEA/CFD<br>Critical design review</div><div class="ph-theme">Design &amp; Analyze</div></div>
+      <div class="phase"><div class="ph-num">05</div><div class="ph-name">Manufacturing &amp; Build</div><div class="ph-items">DRL fabrication<br>Electronics · Software</div><div class="ph-theme">Build &amp; Create</div></div>
+      <div class="phase"><div class="ph-num">06</div><div class="ph-name">Integration &amp; Testing</div><div class="ph-items">System integration<br>Safety review · Comp prep</div><div class="ph-theme">Test &amp; Validate</div></div>
+      <div class="phase"><div class="ph-num">07</div><div class="ph-name">Competition Season</div><div class="ph-items">Regional &amp; international<br>Design reports · Debrief</div><div class="ph-theme">Compete &amp; Excel</div></div>
+      <div class="phase ph-last"><div class="ph-num">08</div><div class="ph-name">Knowledge Transfer</div><div class="ph-items">Lessons learned<br>Roadmap · IP filing</div><div class="ph-theme">Learn &amp; Lead</div></div>
     </div>
   </div>
 </div>
@@ -973,16 +1291,16 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(-
 <div class="wave" style="background:#f0f4f8"><svg viewBox="0 0 1440 70" preserveAspectRatio="none"><path d="M0,35 C360,0 1080,70 1440,35 L1440,70 L0,70Z" fill="#f0f4f8"/></svg></div>
 
 <!-- ══════════════════════════════════════
-     05 KPI PLATFORM
+     07 KPI PLATFORM
 ══════════════════════════════════════ -->
 <section class="sec sec-white" id="kpis">
 <div class="container">
-  <p class="sec-label r">05</p>
+  <p class="sec-label r">07</p>
   <h2 class="sec-title r">DRL Clubs Platform</h2>
   <p class="sec-sub r">DRL-hosted infrastructure &nbsp;·&nbsp; Student-owned execution &nbsp;·&nbsp; Engineer guidance on demand</p>
 
-  <div class="platform-demo-wrap r">
-    <a class="platform-demo-btn" href="drl_clubs_portal.html" target="_blank" rel="noopener">
+  <div class="platform-demo-wrap platform-demo-reveal">
+    <a class="platform-demo-btn" href="drl_clubs_portal.html" target="_blank" rel="noopener" onclick="try{sessionStorage.setItem('dtv-portal-pass','1')}catch(e){}">
       <span class="platform-demo-glow" aria-hidden="true"></span>
       <span class="platform-demo-label">Open Platform Example</span>
       <span class="platform-demo-icon" aria-hidden="true">
@@ -1009,77 +1327,7 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(-
       The DRL Clubs Platform is the single digital home for every Engineering Excellence Club at KFUPM — from registration and attendance to public showcases and calendar visibility. It is hosted by DRL, student-executed, and open to the whole university community.
     </p>
 
-    <!-- ── Problems we solve ── -->
-    <div class="issues-block r">
-      <div class="issues-head">Why This Platform Exists</div>
-      <div class="issues-title">Six real problems. Twelve platform ideas. One integrated solution.</div>
-      <div class="issues-sub">Every feature below was designed to fix a specific failure mode in how KFUPM clubs operate today — not as a nice-to-have tool, but as a direct response to a problem leaders, members, sponsors, and DRL face every semester.</div>
-      <div class="issues-grid">
-        <div class="issue-card i1">
-          <div class="issue-num">Problem 01</div>
-          <div class="issue-name">The club dies when members graduate.</div>
-          <div class="issue-desc">Every year a new team starts from scratch because nothing was documented or preserved — institutional knowledge walks out the door with every graduating class.</div>
-          <div class="issue-solves">Platform ideas that fix it</div>
-          <div class="issue-tags">
-            <span class="issue-tag">Knowledge Wiki</span>
-            <span class="issue-tag">Member Portfolio</span>
-            <span class="issue-tag">Club Micro-Website</span>
-          </div>
-        </div>
-        <div class="issue-card i2">
-          <div class="issue-num">Problem 02</div>
-          <div class="issue-name">Nobody knows what anyone is actually doing.</div>
-          <div class="issue-desc">Leaders can't manage what they can't see, and DRL can't support clubs they have no data on — activity, attendance, and spend all happen off the record.</div>
-          <div class="issue-solves">Platform ideas that fix it</div>
-          <div class="issue-tags">
-            <span class="issue-tag">KPI Dashboard</span>
-            <span class="issue-tag">Attendance &amp; QR Tracking</span>
-            <span class="issue-tag">Budgeting &amp; Invoicing</span>
-          </div>
-        </div>
-        <div class="issue-card i3">
-          <div class="issue-num">Problem 03</div>
-          <div class="issue-name">Good work goes unrecognized.</div>
-          <div class="issue-desc">Students do real engineering work that never shows up on a resume or gets acknowledged by anyone — effort disappears into the semester with no lasting record.</div>
-          <div class="issue-solves">Platform ideas that fix it</div>
-          <div class="issue-tags">
-            <span class="issue-tag">Rewards &amp; LPI</span>
-            <span class="issue-tag">Member Portfolio</span>
-          </div>
-        </div>
-        <div class="issue-card i4">
-          <div class="issue-num">Problem 04</div>
-          <div class="issue-name">Finding and joining a club is chaotic.</div>
-          <div class="issue-desc">Students don't know what clubs exist, what roles are open, or when anything is happening — discovery is word-of-mouth and onboarding is inconsistent.</div>
-          <div class="issue-solves">Platform ideas that fix it</div>
-          <div class="issue-tags">
-            <span class="issue-tag">Club Directory</span>
-            <span class="issue-tag">Registration &amp; Onboarding</span>
-            <span class="issue-tag">KFUPM Calendar Integration</span>
-          </div>
-        </div>
-        <div class="issue-card i5">
-          <div class="issue-num">Problem 05</div>
-          <div class="issue-name">Sponsors get nothing after writing a check.</div>
-          <div class="issue-desc">Companies get no visibility into how their money is being used or what impact it had — which is exactly why sponsorships don't renew.</div>
-          <div class="issue-solves">Platform ideas that fix it</div>
-          <div class="issue-tags">
-            <span class="issue-tag">Sponsor Visibility Portal</span>
-          </div>
-        </div>
-        <div class="issue-card i6">
-          <div class="issue-num">Problem 06</div>
-          <div class="issue-name">Consultants and mentors are disconnected.</div>
-          <div class="issue-desc">Expert oversight is informal and invisible — check-ins happen but nothing is logged, risks get flagged verbally and then forgotten.</div>
-          <div class="issue-solves">Platform ideas that fix it</div>
-          <div class="issue-tags">
-            <span class="issue-tag">Consultant &amp; Mentor Hub</span>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div style="font-size:.7rem;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--dtv-navy);margin-bottom:.9rem" class="r">12 Platform Features — Mapped to the Problems Above</div>
+    <div style="font-size:.7rem;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--dtv-navy);margin-bottom:.9rem" class="r">12 Platform Features — <a href="#why-platform" style="color:inherit;text-decoration:underline;text-underline-offset:3px">Mapped to Section 02</a></div>
 
     <!-- ── Feature grid ── -->
     <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px;margin-bottom:2rem">
@@ -1108,7 +1356,7 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(-
           <div style="font-size:.88rem;font-weight:800;color:#111">Student Registration &amp; Onboarding</div>
         </div>
         <div class="feat-issue-bar"><span class="feat-issue fi-4">Fixes: Chaotic discovery</span></div>
-        <div style="font-size:.74rem;color:#333;line-height:1.55;margin-bottom:.8rem">Students browse all clubs, view open roles with goals and requirements, and apply in one click. Applications are reviewed by the Training Director and tracked on the platform through acceptance, onboarding, and division placement.</div>
+        <div style="font-size:.74rem;color:#333;line-height:1.55;margin-bottom:.8rem">Students browse all clubs, view open roles with goals and requirements, and apply in one click. Applications are reviewed by the club leadership team and tracked on the platform through acceptance, onboarding, and division placement.</div>
         <div style="display:flex;flex-wrap:wrap;gap:.3rem">
           <span style="font-size:.63rem;font-weight:700;padding:2px 8px;border-radius:20px;background:rgba(43,181,160,.08);border:1px solid rgba(43,181,160,.2);color:#0a5c52">Browse all clubs</span>
           <span style="font-size:.63rem;font-weight:700;padding:2px 8px;border-radius:20px;background:rgba(43,181,160,.08);border:1px solid rgba(43,181,160,.2);color:#0a5c52">Open roles &amp; goals listed</span>
@@ -1123,7 +1371,7 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(-
           <div style="width:38px;height:38px;border-radius:9px;background:rgba(240,125,0,.08);border:1px solid rgba(240,125,0,.2);display:flex;align-items:center;justify-content:center;font-size:1.15rem;flex-shrink:0">📍</div>
           <div style="font-size:.88rem;font-weight:800;color:#111">Attendance &amp; QR Tracking</div>
         </div>
-        <div class="feat-issue-bar"><span class="feat-issue fi-2">Fixes: Zero visibility</span></div>
+        <div class="feat-issue-bar"><span class="feat-issue fi-2">Fixes: Zero visibility</span><span class="feat-issue fi-8">Fixes: Reward without commitment</span></div>
         <div style="font-size:.74rem;color:#333;line-height:1.55;margin-bottom:.8rem">Every session, workshop, and event generates a unique QR code. Members scan to check in — the platform records timestamp, duration, and event type. Leaders see live attendance dashboards. DRL sees club-level health at a glance.</div>
         <div style="display:flex;flex-wrap:wrap;gap:.3rem">
           <span style="font-size:.63rem;font-weight:700;padding:2px 8px;border-radius:20px;background:rgba(240,125,0,.08);border:1px solid rgba(240,125,0,.2);color:#7a3d00">Per-event QR codes</span>
@@ -1171,7 +1419,7 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(-
           <div style="width:38px;height:38px;border-radius:9px;background:rgba(34,71,150,.08);border:1px solid rgba(34,71,150,.18);display:flex;align-items:center;justify-content:center;font-size:1.15rem;flex-shrink:0">📊</div>
           <div style="font-size:.88rem;font-weight:800;color:#111">KPI Monitoring Dashboard</div>
         </div>
-        <div class="feat-issue-bar"><span class="feat-issue fi-2">Fixes: Zero visibility</span></div>
+        <div class="feat-issue-bar"><span class="feat-issue fi-2">Fixes: Zero visibility</span><span class="feat-issue fi-7">Fixes: Wasted spend</span><span class="feat-issue fi-8">Fixes: Reward without commitment</span></div>
         <div style="font-size:.74rem;color:#333;line-height:1.55;margin-bottom:.8rem">Real-time KPI dashboards for members, leaders, and DRL staff — attendance rates, task completion, LPI scores, machine hours, competition readiness, and design review submissions. Club leaders own their data; DRL uses aggregate views to allocate resources and support.</div>
         <div style="display:flex;flex-wrap:wrap;gap:.3rem">
           <span style="font-size:.63rem;font-weight:700;padding:2px 8px;border-radius:20px;background:rgba(34,71,150,.07);border:1px solid rgba(34,71,150,.15);color:#224796">Member &amp; leader views</span>
@@ -1187,7 +1435,7 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(-
           <div style="width:38px;height:38px;border-radius:9px;background:rgba(43,181,160,.1);border:1px solid rgba(43,181,160,.22);display:flex;align-items:center;justify-content:center;font-size:1.15rem;flex-shrink:0">💰</div>
           <div style="font-size:.88rem;font-weight:800;color:#111">Budgeting &amp; Invoicing</div>
         </div>
-        <div class="feat-issue-bar"><span class="feat-issue fi-2">Fixes: Zero visibility</span></div>
+        <div class="feat-issue-bar"><span class="feat-issue fi-2">Fixes: Zero visibility</span><span class="feat-issue fi-7">Fixes: Wasted spend</span></div>
         <div style="font-size:.74rem;color:#333;line-height:1.55;margin-bottom:.8rem">Full budget lifecycle on the platform — from itemized request to DRL approval, purchase order generation, receipt upload, and auto-updated budget tracker. Sponsor funds are ring-fenced per club. Semester financial reports are auto-generated for DRL archives and audits.</div>
         <div style="display:flex;flex-wrap:wrap;gap:.3rem">
           <span style="font-size:.63rem;font-weight:700;padding:2px 8px;border-radius:20px;background:rgba(43,181,160,.08);border:1px solid rgba(43,181,160,.2);color:#0a5c52">Request → PO → receipt</span>
@@ -1203,7 +1451,7 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(-
           <div style="width:38px;height:38px;border-radius:9px;background:rgba(240,125,0,.08);border:1px solid rgba(240,125,0,.2);display:flex;align-items:center;justify-content:center;font-size:1.15rem;flex-shrink:0">⭐</div>
           <div style="font-size:.88rem;font-weight:800;color:#111">Rewards, Badges &amp; LPI</div>
         </div>
-        <div class="feat-issue-bar"><span class="feat-issue fi-3">Fixes: Unrecognized work</span></div>
+        <div class="feat-issue-bar"><span class="feat-issue fi-3">Fixes: Unrecognized work</span><span class="feat-issue fi-8">Fixes: Reward without commitment</span></div>
         <div style="font-size:.74rem;color:#333;line-height:1.55;margin-bottom:.8rem">The platform issues digital badges for streaks, LPI milestone certificates (LPI-1/2/3), and annual excellence awards. Machine access upgrades are triggered automatically by performance. Sponsor-backed prizes and internship fast-tracks are managed through the rewards module.</div>
         <div style="display:flex;flex-wrap:wrap;gap:.3rem">
           <span style="font-size:.63rem;font-weight:700;padding:2px 8px;border-radius:20px;background:rgba(240,125,0,.08);border:1px solid rgba(240,125,0,.2);color:#7a3d00">Digital badges &amp; certs</span>
@@ -1235,7 +1483,7 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(-
           <div style="width:38px;height:38px;border-radius:9px;background:rgba(43,181,160,.1);border:1px solid rgba(43,181,160,.22);display:flex;align-items:center;justify-content:center;font-size:1.15rem;flex-shrink:0">🧭</div>
           <div style="font-size:.88rem;font-weight:800;color:#111">Consultant &amp; Mentor Hub</div>
         </div>
-        <div class="feat-issue-bar"><span class="feat-issue fi-6">Fixes: Mentor disconnect</span></div>
+        <div class="feat-issue-bar"><span class="feat-issue fi-6">Fixes: Mentor disconnect</span><span class="feat-issue fi-7">Fixes: Wasted spend</span></div>
         <div style="font-size:.74rem;color:#333;line-height:1.55;margin-bottom:.8rem">Every project has an assigned DRL engineer or professor consultant visible on the platform. The hub shows their availability, check-in schedule, and logged milestone sign-offs. Mentors can leave notes, flag risks, and co-sign design reviews — all tracked and visible to DRL leadership.</div>
         <div style="display:flex;flex-wrap:wrap;gap:.3rem">
           <span style="font-size:.63rem;font-weight:700;padding:2px 8px;border-radius:20px;background:rgba(43,181,160,.08);border:1px solid rgba(43,181,160,.2);color:#0a5c52">Consultant per project</span>
@@ -1309,55 +1557,25 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(-
 
   <!-- PANEL: Leadership KPIs -->
   <div class="kpi-panel" id="panel-leaders">
-    <div style="font-size:.75rem;color:#4a6080;margin-bottom:1.1rem;line-height:1.6">Every leader role has a defined KPI set reviewed quarterly by the DRL team. Underperforming roles trigger a structured improvement plan.</div>
+    <div style="font-size:.75rem;color:#4a6080;margin-bottom:1.1rem;line-height:1.6">Executive roles have a defined KPI set reviewed quarterly by the DRL team. Sub-leadership KPIs are assigned per club during Team Assembly.</div>
     <div class="kpi-role-grid">
-      <div class="kpi-role-card" style="background:#fff;border-color:var(--border)"><div class="krc-head"><div class="krc-dot" style="background:#224796"></div><div class="krc-name">Team Director</div></div>
-        <div class="krc-kpi"><span class="krc-kname" style="color:#4a6080">Sponsor meetings held</span><span class="krc-ktarget">≥ 4/semester</span></div>
-        <div class="krc-kpi"><span class="krc-kname" style="color:#4a6080">Faculty liaison check-ins</span><span class="krc-ktarget">Monthly</span></div>
+      <div class="kpi-role-card" style="background:#fff;border-color:var(--border)"><div class="krc-head"><div class="krc-dot" style="background:#224796"></div><div class="krc-name">Team President</div></div>
+        <div class="krc-kpi"><span class="krc-kname" style="color:#4a6080">Executive Committee meetings</span><span class="krc-ktarget">Weekly</span></div>
         <div class="krc-kpi"><span class="krc-kname" style="color:#4a6080">Club LPI avg</span><span class="krc-ktarget">≥ 70</span></div>
         <div class="krc-kpi"><span class="krc-kname" style="color:#4a6080">Vision doc updated</span><span class="krc-ktarget">Per semester</span></div>
+        <div class="krc-kpi"><span class="krc-kname" style="color:#4a6080">Competition readiness score</span><span class="krc-ktarget">On track</span></div>
       </div>
-      <div class="kpi-role-card" style="background:#fff;border-color:var(--border)"><div class="krc-head"><div class="krc-dot" style="background:#2bb5a0"></div><div class="krc-name">Chief Engineer</div></div>
-        <div class="krc-kpi"><span class="krc-kname" style="color:#4a6080">Design reviews completed</span><span class="krc-ktarget">100% of phases</span></div>
-        <div class="krc-kpi"><span class="krc-kname" style="color:#4a6080">Risk flags raised</span><span class="krc-ktarget">Logged &amp; actioned</span></div>
-        <div class="krc-kpi"><span class="krc-kname" style="color:#4a6080">System integration score</span><span class="krc-ktarget">≥ 85%</span></div>
-        <div class="krc-kpi"><span class="krc-kname" style="color:#4a6080">Consultant meetings</span><span class="krc-ktarget">Bi-weekly</span></div>
-      </div>
-      <div class="kpi-role-card" style="background:#fff;border-color:var(--border)"><div class="krc-head"><div class="krc-dot" style="background:#7c3aed"></div><div class="krc-name">Program Manager</div></div>
-        <div class="krc-kpi"><span class="krc-kname" style="color:#4a6080">Milestones on-time</span><span class="krc-ktarget">≥ 80%</span></div>
+      <div class="kpi-role-card" style="background:#fff;border-color:var(--border)"><div class="krc-head"><div class="krc-dot" style="background:#2bb5a0"></div><div class="krc-name">Finance Leader</div></div>
         <div class="krc-kpi"><span class="krc-kname" style="color:#4a6080">Budget variance</span><span class="krc-ktarget">&lt; 10%</span></div>
-        <div class="krc-kpi"><span class="krc-kname" style="color:#4a6080">Meeting minutes filed</span><span class="krc-ktarget">100%</span></div>
-        <div class="krc-kpi"><span class="krc-kname" style="color:#4a6080">Risk register updated</span><span class="krc-ktarget">Weekly</span></div>
+        <div class="krc-kpi"><span class="krc-kname" style="color:#4a6080">Sponsor funds ring-fenced</span><span class="krc-ktarget">100%</span></div>
+        <div class="krc-kpi"><span class="krc-kname" style="color:#4a6080">Advisor sign-off on spend</span><span class="krc-ktarget">Before release</span></div>
+        <div class="krc-kpi"><span class="krc-kname" style="color:#4a6080">Semester financial report</span><span class="krc-ktarget">On deadline</span></div>
       </div>
-      <div class="kpi-role-card" style="background:#fff;border-color:var(--border)"><div class="krc-head"><div class="krc-dot" style="background:#2bb5a0"></div><div class="krc-name">Business Dev Lead</div></div>
+      <div class="kpi-role-card" style="background:#fff;border-color:var(--border)"><div class="krc-head"><div class="krc-dot" style="background:#f07d00"></div><div class="krc-name">Sponsorship Leader</div></div>
+        <div class="krc-kpi"><span class="krc-kname" style="color:#4a6080">Sponsor meetings held</span><span class="krc-ktarget">≥ 4/semester</span></div>
         <div class="krc-kpi"><span class="krc-kname" style="color:#4a6080">Sponsor proposals sent</span><span class="krc-ktarget">≥ 3/semester</span></div>
-        <div class="krc-kpi"><span class="krc-kname" style="color:#4a6080">Grants applied</span><span class="krc-ktarget">≥ 1/year</span></div>
-        <div class="krc-kpi"><span class="krc-kname" style="color:#4a6080">Annual report filed</span><span class="krc-ktarget">On deadline</span></div>
+        <div class="krc-kpi"><span class="krc-kname" style="color:#4a6080">Quarterly impact reports</span><span class="krc-ktarget">100%</span></div>
         <div class="krc-kpi"><span class="krc-kname" style="color:#4a6080">Media posts published</span><span class="krc-ktarget">≥ 2/month</span></div>
-      </div>
-      <div class="kpi-role-card" style="background:#fff;border-color:var(--border)"><div class="krc-head"><div class="krc-dot" style="background:#224796"></div><div class="krc-name">Software &amp; Systems</div></div>
-        <div class="krc-kpi"><span class="krc-kname" style="color:#4a6080">Code review coverage</span><span class="krc-ktarget">100% of PRs</span></div>
-        <div class="krc-kpi"><span class="krc-kname" style="color:#4a6080">Test coverage</span><span class="krc-ktarget">≥ 75%</span></div>
-        <div class="krc-kpi"><span class="krc-kname" style="color:#4a6080">Integration issues found</span><span class="krc-ktarget">Pre-build detection</span></div>
-        <div class="krc-kpi"><span class="krc-kname" style="color:#4a6080">Firmware docs updated</span><span class="krc-ktarget">Per release</span></div>
-      </div>
-      <div class="kpi-role-card" style="background:#fff;border-color:var(--border)"><div class="krc-head"><div class="krc-dot" style="background:#f07d00"></div><div class="krc-name">Manufacturing Lead</div></div>
-        <div class="krc-kpi"><span class="krc-kname" style="color:#4a6080">DRL slot utilization</span><span class="krc-ktarget">≥ 85%</span></div>
-        <div class="krc-kpi"><span class="krc-kname" style="color:#4a6080">Build timeline adherence</span><span class="krc-ktarget">≥ 90%</span></div>
-        <div class="krc-kpi"><span class="krc-kname" style="color:#4a6080">QC pass rate</span><span class="krc-ktarget">≥ 95%</span></div>
-        <div class="krc-kpi"><span class="krc-kname" style="color:#4a6080">Waste reduction</span><span class="krc-ktarget">Tracked per build</span></div>
-      </div>
-      <div class="kpi-role-card" style="background:#fff;border-color:var(--border)"><div class="krc-head"><div class="krc-dot" style="background:#7c3aed"></div><div class="krc-name">Knowledge Manager</div></div>
-        <div class="krc-kpi"><span class="krc-kname" style="color:#4a6080">Wiki articles updated</span><span class="krc-ktarget">≥ 5/semester</span></div>
-        <div class="krc-kpi"><span class="krc-kname" style="color:#4a6080">Onboarding docs complete</span><span class="krc-ktarget">100%</span></div>
-        <div class="krc-kpi"><span class="krc-kname" style="color:#4a6080">Design records filed</span><span class="krc-ktarget">Per review</span></div>
-        <div class="krc-kpi"><span class="krc-kname" style="color:#4a6080">IP log maintained</span><span class="krc-ktarget">Monthly</span></div>
-      </div>
-      <div class="kpi-role-card" style="background:#fff;border-color:var(--border)"><div class="krc-head"><div class="krc-dot" style="background:#f07d00"></div><div class="krc-name">Training Director</div></div>
-        <div class="krc-kpi"><span class="krc-kname" style="color:#4a6080">Workshops delivered</span><span class="krc-ktarget">≥ 3/semester</span></div>
-        <div class="krc-kpi"><span class="krc-kname" style="color:#4a6080">Mentorship pairs active</span><span class="krc-ktarget">100% of new members</span></div>
-        <div class="krc-kpi"><span class="krc-kname" style="color:#4a6080">Review sessions held</span><span class="krc-ktarget">Bi-monthly</span></div>
-        <div class="krc-kpi"><span class="krc-kname" style="color:#4a6080">Recruitment pipeline</span><span class="krc-ktarget">Filled before deadline</span></div>
       </div>
     </div>
   </div>
@@ -1399,66 +1617,81 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(-
 <div class="wave" style="background:#f0f4f8"><svg viewBox="0 0 1440 70" preserveAspectRatio="none"><path d="M0,35 C360,70 1080,0 1440,35 L1440,70 L0,70Z" fill="#2f2f30"/></svg></div>
 
 <!-- ══════════════════════════════════════
-     05 SPONSORSHIP
+     08 SPONSORSHIP
 ══════════════════════════════════════ -->
 <section class="sec sec-white" id="sponsorship">
 <div class="container">
-  <p class="sec-label r">06</p>
+  <p class="sec-label r">08</p>
   <h2 class="sec-title r">Sponsorship &amp; Industry Partnerships</h2>
   <p class="sec-sub r">Empowering Innovation · Driving Impact · Building the Future &nbsp;|&nbsp; DTV + KFUPM</p>
   <div class="tier-grid">
     <div class="tier-card tc-ti r">
       <div class="tier-icon">🛡</div>
-      <div class="tier-name">Titanium</div>
-      <div class="tier-amount">SAR 250k+</div>
-      <div class="tier-badge">Strategic Partner</div>
+      <div class="tier-name">Titanium Partner</div>
+      <div class="tier-amount">SAR 250,000+ per year</div>
+      <div class="tier-badge">Ecosystem Strategic Partner (One Partner Only)</div>
+      <div class="tier-desc">Principal industry partner of the DRL Student Club Ecosystem — supporting innovation, engineering education, and student development across all affiliated clubs.</div>
       <ul class="tier-list">
-        <li>Ecosystem-level naming rights</li>
-        <li>EEC Advisory Panel seat</li>
-        <li>First right on IP licensing</li>
-        <li>Priority recruitment — all clubs</li>
-        <li>Co-branded competitions</li>
-        <li>Dedicated lab space naming</li>
+        <li>Exclusive &ldquo;Ecosystem Strategic Partner&rdquo; designation</li>
+        <li>Prominent branding across all clubs, major events, annual reports, and digital platforms</li>
+        <li>Seat on the Industry Advisory Board</li>
+        <li>Executive participation in annual strategic planning and innovation forums</li>
+        <li>Direct engagement opportunities with members across all clubs</li>
+        <li>Priority access to recruitment events, career fairs, and talent showcases</li>
+        <li>First consideration for collaborative capstone, research, and innovation projects</li>
+        <li>Dedicated annual innovation challenge or competition under the partner&rsquo;s name</li>
+        <li>Executive speaking opportunities at major ecosystem events</li>
+        <li>Customized annual impact report on student engagement, projects, and outcomes</li>
       </ul>
     </div>
     <div class="tier-card tc-pl r r1">
       <div class="tier-icon">🏅</div>
-      <div class="tier-name">Platinum</div>
-      <div class="tier-amount">SAR 100k – 250k</div>
-      <div class="tier-badge">Premier Partner</div>
+      <div class="tier-name">Platinum Partner</div>
+      <div class="tier-amount">SAR 100,000 – 250,000 per year</div>
+      <div class="tier-badge">Premier Club Alliance Partner</div>
+      <div class="tier-desc">Selects and exclusively supports two student clubs aligned with its industry sector and strategic interests.</div>
       <ul class="tier-list">
-        <li>Federation-level naming (1 domain)</li>
-        <li>Quarterly technical briefings</li>
-        <li>Preferred supplier status</li>
-        <li>2 dedicated recruitment events</li>
-        <li>R&amp;D proposals first access</li>
+        <li>Exclusive Platinum sponsorship within two selected clubs</li>
+        <li>Premium branding on club websites, team apparel, competition materials, and major events</li>
+        <li>Quarterly technical briefings on club activities and achievements</li>
+        <li>Two dedicated recruitment and networking events annually</li>
+        <li>Access to student project showcases and demonstration days</li>
+        <li>Opportunity to sponsor workshops, technical competitions, and industry challenges</li>
+        <li>Priority consideration for equipment donations, software deployment, and technical mentorship</li>
+        <li>Featured recognition in ecosystem-wide publications and annual reports</li>
       </ul>
     </div>
     <div class="tier-card tc-go r r2">
       <div class="tier-icon">🥇</div>
-      <div class="tier-name">Gold</div>
-      <div class="tier-amount">SAR 40k – 100k</div>
-      <div class="tier-badge">Supporting Partner</div>
+      <div class="tier-name">Gold Partner</div>
+      <div class="tier-amount">SAR 40,000 – 100,000 per year</div>
+      <div class="tier-badge">Exclusive Club Partner</div>
+      <div class="tier-desc">Focused support for a single student club — becoming its primary industry collaborator.</div>
       <ul class="tier-list">
-        <li>Single club naming rights</li>
-        <li>Annual demo day presence</li>
-        <li>1 recruitment event</li>
-        <li>Logo on team uniforms</li>
-        <li>Technical challenge sponsorship</li>
+        <li>Exclusive Gold sponsorship within one selected club</li>
+        <li>Branding on club communications, apparel, competition materials, and digital platforms</li>
+        <li>Participation in the club&rsquo;s annual project exhibition and demo day</li>
+        <li>One dedicated recruitment or networking session annually</li>
+        <li>Opportunities to propose industry-relevant challenges and projects</li>
+        <li>Access to club technical presentations and milestone reviews</li>
+        <li>Recognition across ecosystem publications and partner showcases</li>
       </ul>
     </div>
     <div class="tier-card tc-si r r3">
       <div class="tier-icon">🥈</div>
-      <div class="tier-name">Silver</div>
-      <div class="tier-amount">SAR 10k – 40k</div>
-      <div class="tier-badge">Contributing Partner</div>
+      <div class="tier-name">Silver Partner</div>
+      <div class="tier-amount">SAR 10,000 – 40,000 per year</div>
+      <div class="tier-badge">Supporting Partner</div>
+      <div class="tier-desc">Contributes through financial support, equipment, software licenses, training resources, or technical expertise.</div>
       <ul class="tier-list">
-        <li>In-kind equipment &amp; software</li>
-        <li>Logo on team website</li>
-        <li>1 CV-drop from talent pool</li>
-        <li>Feature in annual report</li>
-        <li>In-kind license partnerships</li>
+        <li>Recognition on club websites and annual reports</li>
+        <li>Logo placement on selected event materials</li>
+        <li>Access to annual talent and project showcase events</li>
+        <li>Invitation to selected workshops, demonstrations, and networking sessions</li>
+        <li>Opportunity to provide mentorship, guest lectures, or technical training</li>
+        <li>Inclusion in partner appreciation and recognition activities</li>
       </ul>
+      <div class="tier-note">Up to three Silver Partners may support a club simultaneously, subject to industry-category considerations.</div>
     </div>
   </div>
   <div class="why-bar r">
@@ -1475,29 +1708,41 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(-
 <div class="wave" style="background:#f0f4f8"><svg viewBox="0 0 1440 70" preserveAspectRatio="none"><path d="M0,35 C360,0 1080,70 1440,35 L1440,70 L0,70Z" fill="#2f2f30"/></svg></div>
 
 <!-- ══════════════════════════════════════
-     06 COMPETITIONS
+     09 COMPETITIONS
 ══════════════════════════════════════ -->
 <section class="sec sec-dark" id="competitions">
 <div class="container">
-  <p class="sec-label r">07</p>
+  <p class="sec-label r">09</p>
   <h2 class="sec-title r">Competitions</h2>
   <p class="sec-sub r">Focused Purpose · Real Impact · Continuous Growth</p>
   <div class="domain-grid">
-    <div class="domain-card r"><img src="https://images.unsplash.com/photo-1517976487492-5750f3195933?w=400&q=50&auto=format&fit=crop" alt="" class="domain-img"><div class="domain-body"><div class="domain-icon">✈️</div><div class="domain-name">Aerospace</div><div class="domain-purp">Design &amp; operate systems pushing limits of flight</div><div class="domain-ex">SUAS · CanSat · Rover Challenge</div></div></div>
+    <div class="domain-card domain-card-featured r"><img src="https://images.unsplash.com/photo-1509062522246-3755977927d7?w=400&q=50&auto=format&fit=crop" alt="" class="domain-img"><div class="domain-body"><div class="domain-host-badge">Our Initiative · KFUPM &amp; DRL Host</div><div class="domain-icon">🌍</div><div class="domain-name">Outreach &amp; STEM Education</div><div class="domain-purp">The DRL-origin program — engineering clubs mentor schools, run workshops, and host campus STEM festivals</div><div class="domain-ex">KFUPM STEM Outreach League · School Workshops · STEM Festivals</div></div></div>
+    <div class="domain-card r r1"><img src="https://images.unsplash.com/photo-1517976487492-5750f3195933?w=400&q=50&auto=format&fit=crop" alt="" class="domain-img"><div class="domain-body"><div class="domain-icon">✈️</div><div class="domain-name">Aerospace</div><div class="domain-purp">Design &amp; operate systems pushing limits of flight</div><div class="domain-ex">SUAS · CanSat · Rover Challenge</div></div></div>
     <div class="domain-card r r1"><img src="https://images.unsplash.com/photo-1485827404703-89b55fcc595e?w=400&q=50&auto=format&fit=crop" alt="" class="domain-img"><div class="domain-body"><div class="domain-icon">🤖</div><div class="domain-name">Robotics &amp; AI</div><div class="domain-purp">Advance autonomous systems &amp; intelligent machines</div><div class="domain-ex">RoboCup · RoboSub · Formula SAE</div></div></div>
     <div class="domain-card r r2"><img src="https://images.unsplash.com/photo-1581092918056-0c4c3acd3789?w=400&q=50&auto=format&fit=crop" alt="" class="domain-img"><div class="domain-body"><div class="domain-icon">⚙️</div><div class="domain-name">Mechanical</div><div class="domain-purp">Engineer high-performance mechanical systems</div><div class="domain-ex">Baja SAE · Shell Eco-marathon</div></div></div>
     <div class="domain-card r r3"><img src="https://images.unsplash.com/photo-1466611653911-95081537e5b7?w=400&q=50&auto=format&fit=crop" alt="" class="domain-img"><div class="domain-body"><div class="domain-icon">⚡</div><div class="domain-name">Energy</div><div class="domain-purp">Create sustainable energy for a smarter future</div><div class="domain-ex">Solar Decathlon · ASHRAE</div></div></div>
     <div class="domain-card r"><img src="https://images.unsplash.com/photo-1550751827-4bd374c3f58b?w=400&q=50&auto=format&fit=crop" alt="" class="domain-img"><div class="domain-body"><div class="domain-icon">💻</div><div class="domain-name">Digital &amp; Cyber</div><div class="domain-purp">Build intelligent systems &amp; secure the digital future</div><div class="domain-ex">NeurIPS / Kaggle · IoT Hackster</div></div></div>
     <div class="domain-card r r1"><img src="https://images.unsplash.com/photo-1532187863486-abf9dbad1b69?w=400&q=50&auto=format&fit=crop" alt="" class="domain-img"><div class="domain-body"><div class="domain-icon">🧪</div><div class="domain-name">Materials</div><div class="domain-purp">Develop advanced materials enabling new technologies</div><div class="domain-ex">ASM Design Comp. · IEEE PVSC</div></div></div>
     <div class="domain-card r r2"><img src="https://images.unsplash.com/photo-1504384308090-c894fdcc538d?w=400&q=50&auto=format&fit=crop" alt="" class="domain-img"><div class="domain-body"><div class="domain-icon">🏭</div><div class="domain-name">Industrial</div><div class="domain-purp">Optimize supply chains with data-driven decisions</div><div class="domain-ex">INFORMS Analytics</div></div></div>
-    <div class="domain-card r r3"><img src="https://images.unsplash.com/photo-1509062522246-3755977927d7?w=400&q=50&auto=format&fit=crop" alt="" class="domain-img"><div class="domain-body"><div class="domain-icon">🌍</div><div class="domain-name">Outreach</div><div class="domain-purp">Inspire the next generation through STEM</div><div class="domain-ex">School Workshops · STEM Festivals</div></div></div>
+  </div>
+
+  <div class="comp-spotlight r">
+    <div class="comp-spotlight-badge">Flagship Initiative · Official Host</div>
+    <div class="comp-spotlight-title">KFUPM &amp; DRL STEM Outreach League</div>
+    <div class="comp-spotlight-sub">This is our idea — not an external competition we travel to. KFUPM and the Dream Realization Lab are the official hosts: engineering clubs mentor school teams, deliver STEM workshops, build kits, and run outreach festivals on campus year-round.</div>
+    <div class="comp-spotlight-meta">
+      <span class="comp-spotlight-pill">Hosted at KFUPM</span>
+      <span class="comp-spotlight-pill">Organized by DRL</span>
+      <span class="comp-spotlight-pill">STEM Outreach &amp; Engineering Education Team</span>
+      <span class="comp-spotlight-pill">Year-round</span>
+    </div>
   </div>
 
   <div class="comp-preview r r1">
     <div class="comp-preview-head">
       <div>
         <div class="comp-preview-title">Competition Roster Preview</div>
-        <div class="comp-preview-sub">23 competitions across all domains — browse the full roster on this page</div>
+        <div class="comp-preview-sub">28 competitions across all domains — browse the full roster on this page</div>
       </div>
       <input class="comp-search" id="comp-search" type="search" placeholder="Search category, team, competition…" aria-label="Search competitions">
     </div>
@@ -1536,11 +1781,11 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(-
 <div class="wave" style="background:#2f2f30"><svg viewBox="0 0 1440 70" preserveAspectRatio="none"><path d="M0,35 C360,70 1080,0 1440,35 L1440,70 L0,70Z" fill="#f0f4f8"/></svg></div>
 
 <!-- ══════════════════════════════════════
-     07 CREATING VALUE
+     10 CREATING VALUE
 ══════════════════════════════════════ -->
 <section class="sec sec-white" id="value">
 <div class="container">
-  <p class="sec-label r">08</p>
+  <p class="sec-label r">10</p>
   <h2 class="sec-title r">Creating Value</h2>
   <p class="sec-sub r">From student projects to real-world impact</p>
   <img src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=1100&q=55&auto=format&fit=crop" alt="" style="width:100%;height:200px;object-fit:cover;border-radius:14px;border:1px solid var(--border);margin-bottom:1.4rem;opacity:.82" class="r">
@@ -1561,11 +1806,11 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(-
 <div class="wave" style="background:#f0f4f8"><svg viewBox="0 0 1440 70" preserveAspectRatio="none"><path d="M0,35 C360,0 1080,70 1440,35 L1440,70 L0,70Z" fill="#2f2f30"/></svg></div>
 
 <!-- ══════════════════════════════════════
-     08 REFERENCE
+     11 REFERENCE
 ══════════════════════════════════════ -->
 <section class="sec sec-dark" id="reference" style="padding:3rem 2rem">
 <div class="container">
-  <p class="sec-label r">09</p>
+  <p class="sec-label r">11</p>
   <h2 class="sec-title r" style="font-size:1.4rem">Main Reference</h2>
   <div class="ref-card r" style="background:rgba(255,255,255,.06);border-color:rgba(43,181,160,.3);margin-top:.8rem">
     <div class="ref-icon">🎓</div>
@@ -1591,7 +1836,7 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(-
     <h2>Build. <span>Compete.</span> Lead.</h2>
     <p class="closing-sub">Students Activates Affairs with DRL — KFUPM</p>
     <div class="closing-pills">
-      <div class="cpill">8-Role Leadership</div>
+      <div class="cpill">Role Leadership</div>
       <div class="cpill">Annual Operating Cycle</div>
       <div class="cpill">4-Year Student Pipeline</div>
       <div class="cpill">Competitions</div>
@@ -1623,32 +1868,44 @@ var io=new IntersectionObserver(function(entries){
   entries.forEach(function(e){if(e.isIntersecting){e.target.classList.add('on');io.unobserve(e.target);}});
 },{threshold:.1});
 els.forEach(function(el){io.observe(el);});
+var platformReveal=document.querySelector('.platform-demo-reveal');
+if(platformReveal){
+  var pio=new IntersectionObserver(function(entries){
+    entries.forEach(function(e){if(e.isIntersecting){e.target.classList.add('on');pio.unobserve(e.target);}});
+  },{threshold:.35,rootMargin:'0px 0px -60px 0px'});
+  pio.observe(platformReveal);
+}
 
 // Competitions roster preview (from Compeitions.xlsx)
 var COMPETITIONS = [
+  {cat:"Outreach",team:"STEM Outreach & Engineering Education Team",name:"KFUPM & DRL STEM Outreach League",time:"Year-round",desc:"A DRL-origin initiative — KFUPM and Dream Realization Lab serve as official hosts. University clubs mentor school robotics teams, create STEM kits, organize workshops, and lead engineering outreach festivals on campus.",featured:true},
   {cat:"Aerospace",team:"KFUPM Aerial Robotics Team",name:"SUAS International Competition",time:"Sept 14–17, 2026",desc:"Students build an autonomous UAV capable of flight, navigation, remote sensing, and mission-task execution."},
   {cat:"Aerospace",team:"KFUPM Satellite & CubeSat Team",name:"CanSat Competition",time:"June 4–7, 2026",desc:"Students build a can-sized satellite payload launched by rocket, then collect telemetry and complete a mission profile."},
   {cat:"Aerospace",team:"Space Robotics & Rover Team",name:"University Rover Challenge",time:"May 27–30, 2026",desc:"Teams build Mars-style rovers for science, autonomy, manipulation, and field tasks at a Mars-analog site."},
   {cat:"Robotics & AI",team:"KFUPM Robotics & AI Team",name:"RoboCup",time:"June 30–July 6, 2026",desc:"Global robotics and AI competition covering soccer robots, rescue robots, service robots, and industrial robotics."},
   {cat:"Robotics & AI",team:"Subsea & Marine Engineering Team",name:"RoboSub",time:"July 11–16, 2026",desc:"Teams build autonomous underwater vehicles that complete navigation and perception tasks underwater."},
   {cat:"Robotics & AI",team:"KFUPM Formula Racing Team",name:"Formula SAE / Formula Student",time:"May–June",desc:"Teams design and manufacture a formula-style race car, judged on engineering design, cost, business case, and dynamic racing events."},
+  {cat:"Robotics & AI",team:"KFUPM VEX Robotics Team",name:"VEX U Robotics Competition",time:"Apr 2027 (annual)",desc:"University teams design, build, and program robots to compete in game-based challenges at the annual world championship."},
   {cat:"Mechanical",team:"Baja Off-Road Engineering Team",name:"Baja SAE",time:"May–Sept",desc:"Students build a rugged off-road vehicle tested through design judging, acceleration, maneuverability, suspension, and endurance."},
   {cat:"Mechanical",team:"Clean Energy Engineering Team",name:"Shell Eco-marathon",time:"Jan–Apr",desc:"Teams build ultra-energy-efficient vehicles and compete to travel the farthest using the least energy."},
   {cat:"Mechanical",team:"Hydrogen & Fuel Cell Lab",name:"Shell Eco-marathon Hydrogen Class",time:"Jan–Apr",desc:"Focuses on hydrogen-powered mobility, fuel-cell systems, lightweight vehicle design, and energy efficiency."},
   {cat:"Mechanical",team:"ChemE Innovation Team",name:"AIChE Chem-E-Car",time:"Regional in Spring; finals around Nov",desc:"Chemical engineering teams build a small vehicle powered and stopped by chemical reactions, with strong safety and design requirements."},
   {cat:"Energy",team:"Clean Energy Engineering Team",name:"Solar Decathlon",time:"Fall–Spring",desc:"Students design and build highly energy-efficient solar-powered buildings integrating renewable energy systems and smart technologies."},
+  {cat:"Energy",team:"Solar Car Engineering Team",name:"Bridgestone World Solar Challenge",time:"Aug",desc:"Teams design, build, and race solar-powered cars across 3,000 km of the Australian Outback from Darwin to Adelaide, competing for the fastest time using only solar energy across the Challenger, Cruiser, and Explorer classes."},
   {cat:"Energy",team:"HVAC & Building Systems Club",name:"ASHRAE Student Design Competition",time:"May–June submissions",desc:"Students design HVAC/building systems for a real building scenario, focusing on energy, comfort, sustainability, and system selection."},
   {cat:"Energy",team:"KFUPM Cyber Defense League",name:"DEF CON CTF Qualifier",time:"May 22–24, 2026",desc:"Elite cybersecurity competition where teams solve exploitation, reverse engineering, cryptography, web, and binary challenges."},
   {cat:"Energy",team:"Artificial Intelligence Society",name:"Kaggle / NeurIPS ML Competitions",time:"Year-round; major events in Fall",desc:"Students compete in machine learning, prediction, computer vision, NLP, and optimization challenges."},
   {cat:"Digital & Cyber",team:"Embedded Systems & IoT Lab",name:"IEEE / ARM / Hackster IoT Challenges",time:"Year-round",desc:"Teams build connected hardware systems using sensors, microcontrollers, edge AI, cloud platforms, and embedded software."},
   {cat:"Digital & Cyber",team:"Advanced Manufacturing Club",name:"ASME / SME Design Challenges",time:"Spring–Summer",desc:"Students compete in mechanical design, manufacturing, CAD/CAM, machining, additive manufacturing, and product development."},
   {cat:"Digital & Cyber",team:"Medical Device Design Team",name:"BMES / Healthcare Design Competitions",time:"Spring–Fall",desc:"Teams design medical devices, diagnostics, assistive tools, prosthetics, or healthcare technology prototypes."},
+  {cat:"Bio & Med",team:"Synthetic Biology & Bioengineering Lab",name:"iGEM (International Genetically Engineered Machine)",time:"Nov 13–16, 2026 (Paris)",desc:"Teams engineer biological systems using standardized DNA parts throughout the summer, then present their projects at the Grand Jamboree."},
   {cat:"Bio & Med",team:"Tech Entrepreneurship & Venture Studio",name:"Hult Prize / Startup Competitions",time:"Sept–Spring",desc:"Students build startup ventures, validate business models, pitch, and compete for funding."},
+  {cat:"Business & Strategy",team:"Engineering & Business Case Team",name:"EngComm (Engineering & Commerce Case Competition)",time:"Feb 16–21, 2027",desc:"Interdisciplinary teams of engineering and commerce students collaborate to solve complex real-world business cases."},
+  {cat:"Business & Strategy",team:"Business Strategy & Consulting Club",name:"EMEA Strategy Consulting Summit",time:"Annual",desc:"Student teams across Europe, Middle East, and Africa develop and present strategic recommendations for real business challenges."},
   {cat:"Materials",team:"Advanced Materials Science Club",name:"ASM Undergraduate Design Competition",time:"Annual",desc:"Students submit material-focused design projects, including alloys, polymers, composites, or additive-manufacturing materials."},
   {cat:"Civil",team:"Smart Infrastructure & Construction Club",name:"ASCE 3D Printing Competition",time:"Spring",desc:"Students design and fabricate 3D-printed civil structures, tested for strength, efficiency, and engineering quality."},
   {cat:"Materials / Energy",team:"Advanced Materials Science Club",name:"IEEE PVSC Student Solar Challenge",time:"Summer",desc:"Students develop innovative photovoltaic (solar panel) materials, efficiency improvements, and next-generation solar technologies."},
-  {cat:"Industrial",team:"Operations Research & Logistics Club",name:"INFORMS Analytics Competition",time:"Fall–Spring",desc:"Students solve real-world optimization, logistics, supply chain, and data analytics problems using operations research and AI methods."},
-  {cat:"Outreach",team:"STEM Outreach & Engineering Education Team",name:"School workshops, STEM festivals from KFUPM",time:"Year long",desc:"University students mentor school robotics teams, create STEM kits, organize STEM workshops, and lead engineering outreach programs and competitions."}
+  {cat:"Industrial",team:"Operations Research & Logistics Club",name:"INFORMS Analytics Competition",time:"Fall–Spring",desc:"Students solve real-world optimization, logistics, supply chain, and data analytics problems using operations research and AI methods."}
 ];
 
 function catClass(cat) {
@@ -1673,14 +1930,21 @@ function renderCompetitions(filter) {
     if (!q) return true;
     return (c.cat + ' ' + c.team + ' ' + c.name + ' ' + c.time + ' ' + c.desc).toLowerCase().indexOf(q) !== -1;
   });
+  rows.sort(function(a, b) {
+    if (a.featured && !b.featured) return -1;
+    if (!a.featured && b.featured) return 1;
+    return 0;
+  });
   if (!rows.length) {
     tbody.innerHTML = '<tr><td colspan="5" class="comp-empty">No competitions match your search.</td></tr>';
     return;
   }
   tbody.innerHTML = rows.map(function(c) {
-    return '<tr><td><span class="comp-cat ' + catClass(c.cat) + '">' + c.cat + '</span></td>' +
+    var rowCls = c.featured ? ' class="comp-row-featured"' : '';
+    var hostTag = c.featured ? ' <span class="comp-host-tag">KFUPM &amp; DRL Host</span>' : '';
+    return '<tr' + rowCls + '><td><span class="comp-cat ' + catClass(c.cat) + '">' + c.cat + '</span></td>' +
       '<td class="comp-team">' + c.team + '</td>' +
-      '<td>' + c.name + '</td>' +
+      '<td>' + c.name + hostTag + '</td>' +
       '<td class="comp-time">' + c.time + '</td>' +
       '<td>' + c.desc + '</td></tr>';
   }).join('');

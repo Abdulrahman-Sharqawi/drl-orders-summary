@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>DRL - Order Summary Report</title>
 <style>
   :root {
@@ -22,7 +22,8 @@
     --orange: #f07d00;
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
-  body { font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; background: var(--bg); color: var(--text); }
+  html { overflow-x: hidden; }
+  body { font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; background: var(--bg); color: var(--text); overflow-x: hidden; }
 
   /* HEADER */
   .report-header {
@@ -261,11 +262,31 @@
     .report-header-inner { padding: 22px 20px 20px; gap: 16px; flex-direction: column; border-radius: 16px; }
     .report-header-logo { height: 58px; }
     .report-header-title { font-size: 1.25rem; }
+    .report-header p { font-size: 0.82rem; }
+    .report-header .badge { font-size: 0.68rem; padding: 4px 12px; line-height: 1.45; }
     .header-pattern { width: 72%; opacity: 0.85; }
-    .card-grid-2, .card-grid-3 { grid-template-columns: 1fr; }
-    .bar-label { width: 100px; font-size: 0.75rem; }
+    .container { padding: 20px 14px; }
+    .card-grid-2, .card-grid-3, .kpi-grid { grid-template-columns: 1fr; }
+    .card { padding: 18px 16px; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+    table { min-width: 480px; font-size: 0.78rem; }
+    thead th, tbody td { padding: 8px 10px; }
+    .bar-label { width: 88px; font-size: 0.72rem; }
+    .bar-count { width: 36px; font-size: 0.72rem; }
     .kpi-value { font-size: 1.6rem; }
-    .donut-wrap { flex-direction: column; }
+    .kpi-card { padding: 18px 16px; }
+    .donut-wrap { flex-direction: column; align-items: flex-start; gap: 16px; }
+    .highlight-box { flex-direction: column; padding: 16px; }
+    .timeline { height: 100px; }
+    .t-label { font-size: 0.62rem; }
+    .section-title { font-size: 1rem; margin: 24px 0 12px; }
+    .report-footer { padding: 24px 16px; font-size: 0.72rem; }
+  }
+  @media (max-width: 400px) {
+    .report-header-title { font-size: 1.1rem; }
+    .bar-row { flex-wrap: wrap; gap: 6px; }
+    .bar-label { width: 100%; text-align: left; }
+    .bar-track { width: 100%; flex: none; }
+    .bar-count { width: auto; margin-left: auto; }
   }
 </style>
 </head>
