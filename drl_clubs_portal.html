@@ -1,0 +1,1009 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DRL Clubs Portal — KFUPM</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --blue:#003594;       /* deep blue */
+  --green:#00C7B1;      /* electric green */
+  --orange:#FF8200;     /* bright orange */
+  --ink:#0a1530;        /* near-black navy */
+  --panel:#0e1c40;      /* dark panel */
+  --panel2:#13245096;
+  --line:rgba(255,255,255,.08);
+  --line2:rgba(0,199,177,.22);
+  --txt:#eaf0ff;
+  --muted:#8fa0c8;
+  --muted2:#5e6f9a;
+  --card:#ffffff;
+  --card-line:#dde5f2;
+  --card-ink:#0a1530;
+  --card-muted:#5a6b8c;
+  --bg:#f3f6fc;
+  --disp:'Space Grotesk',sans-serif;
+  --body:'Inter',sans-serif;
+  --mono:'JetBrains Mono',monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:var(--body);background:var(--bg);color:var(--card-ink);-webkit-font-smoothing:antialiased;overflow-x:hidden}
+
+/* ───────── APP SHELL ───────── */
+.app{display:grid;grid-template-columns:248px 1fr;min-height:100vh}
+
+/* ───────── SIDEBAR ───────── */
+.side{
+  background:var(--ink);color:var(--txt);position:sticky;top:0;height:100vh;
+  display:flex;flex-direction:column;border-right:1px solid var(--line);
+  position:relative;overflow:hidden;
+}
+/* circuit trace signature */
+.side::before{
+  content:'';position:absolute;inset:0;z-index:0;opacity:.5;
+  background-image:
+    linear-gradient(var(--line) 1px,transparent 1px),
+    linear-gradient(90deg,var(--line) 1px,transparent 1px);
+  background-size:26px 26px;
+  -webkit-mask-image:linear-gradient(to bottom,transparent,#000 30%,#000 70%,transparent);
+          mask-image:linear-gradient(to bottom,transparent,#000 30%,#000 70%,transparent);
+}
+.side>*{position:relative;z-index:1}
+.brand{padding:1.4rem 1.3rem 1.1rem;border-bottom:1px solid var(--line)}
+.brand-row{display:flex;align-items:center;gap:.6rem}
+.brand-mark{
+  width:34px;height:34px;border-radius:9px;flex-shrink:0;position:relative;
+  background:linear-gradient(135deg,var(--blue),#0048c8);
+  border:1px solid rgba(0,199,177,.4);
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:0 0 0 1px rgba(0,0,0,.3),0 6px 18px rgba(0,53,148,.4);
+}
+.brand-mark span{font-family:var(--disp);font-weight:700;font-size:.95rem;color:#fff;letter-spacing:-.04em}
+.brand-mark::after{content:'';position:absolute;right:-1px;top:7px;width:6px;height:6px;border-radius:50%;background:var(--green);box-shadow:0 0 8px var(--green)}
+.brand-txt .bt-1{font-family:var(--disp);font-weight:700;font-size:.92rem;letter-spacing:-.02em}
+.brand-txt .bt-2{font-size:.62rem;color:var(--muted);letter-spacing:.16em;text-transform:uppercase;margin-top:1px}
+
+.nav-group{padding:1rem .8rem .4rem}
+.nav-label{font-size:.6rem;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:var(--muted2);padding:0 .6rem .5rem}
+.nav-item{
+  display:flex;align-items:center;gap:.7rem;padding:.6rem .7rem;border-radius:9px;
+  font-size:.83rem;font-weight:500;color:var(--muted);cursor:pointer;
+  transition:background .15s,color .15s;margin-bottom:2px;border:1px solid transparent;
+}
+.nav-item:hover{background:rgba(255,255,255,.04);color:var(--txt)}
+.nav-item.active{background:linear-gradient(90deg,rgba(0,199,177,.16),rgba(0,199,177,.02));color:#fff;border-color:var(--line2)}
+.nav-item.active .ni-ic{color:var(--green)}
+.ni-ic{width:18px;text-align:center;font-size:1rem;color:var(--muted2);transition:color .15s}
+.ni-badge{margin-left:auto;font-size:.6rem;font-weight:700;background:var(--orange);color:#fff;border-radius:20px;padding:1px 7px}
+
+.side-foot{margin-top:auto;padding:1rem;border-top:1px solid var(--line)}
+.user-chip{display:flex;align-items:center;gap:.6rem;padding:.5rem;border-radius:10px;background:rgba(255,255,255,.03);border:1px solid var(--line)}
+.avatar{width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,var(--orange),#ffae52);display:flex;align-items:center;justify-content:center;font-family:var(--disp);font-weight:700;font-size:.78rem;color:#3a1e00;flex-shrink:0}
+.uc-name{font-size:.76rem;font-weight:600;color:var(--txt)}
+.uc-role{font-size:.62rem;color:var(--muted2)}
+
+/* ───────── MAIN ───────── */
+.main{display:flex;flex-direction:column;min-width:0}
+.topbar{
+  background:#fff;border-bottom:1px solid var(--card-line);
+  padding:.85rem 1.6rem;display:flex;align-items:center;gap:1rem;position:sticky;top:0;z-index:20;
+}
+.search{
+  flex:1;max-width:380px;display:flex;align-items:center;gap:.5rem;
+  background:var(--bg);border:1px solid var(--card-line);border-radius:10px;padding:.5rem .8rem;
+}
+.search input{border:none;background:none;outline:none;font-family:var(--body);font-size:.82rem;width:100%;color:var(--card-ink)}
+.search input::placeholder{color:#9aa8c4}
+.search .sk{font-size:.62rem;color:#9aa8c4;border:1px solid var(--card-line);border-radius:5px;padding:1px 5px;font-family:var(--mono)}
+.top-actions{margin-left:auto;display:flex;align-items:center;gap:.7rem}
+.icon-btn{width:36px;height:36px;border-radius:9px;border:1px solid var(--card-line);background:#fff;display:flex;align-items:center;justify-content:center;font-size:1rem;cursor:pointer;position:relative;transition:border-color .15s}
+.icon-btn:hover{border-color:var(--green)}
+.icon-btn .dot{position:absolute;top:7px;right:8px;width:7px;height:7px;border-radius:50%;background:var(--orange);border:1.5px solid #fff}
+.btn-cta{font-family:var(--body);font-weight:600;font-size:.8rem;color:#fff;background:var(--blue);border:none;border-radius:9px;padding:.55rem 1rem;cursor:pointer;display:flex;align-items:center;gap:.4rem;transition:background .15s}
+.btn-cta:hover{background:#0046c4}
+
+.view{padding:1.8rem 1.6rem 3rem;max-width:1280px;width:100%;margin:0 auto;display:none}
+.view.active{display:block;animation:fade .35s ease}
+@keyframes fade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+
+.page-head{margin-bottom:1.5rem}
+.eyebrow{font-family:var(--mono);font-size:.66rem;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--green);display:flex;align-items:center;gap:.5rem;margin-bottom:.4rem}
+.eyebrow::before{content:'';width:18px;height:1px;background:var(--green)}
+.page-title{font-family:var(--disp);font-size:1.7rem;font-weight:700;letter-spacing:-.03em;color:var(--card-ink)}
+.page-sub{font-size:.86rem;color:var(--card-muted);margin-top:.25rem}
+
+/* ───────── STAT STRIP ───────── */
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:1.5rem}
+.stat{
+  background:#fff;border:1px solid var(--card-line);border-radius:14px;padding:1.1rem 1.2rem;position:relative;overflow:hidden;
+}
+.stat::after{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--c,var(--blue))}
+.stat-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:.7rem}
+.stat-ic{width:34px;height:34px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:1.05rem;background:var(--cb,rgba(0,53,148,.08))}
+.stat-trend{font-family:var(--mono);font-size:.64rem;font-weight:600;color:var(--green);background:rgba(0,199,177,.1);border-radius:20px;padding:2px 7px}
+.stat-trend.down{color:var(--orange);background:rgba(255,130,0,.1)}
+.stat-num{font-family:var(--disp);font-size:1.8rem;font-weight:700;letter-spacing:-.03em;line-height:1}
+.stat-lbl{font-size:.72rem;color:var(--card-muted);margin-top:.35rem}
+
+/* ───────── GRID LAYOUTS ───────── */
+.cols{display:grid;grid-template-columns:1.6fr 1fr;gap:16px;margin-bottom:16px}
+.panel-card{background:#fff;border:1px solid var(--card-line);border-radius:14px;padding:1.3rem}
+.pc-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.1rem}
+.pc-title{font-family:var(--disp);font-weight:600;font-size:1rem;letter-spacing:-.01em}
+.pc-link{font-size:.74rem;color:var(--blue);font-weight:600;cursor:pointer}
+.pc-link:hover{text-decoration:underline}
+
+/* LPI ring */
+.lpi-wrap{display:flex;align-items:center;gap:1.4rem;flex-wrap:wrap}
+.ring{position:relative;width:128px;height:128px;flex-shrink:0}
+.ring svg{transform:rotate(-90deg)}
+.ring-center{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.ring-score{font-family:var(--disp);font-size:2rem;font-weight:700;letter-spacing:-.04em;line-height:1}
+.ring-lbl{font-family:var(--mono);font-size:.6rem;color:var(--card-muted);letter-spacing:.1em;margin-top:2px}
+.lpi-breakdown{flex:1;min-width:200px}
+.lpi-row{display:flex;align-items:center;gap:.7rem;margin-bottom:.7rem}
+.lpi-rname{font-size:.74rem;color:var(--card-muted);width:92px;flex-shrink:0}
+.bar{flex:1;height:7px;background:#eef2f9;border-radius:10px;overflow:hidden}
+.bar span{display:block;height:100%;border-radius:10px;background:linear-gradient(90deg,var(--blue),var(--green))}
+.lpi-rval{font-family:var(--mono);font-size:.72rem;font-weight:600;width:34px;text-align:right}
+.lpi-cert{display:inline-flex;align-items:center;gap:.4rem;font-size:.7rem;font-weight:700;color:#0a5c52;background:rgba(0,199,177,.12);border:1px solid rgba(0,199,177,.3);border-radius:20px;padding:3px 10px;margin-top:.4rem}
+
+/* activity feed */
+.feed-item{display:flex;gap:.8rem;padding:.7rem 0;border-bottom:1px solid #f0f3f9}
+.feed-item:last-child{border-bottom:none}
+.feed-dot{width:30px;height:30px;border-radius:8px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:.85rem}
+.feed-txt{font-size:.78rem;line-height:1.4}
+.feed-txt b{font-weight:600}
+.feed-time{font-family:var(--mono);font-size:.64rem;color:var(--muted2);margin-top:2px}
+
+/* QR widget */
+.qr-card{background:linear-gradient(150deg,var(--ink),#13234e);color:#fff;border:1px solid var(--line2);border-radius:14px;padding:1.3rem;text-align:center;position:relative;overflow:hidden}
+.qr-card::before{content:'';position:absolute;inset:0;background-image:linear-gradient(var(--line) 1px,transparent 1px),linear-gradient(90deg,var(--line) 1px,transparent 1px);background-size:18px 18px;opacity:.4}
+.qr-card>*{position:relative}
+.qr-box{width:120px;height:120px;margin:0 auto .8rem;border-radius:12px;background:#fff;padding:10px;display:grid;grid-template-columns:repeat(7,1fr);grid-template-rows:repeat(7,1fr);gap:2px}
+.qr-box i{background:var(--ink);border-radius:1px}
+.qr-box i.off{background:transparent}
+.qr-status{font-family:var(--mono);font-size:.66rem;color:var(--green);letter-spacing:.1em;margin-bottom:.3rem}
+.qr-event{font-family:var(--disp);font-weight:600;font-size:.95rem}
+.qr-meta{font-size:.7rem;color:var(--muted);margin-top:.2rem}
+.qr-btn{margin-top:1rem;width:100%;background:var(--green);color:var(--ink);border:none;border-radius:9px;padding:.6rem;font-family:var(--body);font-weight:700;font-size:.8rem;cursor:pointer;transition:transform .12s}
+.qr-btn:hover{transform:translateY(-1px)}
+.qr-btn:active{transform:translateY(0)}
+
+/* ───────── CLUB DIRECTORY ───────── */
+.filters{display:flex;gap:.5rem;flex-wrap:wrap;margin-bottom:1.2rem}
+.chip{font-size:.74rem;font-weight:600;padding:.4rem .9rem;border-radius:20px;border:1px solid var(--card-line);background:#fff;color:var(--card-muted);cursor:pointer;transition:all .15s}
+.chip:hover{border-color:var(--green)}
+.chip.active{background:var(--blue);border-color:var(--blue);color:#fff}
+.club-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px}
+.club{background:#fff;border:1px solid var(--card-line);border-radius:14px;overflow:hidden;transition:transform .2s,box-shadow .2s;cursor:pointer}
+.club:hover{transform:translateY(-4px);box-shadow:0 16px 40px rgba(10,21,48,.12)}
+.club-banner{height:84px;position:relative;display:flex;align-items:flex-end;padding:.8rem;overflow:hidden}
+.club-banner::before{content:'';position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.14) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.14) 1px,transparent 1px);background-size:20px 20px}
+.club-emoji{font-size:1.5rem;position:relative;z-index:1;width:42px;height:42px;border-radius:10px;background:rgba(255,255,255,.16);backdrop-filter:blur(6px);display:flex;align-items:center;justify-content:center;border:1px solid rgba(255,255,255,.25)}
+.club-open{position:absolute;top:.7rem;right:.7rem;z-index:1;font-size:.6rem;font-weight:700;background:var(--orange);color:#fff;border-radius:20px;padding:2px 9px;letter-spacing:.04em}
+.club-body{padding:1rem 1.1rem 1.2rem}
+.club-name{font-family:var(--disp);font-weight:600;font-size:1rem;letter-spacing:-.01em}
+.club-domain{font-family:var(--mono);font-size:.64rem;color:var(--green);letter-spacing:.08em;text-transform:uppercase;margin:.2rem 0 .6rem}
+.club-desc{font-size:.76rem;color:var(--card-muted);line-height:1.5;margin-bottom:.9rem}
+.club-foot{display:flex;align-items:center;gap:1rem;padding-top:.8rem;border-top:1px solid #f0f3f9}
+.cf-item{display:flex;align-items:center;gap:.35rem;font-size:.72rem;color:var(--card-muted)}
+.cf-item b{font-family:var(--disp);color:var(--card-ink);font-weight:600}
+.cf-health{margin-left:auto;display:flex;align-items:center;gap:.3rem;font-size:.68rem;font-weight:700}
+.hd{width:8px;height:8px;border-radius:50%}
+
+/* ───────── LEADERBOARD ───────── */
+.lb-table{background:#fff;border:1px solid var(--card-line);border-radius:14px;overflow:hidden}
+.lb-row{display:grid;grid-template-columns:48px 1fr 110px 110px 90px;align-items:center;padding:.85rem 1.2rem;border-bottom:1px solid #f0f3f9;font-size:.82rem;transition:background .12s}
+.lb-row:last-child{border-bottom:none}
+.lb-row.head{background:var(--bg);font-family:var(--mono);font-size:.64rem;letter-spacing:.1em;text-transform:uppercase;color:var(--card-muted);font-weight:600}
+.lb-row:not(.head):hover{background:#fafcff}
+.lb-rank{font-family:var(--disp);font-weight:700;font-size:1rem}
+.lb-rank.top{color:var(--orange)}
+.lb-club{display:flex;align-items:center;gap:.7rem;font-weight:600}
+.lb-em{width:30px;height:30px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:.9rem;background:var(--bg)}
+.lb-bar{height:6px;background:#eef2f9;border-radius:10px;overflow:hidden;width:80px}
+.lb-bar span{display:block;height:100%;background:linear-gradient(90deg,var(--blue),var(--green))}
+.lb-score{font-family:var(--mono);font-weight:600}
+.lb-tag{font-size:.64rem;font-weight:700;padding:2px 8px;border-radius:20px}
+
+/* ───────── CALENDAR ───────── */
+.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:6px}
+.cal-h{font-family:var(--mono);font-size:.62rem;text-transform:uppercase;letter-spacing:.08em;color:var(--card-muted);text-align:center;padding:.4rem 0;font-weight:600}
+.cal-d{aspect-ratio:1;background:#fff;border:1px solid var(--card-line);border-radius:9px;padding:.4rem;font-size:.72rem;position:relative;transition:border-color .15s;cursor:pointer}
+.cal-d:hover{border-color:var(--green)}
+.cal-d.empty{background:transparent;border:none}
+.cal-d.today{border-color:var(--blue);box-shadow:0 0 0 1px var(--blue)}
+.cal-dn{font-weight:600;color:var(--card-muted)}
+.cal-ev{font-size:.58rem;font-weight:600;border-radius:5px;padding:1px 4px;margin-top:3px;color:#fff;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
+
+/* sponsor portal */
+.sp-banner{background:linear-gradient(135deg,var(--blue),#0a1b52);border-radius:14px;padding:1.6rem;color:#fff;position:relative;overflow:hidden;margin-bottom:16px}
+.sp-banner::before{content:'';position:absolute;inset:0;background-image:linear-gradient(var(--line) 1px,transparent 1px),linear-gradient(90deg,var(--line) 1px,transparent 1px);background-size:24px 24px;opacity:.5}
+.sp-banner>*{position:relative}
+.sp-tier{display:inline-flex;align-items:center;gap:.4rem;font-size:.66rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;background:rgba(0,199,177,.18);border:1px solid var(--line2);color:var(--green);border-radius:20px;padding:3px 11px;margin-bottom:.8rem}
+.sp-banner h3{font-family:var(--disp);font-size:1.4rem;font-weight:700;letter-spacing:-.02em}
+.sp-banner p{font-size:.82rem;color:var(--muted);margin-top:.3rem;max-width:440px}
+
+/* ───────── ROLE SWITCHER ───────── */
+.role-switch{display:flex;gap:2px;background:var(--bg);border:1px solid var(--card-line);border-radius:10px;padding:3px}
+.role-opt{font-size:.72rem;font-weight:600;color:var(--card-muted);padding:.4rem .7rem;border-radius:7px;cursor:pointer;transition:all .15s;white-space:nowrap}
+.role-opt:hover{color:var(--card-ink)}
+.role-opt.active{background:var(--blue);color:#fff}
+
+/* hide nav groups per role */
+.nav-group[data-roles]{display:none}
+.nav-group.show{display:block}
+
+/* ───────── MODAL ───────── */
+.modal-scrim{position:fixed;inset:0;background:rgba(10,21,48,.55);backdrop-filter:blur(3px);z-index:200;display:none;align-items:center;justify-content:center;padding:1.5rem}
+.modal-scrim.show{display:flex;animation:fade .2s ease}
+.modal{background:#fff;border-radius:18px;max-width:460px;width:100%;overflow:hidden;box-shadow:0 30px 80px rgba(10,21,48,.4);animation:pop .28s cubic-bezier(.22,1,.36,1)}
+@keyframes pop{from{transform:translateY(20px) scale(.97);opacity:0}to{transform:none;opacity:1}}
+.modal-banner{height:90px;display:flex;align-items:flex-end;padding:1rem;position:relative;overflow:hidden}
+.modal-banner::before{content:'';position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.14) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.14) 1px,transparent 1px);background-size:20px 20px}
+.modal-em{position:relative;z-index:1;width:46px;height:46px;border-radius:11px;background:rgba(255,255,255,.16);backdrop-filter:blur(6px);border:1px solid rgba(255,255,255,.25);display:flex;align-items:center;justify-content:center;font-size:1.5rem}
+.modal-body{padding:1.3rem 1.5rem 1.5rem}
+.modal-x{position:absolute;top:.7rem;right:.8rem;z-index:2;width:28px;height:28px;border-radius:7px;background:rgba(0,0,0,.25);color:#fff;border:none;cursor:pointer;font-size:1rem}
+.role-list{margin:.8rem 0 1.1rem}
+.role-pick{display:flex;align-items:center;gap:.8rem;padding:.8rem;border:1px solid var(--card-line);border-radius:11px;margin-bottom:.5rem;cursor:pointer;transition:all .15s}
+.role-pick:hover{border-color:var(--green);background:#fafffe}
+.role-pick.sel{border-color:var(--blue);box-shadow:0 0 0 1px var(--blue);background:#f7faff}
+.rp-ic{width:38px;height:38px;border-radius:9px;background:var(--bg);display:flex;align-items:center;justify-content:center;font-size:1.05rem;flex-shrink:0}
+.rp-name{font-weight:600;font-size:.84rem}
+.rp-meta{font-size:.7rem;color:var(--card-muted)}
+.rp-check{margin-left:auto;color:var(--blue);opacity:0;font-size:1.1rem}
+.role-pick.sel .rp-check{opacity:1}
+.modal-btn{width:100%;background:var(--blue);color:#fff;border:none;border-radius:10px;padding:.75rem;font-family:var(--body);font-weight:600;font-size:.85rem;cursor:pointer;transition:background .15s}
+.modal-btn:hover{background:#0046c4}
+.toast{position:fixed;bottom:1.5rem;left:50%;transform:translateX(-50%) translateY(20px);background:var(--ink);color:#fff;padding:.8rem 1.3rem;border-radius:11px;font-size:.82rem;font-weight:500;z-index:300;opacity:0;transition:all .3s;border:1px solid var(--line2);display:flex;align-items:center;gap:.6rem;box-shadow:0 12px 40px rgba(0,0,0,.3)}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+.toast b{color:var(--green)}
+
+/* ───────── LAB BOOKING ───────── */
+.lab-legend{display:flex;gap:1.2rem;flex-wrap:wrap;margin-bottom:1rem;font-size:.74rem;color:var(--card-muted)}
+.lab-legend span{display:flex;align-items:center;gap:.4rem}
+.ll-sw{width:14px;height:14px;border-radius:4px}
+.lab-grid{display:grid;grid-template-columns:120px repeat(8,1fr);gap:5px;min-width:680px}
+.lab-cell{font-size:.66rem;text-align:center}
+.lab-time{font-family:var(--mono);font-size:.64rem;color:var(--card-muted);display:flex;align-items:center;justify-content:flex-end;padding-right:.6rem}
+.lab-mh{font-family:var(--mono);font-size:.6rem;letter-spacing:.04em;color:var(--card-muted);text-transform:uppercase;padding-bottom:.3rem;text-align:center;font-weight:600}
+.slot{height:34px;border-radius:7px;cursor:pointer;border:1px solid transparent;transition:transform .1s}
+.slot.free{background:rgba(0,199,177,.1);border-color:rgba(0,199,177,.25)}
+.slot.free:hover{transform:scale(1.04);background:rgba(0,199,177,.2)}
+.slot.booked{background:rgba(0,53,148,.1);border-color:rgba(0,53,148,.2);cursor:not-allowed}
+.slot.mine{background:var(--orange);border-color:var(--orange)}
+.slot.sel{background:var(--green);border-color:var(--green)}
+.lab-scroll{overflow-x:auto;padding-bottom:6px}
+
+/* ───────── WIKI ───────── */
+.wiki-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:14px}
+.wiki-card{background:#fff;border:1px solid var(--card-line);border-radius:13px;padding:1.1rem;cursor:pointer;transition:transform .18s,box-shadow .18s;position:relative;overflow:hidden}
+.wiki-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--wc,var(--blue))}
+.wiki-card:hover{transform:translateY(-3px);box-shadow:0 12px 30px rgba(10,21,48,.1)}
+.wiki-tag{font-family:var(--mono);font-size:.6rem;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--wc,var(--blue));margin-bottom:.4rem}
+.wiki-title{font-family:var(--disp);font-weight:600;font-size:.92rem;line-height:1.25;margin-bottom:.5rem}
+.wiki-meta{font-size:.7rem;color:var(--card-muted);display:flex;gap:.8rem;margin-top:.7rem;padding-top:.7rem;border-top:1px solid #f0f3f9}
+
+/* ───────── ADMIN ───────── */
+.heatbar{display:flex;align-items:center;gap:.8rem;padding:.7rem 0;border-bottom:1px solid #f0f3f9}
+.heatbar:last-child{border-bottom:none}
+.hb-name{font-size:.78rem;font-weight:600;width:130px;flex-shrink:0;display:flex;align-items:center;gap:.5rem}
+.hb-track{flex:1;height:24px;border-radius:7px;background:#f3f6fc;position:relative;overflow:hidden}
+.hb-fill{height:100%;border-radius:7px;display:flex;align-items:center;padding-left:.6rem;font-family:var(--mono);font-size:.66rem;font-weight:600;color:#fff}
+.alert-row{display:flex;align-items:center;gap:.8rem;padding:.8rem 0;border-bottom:1px solid #f0f3f9;font-size:.8rem}
+.alert-row:last-child{border-bottom:none}
+.alert-ic{width:30px;height:30px;border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:.9rem}
+.alert-act{margin-left:auto;font-size:.72rem;font-weight:600;color:var(--blue);cursor:pointer}
+
+@media(max-width:1000px){
+  .stats{grid-template-columns:repeat(2,1fr)}
+  .cols{grid-template-columns:1fr}
+}
+@media(max-width:760px){
+  .app{grid-template-columns:1fr}
+  .side{position:fixed;left:0;top:0;width:248px;z-index:100;transform:translateX(-100%);transition:transform .25s}
+  .side.open{transform:none}
+  .menu-toggle{display:flex!important}
+  .stats{grid-template-columns:1fr 1fr}
+  .lb-row{grid-template-columns:36px 1fr 80px;font-size:.76rem}
+  .lb-row .lb-hide{display:none}
+}
+.menu-toggle{display:none;width:36px;height:36px;border-radius:9px;border:1px solid var(--card-line);background:#fff;align-items:center;justify-content:center;font-size:1.1rem;cursor:pointer}
+.scrim{position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:90;display:none}
+.scrim.show{display:block}
+</style>
+</head>
+<body>
+<div class="app">
+
+  <!-- ═══════════ SIDEBAR ═══════════ -->
+  <aside class="side" id="side">
+    <div class="brand">
+      <div class="brand-row">
+        <div class="brand-mark"><span>DRL</span></div>
+        <div class="brand-txt">
+          <div class="bt-1">Clubs Portal</div>
+          <div class="bt-2">DTV · KFUPM</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="nav-group show" data-roles="member,leader,drl">
+      <div class="nav-label">Workspace</div>
+      <div class="nav-item active" data-view="dashboard"><span class="ni-ic">◎</span> <span class="nav-dash-label">Dashboard</span></div>
+      <div class="nav-item" data-view="directory"><span class="ni-ic">▦</span> Club Directory</div>
+      <div class="nav-item" data-view="calendar"><span class="ni-ic">▤</span> Calendar <span class="ni-badge">3</span></div>
+      <div class="nav-item" data-view="leaderboard"><span class="ni-ic">▲</span> Club Health</div>
+    </div>
+
+    <div class="nav-group show" data-roles="member,leader">
+      <div class="nav-label">My Engineering</div>
+      <div class="nav-item" data-view="portfolio"><span class="ni-ic">◈</span> My Portfolio</div>
+      <div class="nav-item" data-view="booking"><span class="ni-ic">⬡</span> DRL Lab Booking</div>
+      <div class="nav-item" data-view="wiki"><span class="ni-ic">≣</span> Knowledge Wiki</div>
+    </div>
+
+    <div class="nav-group" data-roles="leader,drl">
+      <div class="nav-label">Oversight</div>
+      <div class="nav-item" data-view="admin"><span class="ni-ic">⬢</span> DRL Command</div>
+      <div class="nav-item" data-view="consultant"><span class="ni-ic">⬣</span> Consultant Hub</div>
+    </div>
+
+    <div class="nav-group" data-roles="sponsor">
+      <div class="nav-label">Partner Workspace</div>
+      <div class="nav-item" data-view="sponsor"><span class="ni-ic">◇</span> My Sponsorship</div>
+      <div class="nav-item" data-view="directory"><span class="ni-ic">▦</span> Funded Clubs</div>
+      <div class="nav-item" data-view="leaderboard"><span class="ni-ic">▲</span> Club Health</div>
+    </div>
+
+    <div class="side-foot">
+      <div class="user-chip">
+        <div class="avatar" id="ucAvatar">AS</div>
+        <div>
+          <div class="uc-name" id="ucName">Abdulrahman S.</div>
+          <div class="uc-role" id="ucRole">Chief Engineer · Aero</div>
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="scrim" id="scrim"></div>
+
+  <!-- ═══════════ MAIN ═══════════ -->
+  <div class="main">
+    <div class="topbar">
+      <div class="menu-toggle" id="menuToggle">☰</div>
+      <div class="search">
+        <span style="color:#9aa8c4">⌕</span>
+        <input placeholder="Search clubs, members, projects…">
+        <span class="sk">⌘K</span>
+      </div>
+      <div class="top-actions">
+        <div class="role-switch" id="roleSwitch">
+          <div class="role-opt active" data-role="member">Member</div>
+          <div class="role-opt" data-role="leader">Leader</div>
+          <div class="role-opt" data-role="drl">DRL</div>
+          <div class="role-opt" data-role="sponsor">Sponsor</div>
+        </div>
+        <div class="icon-btn">⌖<span class="dot"></span></div>
+        <button class="btn-cta" id="initBtn" style="background:var(--orange)">💡 Suggest Initiative</button>
+        <button class="btn-cta">＋ New Request</button>
+      </div>
+    </div>
+
+    <!-- ░░░ DASHBOARD ░░░ -->
+    <section class="view active" id="view-dashboard">
+      <div class="page-head">
+        <div class="eyebrow">Member Dashboard</div>
+        <h1 class="page-title">Welcome back, Abdulrahman</h1>
+        <p class="page-sub">Aerospace Club · Fall 2026 · Concept Design phase ends in 12 days</p>
+      </div>
+
+      <div class="stats">
+        <div class="stat" style="--c:var(--blue);--cb:rgba(0,53,148,.08)">
+          <div class="stat-top"><div class="stat-ic">◈</div><span class="stat-trend">▲ 4</span></div>
+          <div class="stat-num">82</div><div class="stat-lbl">LPI Score · LPI-2</div>
+        </div>
+        <div class="stat" style="--c:var(--green);--cb:rgba(0,199,177,.1)">
+          <div class="stat-top"><div class="stat-ic">◉</div><span class="stat-trend">▲ 8%</span></div>
+          <div class="stat-num">91%</div><div class="stat-lbl">Attendance · 12-wk streak</div>
+        </div>
+        <div class="stat" style="--c:var(--orange);--cb:rgba(255,130,0,.1)">
+          <div class="stat-top"><div class="stat-ic">✓</div><span class="stat-trend down">2 due</span></div>
+          <div class="stat-num">14/16</div><div class="stat-lbl">Tasks this sprint</div>
+        </div>
+        <div class="stat" style="--c:#7c5cff;--cb:rgba(124,92,255,.1)">
+          <div class="stat-top"><div class="stat-ic">⬡</div><span class="stat-trend">▲ 6h</span></div>
+          <div class="stat-num">38h</div><div class="stat-lbl">DRL machine hours</div>
+        </div>
+      </div>
+
+      <div class="cols">
+        <!-- LPI breakdown -->
+        <div class="panel-card">
+          <div class="pc-head"><div class="pc-title">Your LPI Breakdown</div><span class="pc-link" data-go="portfolio">View portfolio →</span></div>
+          <div class="lpi-wrap">
+            <div class="ring">
+              <svg width="128" height="128" viewBox="0 0 128 128">
+                <circle cx="64" cy="64" r="54" fill="none" stroke="#eef2f9" stroke-width="12"/>
+                <circle cx="64" cy="64" r="54" fill="none" stroke="url(#g)" stroke-width="12" stroke-linecap="round"
+                  stroke-dasharray="339.292" stroke-dashoffset="61.07"/>
+                <defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+                  <stop offset="0" stop-color="#003594"/><stop offset="1" stop-color="#00C7B1"/>
+                </linearGradient></defs>
+              </svg>
+              <div class="ring-center"><div class="ring-score">82</div><div class="ring-lbl">/ 100</div></div>
+            </div>
+            <div class="lpi-breakdown">
+              <div class="lpi-row"><span class="lpi-rname">Attendance</span><div class="bar"><span style="width:91%"></span></div><span class="lpi-rval">91</span></div>
+              <div class="lpi-row"><span class="lpi-rname">Tasks</span><div class="bar"><span style="width:88%"></span></div><span class="lpi-rval">88</span></div>
+              <div class="lpi-row"><span class="lpi-rname">Portfolio</span><div class="bar"><span style="width:79%"></span></div><span class="lpi-rval">79</span></div>
+              <div class="lpi-row"><span class="lpi-rname">Initiative</span><div class="bar"><span style="width:72%"></span></div><span class="lpi-rval">72</span></div>
+              <div class="lpi-row"><span class="lpi-rname">Peer review</span><div class="bar"><span style="width:84%"></span></div><span class="lpi-rval">84</span></div>
+              <div class="lpi-cert">✦ LPI-2 Certified · 8 pts to LPI-3</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- QR check-in -->
+        <div class="qr-card">
+          <div class="qr-status">● LIVE SESSION OPEN</div>
+          <div class="qr-event">CDR Workshop — Bay 3</div>
+          <div class="qr-meta">Today · 4:00–6:00 PM · DRL Lab</div>
+          <div class="qr-box" id="qrBox"></div>
+          <button class="qr-btn" id="checkinBtn">Scan to Check In</button>
+        </div>
+      </div>
+
+      <div class="cols">
+        <!-- activity feed -->
+        <div class="panel-card">
+          <div class="pc-head"><div class="pc-title">Recent Activity</div><span class="pc-link">Filter</span></div>
+          <div class="feed-item"><div class="feed-dot" style="background:rgba(0,199,177,.12)">◈</div><div><div class="feed-txt"><b>wing_spar_v4.step</b> committed to <b>Aero/structures</b></div><div class="feed-time">22 MIN AGO · +3 PORTFOLIO PTS</div></div></div>
+          <div class="feed-item"><div class="feed-dot" style="background:rgba(255,130,0,.12)">★</div><div><div class="feed-txt">Earned badge <b>12-Week Streak</b></div><div class="feed-time">TODAY · 9:14 AM</div></div></div>
+          <div class="feed-item"><div class="feed-dot" style="background:rgba(0,53,148,.08)">✓</div><div><div class="feed-txt">Consultant <b>Dr. Hassan Iqbal</b> signed off on <b>CDR milestone</b></div><div class="feed-time">YESTERDAY · 2:40 PM</div></div></div>
+          <div class="feed-item"><div class="feed-dot" style="background:rgba(124,92,255,.12)">≣</div><div><div class="feed-txt">Published wiki guide <b>"FEA setup for thin-wall parts"</b></div><div class="feed-time">2 DAYS AGO · +5 KNOWLEDGE PTS</div></div></div>
+          <div class="feed-item"><div class="feed-dot" style="background:rgba(0,199,177,.12)">⬡</div><div><div class="feed-txt">Booked <b>CNC Mill — 2h</b> for Thu build session</div><div class="feed-time">2 DAYS AGO</div></div></div>
+        </div>
+
+        <!-- consultant card -->
+        <div class="panel-card">
+          <div class="pc-head"><div class="pc-title">Your Project Consultant</div></div>
+          <div style="display:flex;align-items:center;gap:.9rem;padding-bottom:1rem;border-bottom:1px solid #f0f3f9">
+            <div class="avatar" style="width:46px;height:46px;background:linear-gradient(135deg,var(--blue),#0a5c52);color:#fff;font-size:.9rem">HI</div>
+            <div>
+              <div style="font-family:var(--disp);font-weight:600;font-size:.92rem">Dr. Hassan Iqbal</div>
+              <div style="font-size:.72rem;color:var(--card-muted)">Sr. Product Development · DRL</div>
+            </div>
+            <div class="cf-health" style="margin-left:auto"><span class="hd" style="background:var(--green)"></span>Available</div>
+          </div>
+          <div style="display:flex;justify-content:space-between;padding:.8rem 0;font-size:.78rem">
+            <span style="color:var(--card-muted)">Next check-in</span><b>Thu · 1:00 PM</b>
+          </div>
+          <div style="display:flex;justify-content:space-between;padding:.8rem 0;font-size:.78rem;border-top:1px solid #f0f3f9">
+            <span style="color:var(--card-muted)">Milestones signed</span><b>5 / 7</b>
+          </div>
+          <div style="margin-top:.6rem;padding:.7rem .9rem;background:rgba(255,130,0,.06);border:1px solid rgba(255,130,0,.22);border-radius:9px;font-size:.74rem;color:#8a4a00;line-height:1.5">
+            ⚑ Risk flagged: <b>composite cure schedule</b> needs review before build phase.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ░░░ CLUB DIRECTORY ░░░ -->
+    <section class="view" id="view-directory">
+      <div class="page-head">
+        <div class="eyebrow">Discover</div>
+        <h1 class="page-title">Club Directory</h1>
+        <p class="page-sub">Every Engineering Excellence Club at KFUPM — live rosters, projects, and open roles</p>
+      </div>
+      <div class="filters">
+        <div class="chip active">All domains</div>
+        <div class="chip">Aerospace</div>
+        <div class="chip">Robotics & AI</div>
+        <div class="chip">Mechanical</div>
+        <div class="chip">Energy</div>
+        <div class="chip">Digital & Cyber</div>
+        <div class="chip">Open roles only</div>
+      </div>
+      <div class="club-grid" id="clubGrid"></div>
+    </section>
+
+    <!-- ░░░ CALENDAR ░░░ -->
+    <section class="view" id="view-calendar">
+      <div class="page-head">
+        <div class="eyebrow">Synced with KFUPM Campus Calendar</div>
+        <h1 class="page-title">October 2026</h1>
+        <p class="page-sub">All club workshops, competitions, and socials — visible university-wide</p>
+      </div>
+      <div class="filters">
+        <div class="chip active">All clubs</div>
+        <div class="chip"><span style="color:var(--blue)">●</span> Workshops</div>
+        <div class="chip"><span style="color:var(--orange)">●</span> Competitions</div>
+        <div class="chip"><span style="color:var(--green)">●</span> Social</div>
+      </div>
+      <div class="panel-card">
+        <div class="cal-grid" id="calGrid"></div>
+      </div>
+    </section>
+
+    <!-- ░░░ LEADERBOARD ░░░ -->
+    <section class="view" id="view-leaderboard">
+      <div class="page-head">
+        <div class="eyebrow">Friendly Competition</div>
+        <h1 class="page-title">Club Health Leaderboard</h1>
+        <p class="page-sub">Ranked by attendance, initiative activity, and aggregate KPI score · Fall 2026</p>
+      </div>
+      <div class="lb-table">
+        <div class="lb-row head"><span>#</span><span>Club</span><span class="lb-hide">Attendance</span><span class="lb-hide">Initiatives</span><span>Score</span></div>
+        <div id="lbBody"></div>
+      </div>
+      <div style="margin-top:14px;padding:1rem 1.2rem;background:rgba(255,130,0,.06);border:1px solid rgba(255,130,0,.22);border-radius:12px;font-size:.78rem;color:#8a4a00;line-height:1.5">
+        <b>Top quartile clubs</b> receive resource priority and recognition at the annual DRL summit. Clubs below threshold get a structured support plan from DRL staff.
+      </div>
+    </section>
+
+    <!-- ░░░ PORTFOLIO ░░░ -->
+    <section class="view" id="view-portfolio">
+      <div class="page-head">
+        <div class="eyebrow">Auto-built from your activity</div>
+        <h1 class="page-title">My Engineering Portfolio</h1>
+        <p class="page-sub">A live professional record — shareable for internship and job applications</p>
+      </div>
+      <div class="stats">
+        <div class="stat" style="--c:var(--blue);--cb:rgba(0,53,148,.08)"><div class="stat-top"><div class="stat-ic">◈</div></div><div class="stat-num">47</div><div class="stat-lbl">Files committed</div></div>
+        <div class="stat" style="--c:var(--green);--cb:rgba(0,199,177,.1)"><div class="stat-top"><div class="stat-ic">▤</div></div><div class="stat-num">9</div><div class="stat-lbl">Reports submitted</div></div>
+        <div class="stat" style="--c:var(--orange);--cb:rgba(255,130,0,.1)"><div class="stat-top"><div class="stat-ic">★</div></div><div class="stat-num">11</div><div class="stat-lbl">Badges earned</div></div>
+        <div class="stat" style="--c:#7c5cff;--cb:rgba(124,92,255,.1)"><div class="stat-top"><div class="stat-ic">⚑</div></div><div class="stat-num">2</div><div class="stat-lbl">Competitions</div></div>
+      </div>
+      <div class="cols">
+        <div class="panel-card">
+          <div class="pc-head"><div class="pc-title">Project Contributions</div><span class="pc-link">Public link ↗</span></div>
+          <div class="feed-item"><div class="feed-dot" style="background:rgba(0,53,148,.08)">✈️</div><div><div class="feed-txt"><b>Fixed-Wing UAV — SUAS 2026</b></div><div class="feed-time">STRUCTURES LEAD · 23 COMMITS · CDR PASSED</div></div></div>
+          <div class="feed-item"><div class="feed-dot" style="background:rgba(0,199,177,.12)">🛰️</div><div><div class="feed-txt"><b>CanSat Telemetry Board</b></div><div class="feed-time">FIRMWARE CONTRIBUTOR · 14 COMMITS</div></div></div>
+          <div class="feed-item"><div class="feed-dot" style="background:rgba(124,92,255,.12)">📄</div><div><div class="feed-txt">Co-authored <b>"Lightweight Spar Topology"</b> — internal tech report</div><div class="feed-time">PUBLISHED TO WIKI · 142 VIEWS</div></div></div>
+        </div>
+        <div class="panel-card">
+          <div class="pc-head"><div class="pc-title">Badges & Certificates</div></div>
+          <div style="display:flex;flex-wrap:wrap;gap:.5rem">
+            <span class="lpi-cert">✦ LPI-2 Certified</span>
+            <span class="lpi-cert" style="color:#8a4a00;background:rgba(255,130,0,.1);border-color:rgba(255,130,0,.3)">🔥 12-Week Streak</span>
+            <span class="lpi-cert" style="color:#3a2b8a;background:rgba(124,92,255,.1);border-color:rgba(124,92,255,.3)">⬡ CNC Certified</span>
+            <span class="lpi-cert">✓ CDR Sign-off</span>
+            <span class="lpi-cert" style="color:#8a4a00;background:rgba(255,130,0,.1);border-color:rgba(255,130,0,.3)">★ Workshop Host</span>
+            <span class="lpi-cert" style="color:#3a2b8a;background:rgba(124,92,255,.1);border-color:rgba(124,92,255,.3)">≣ 5 Wiki Articles</span>
+          </div>
+          <div style="margin-top:1rem;padding:.8rem .9rem;background:var(--bg);border-radius:9px;font-size:.74rem;color:var(--card-muted);line-height:1.5">
+            Unlock <b style="color:var(--card-ink)">LPI-3</b> at 90 to gain priority DRL lab access and the sponsor internship fast-track.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ░░░ SPONSOR ░░░ -->
+    <section class="view" id="view-sponsor">
+      <div class="page-head">
+        <div class="eyebrow">Sponsor Visibility Portal</div>
+        <h1 class="page-title">Saudi Aramco · Titanium Partner</h1>
+        <p class="page-sub">See exactly where your investment goes — projects, talent, and impact</p>
+      </div>
+      <div class="sp-banner">
+        <div class="sp-tier">🛡 Titanium · Strategic Partner</div>
+        <h3>SAR 250,000 committed · 2026</h3>
+        <p>Funding 3 clubs across Aerospace and Robotics — with naming rights, advisory seat, and priority recruitment across all teams.</p>
+      </div>
+      <div class="stats">
+        <div class="stat" style="--c:var(--green);--cb:rgba(0,199,177,.1)"><div class="stat-top"><div class="stat-ic">◉</div></div><div class="stat-num">SAR 184k</div><div class="stat-lbl">Funds deployed · 74%</div></div>
+        <div class="stat" style="--c:var(--blue);--cb:rgba(0,53,148,.08)"><div class="stat-top"><div class="stat-ic">⚑</div></div><div class="stat-num">3</div><div class="stat-lbl">Competitions entered</div></div>
+        <div class="stat" style="--c:var(--orange);--cb:rgba(255,130,0,.1)"><div class="stat-top"><div class="stat-ic">◈</div></div><div class="stat-num">68</div><div class="stat-lbl">Students sponsored</div></div>
+        <div class="stat" style="--c:#7c5cff;--cb:rgba(124,92,255,.1)"><div class="stat-top"><div class="stat-ic">★</div></div><div class="stat-num">9</div><div class="stat-lbl">CV-ready candidates</div></div>
+      </div>
+      <div class="panel-card">
+        <div class="pc-head"><div class="pc-title">Funded Clubs — Live Progress</div><span class="pc-link">Download Q3 impact report ↓</span></div>
+        <div class="feed-item"><div class="feed-dot" style="background:rgba(0,53,148,.08)">✈️</div><div><div class="feed-txt"><b>Aerospace Club</b> — UAV at integration phase, on track for SUAS</div><div class="feed-time">SAR 95k · 78% DEPLOYED · HEALTH ●</div></div></div>
+        <div class="feed-item"><div class="feed-dot" style="background:rgba(0,199,177,.12)">🤖</div><div><div class="feed-txt"><b>Robotics & AI Club</b> — autonomous sub passed pool trials</div><div class="feed-time">SAR 62k · 71% DEPLOYED · HEALTH ●</div></div></div>
+        <div class="feed-item"><div class="feed-dot" style="background:rgba(255,130,0,.12)">⚡</div><div><div class="feed-txt"><b>Energy Club</b> — Shell Eco-marathon chassis fabrication started</div><div class="feed-time">SAR 27k · 64% DEPLOYED · HEALTH ●</div></div></div>
+      </div>
+    </section>
+
+    <!-- ░░░ DRL LAB BOOKING ░░░ -->
+    <section class="view" id="view-booking">
+      <div class="page-head">
+        <div class="eyebrow">Linked to your project & LPI record</div>
+        <h1 class="page-title">DRL Lab Booking</h1>
+        <p class="page-sub">Reserve fabrication time — synced to the calendar, credited to your machine hours · Thu, Oct 14</p>
+      </div>
+      <div class="lab-legend">
+        <span><span class="ll-sw" style="background:rgba(0,199,177,.3)"></span> Available</span>
+        <span><span class="ll-sw" style="background:rgba(0,53,148,.25)"></span> Booked</span>
+        <span><span class="ll-sw" style="background:var(--orange)"></span> Your booking</span>
+        <span><span class="ll-sw" style="background:var(--green)"></span> Selected</span>
+      </div>
+      <div class="panel-card">
+        <div class="lab-scroll"><div class="lab-grid" id="labGrid"></div></div>
+        <div style="margin-top:1rem;display:flex;align-items:center;gap:1rem;flex-wrap:wrap">
+          <div id="labMsg" style="font-size:.8rem;color:var(--card-muted)">Tap an available slot to reserve it.</div>
+          <button class="btn-cta" id="labConfirm" style="margin-left:auto;opacity:.5;pointer-events:none">Confirm Booking</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ░░░ KNOWLEDGE WIKI ░░░ -->
+    <section class="view" id="view-wiki">
+      <div class="page-head">
+        <div class="eyebrow">Cross-club · Permanent · Transferable</div>
+        <h1 class="page-title">Knowledge Wiki</h1>
+        <p class="page-sub">Builds, guides, CAD templates, and lessons learned — knowledge that outlives every graduating class</p>
+      </div>
+      <div class="filters">
+        <div class="chip active">All</div><div class="chip">Guides</div><div class="chip">CAD templates</div>
+        <div class="chip">Lessons learned</div><div class="chip">Firmware</div>
+      </div>
+      <div class="wiki-grid" id="wikiGrid"></div>
+    </section>
+
+    <!-- ░░░ DRL COMMAND (ADMIN) ░░░ -->
+    <section class="view" id="view-admin">
+      <div class="page-head">
+        <div class="eyebrow">DRL Staff · Aggregate Oversight</div>
+        <h1 class="page-title">DRL Command Center</h1>
+        <p class="page-sub">Allocate resources where they're needed — every club, one screen · Fall 2026</p>
+      </div>
+      <div class="stats">
+        <div class="stat" style="--c:var(--blue);--cb:rgba(0,53,148,.08)"><div class="stat-top"><div class="stat-ic">▦</div><span class="stat-trend">▲ 2</span></div><div class="stat-num">14</div><div class="stat-lbl">Active clubs</div></div>
+        <div class="stat" style="--c:var(--green);--cb:rgba(0,199,177,.1)"><div class="stat-top"><div class="stat-ic">◈</div><span class="stat-trend">▲ 41</span></div><div class="stat-num">312</div><div class="stat-lbl">Tracked members</div></div>
+        <div class="stat" style="--c:var(--orange);--cb:rgba(255,130,0,.1)"><div class="stat-top"><div class="stat-ic">⚑</div><span class="stat-trend down">3 flags</span></div><div class="stat-num">2</div><div class="stat-lbl">Clubs need support</div></div>
+        <div class="stat" style="--c:#7c5cff;--cb:rgba(124,92,255,.1)"><div class="stat-top"><div class="stat-ic">◉</div><span class="stat-trend">87%</span></div><div class="stat-num">SAR 1.2M</div><div class="stat-lbl">Sponsor funds managed</div></div>
+      </div>
+      <div class="cols">
+        <div class="panel-card">
+          <div class="pc-head"><div class="pc-title">Club Health — Aggregate</div><span class="pc-link">Export semester report ↓</span></div>
+          <div id="adminHeat"></div>
+        </div>
+        <div class="panel-card">
+          <div class="pc-head"><div class="pc-title">Needs Attention</div></div>
+          <div class="alert-row"><div class="alert-ic" style="background:rgba(255,130,0,.12)">⚑</div><div><b>Materials Club</b> — attendance dropped to 68%<div class="feed-time">BELOW 75% THRESHOLD</div></div><span class="alert-act">Open plan →</span></div>
+          <div class="alert-row"><div class="alert-ic" style="background:rgba(255,130,0,.12)">💰</div><div><b>Mechanical Club</b> — budget variance 14%<div class="feed-time">EXCEEDS 10% LIMIT</div></div><span class="alert-act">Review →</span></div>
+          <div class="alert-row"><div class="alert-ic" style="background:rgba(0,53,148,.08)">🧭</div><div><b>Energy Club</b> — no consultant check-in 9 days<div class="feed-time">CDR PHASE</div></div><span class="alert-act">Assign →</span></div>
+          <div class="alert-row"><div class="alert-ic" style="background:rgba(0,199,177,.12)">✓</div><div><b>Robotics Club</b> — requested SAR 8k for sensors<div class="feed-time">PENDING DRL APPROVAL</div></div><span class="alert-act">Approve →</span></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ░░░ CONSULTANT HUB ░░░ -->
+    <section class="view" id="view-consultant">
+      <div class="page-head">
+        <div class="eyebrow">Expert oversight, on the record</div>
+        <h1 class="page-title">Consultant & Mentor Hub</h1>
+        <p class="page-sub">Every project mapped to a named DRL engineer or professor — sign-offs and risks all logged</p>
+      </div>
+      <div class="cols">
+        <div class="panel-card">
+          <div class="pc-head"><div class="pc-title">My Assigned Projects</div><span class="pc-link">3 active</span></div>
+          <div class="feed-item"><div class="feed-dot" style="background:rgba(0,53,148,.08)">✈️</div><div style="flex:1"><div class="feed-txt"><b>Aerospace — Fixed-Wing UAV</b></div><div class="feed-time">CDR PASSED · NEXT: BUILD REVIEW THU</div></div><span class="lpi-cert" style="font-size:.62rem">5/7 signed</span></div>
+          <div class="feed-item"><div class="feed-dot" style="background:rgba(0,199,177,.12)">🛰️</div><div style="flex:1"><div class="feed-txt"><b>Aerospace — CanSat</b></div><div class="feed-time">PDR PHASE · ON TRACK</div></div><span class="lpi-cert" style="font-size:.62rem">2/7 signed</span></div>
+          <div class="feed-item"><div class="feed-dot" style="background:rgba(255,130,0,.12)">⚡</div><div style="flex:1"><div class="feed-txt"><b>Energy — Solar Vehicle</b></div><div class="feed-time" style="color:var(--orange)">⚑ RISK OPEN · CURE SCHEDULE</div></div><span class="lpi-cert" style="font-size:.62rem;color:#8a4a00;background:rgba(255,130,0,.1);border-color:rgba(255,130,0,.3)">Action</span></div>
+        </div>
+        <div class="panel-card">
+          <div class="pc-head"><div class="pc-title">Log a Sign-off</div></div>
+          <div style="font-size:.78rem;color:var(--card-muted);margin-bottom:.8rem">Aerospace — Fixed-Wing UAV · Build Review milestone</div>
+          <textarea placeholder="Review notes (visible to team & DRL leadership)…" style="width:100%;min-height:88px;border:1px solid var(--card-line);border-radius:10px;padding:.7rem;font-family:var(--body);font-size:.8rem;resize:vertical;color:var(--card-ink)"></textarea>
+          <div style="display:flex;gap:.6rem;margin-top:.8rem">
+            <button class="modal-btn" style="background:var(--green);color:var(--ink)" onclick="toast('Milestone <b>signed off</b> — team & DRL notified')">✓ Approve milestone</button>
+            <button class="modal-btn" style="background:var(--orange)" onclick="toast('Risk <b>flagged</b> to DRL leadership')">⚑ Flag risk</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </div>
+</div>
+
+<!-- ═══════════ APPLY MODAL ═══════════ -->
+<div class="modal-scrim" id="modal">
+  <div class="modal">
+    <div class="modal-banner" id="modalBanner">
+      <button class="modal-x" onclick="closeModal()">✕</button>
+      <div class="modal-em" id="modalEm">✈️</div>
+    </div>
+    <div class="modal-body">
+      <div style="font-family:var(--mono);font-size:.64rem;letter-spacing:.08em;text-transform:uppercase;color:var(--green);margin-bottom:.3rem" id="modalDomain">AEROSPACE</div>
+      <div style="font-family:var(--disp);font-weight:700;font-size:1.2rem;letter-spacing:-.02em" id="modalName">Aerospace Club</div>
+      <div style="font-size:.78rem;color:var(--card-muted);margin:.7rem 0 .3rem;font-weight:600">Open roles — pick one to apply</div>
+      <div class="role-list" id="modalRoles"></div>
+      <button class="modal-btn" onclick="submitApp()">Submit application</button>
+    </div>
+  </div>
+</div>
+<div class="toast" id="toast"></div>
+
+<!-- ═══════════ SUGGEST INITIATIVE MODAL ═══════════ -->
+<div class="modal-scrim" id="initModal">
+  <div class="modal" style="max-width:500px">
+    <div class="modal-banner" style="background:linear-gradient(135deg,#FF8200,#003594)">
+      <button class="modal-x" onclick="closeInit()">✕</button>
+      <div class="modal-em">💡</div>
+    </div>
+    <div class="modal-body">
+      <div style="font-family:var(--mono);font-size:.64rem;letter-spacing:.08em;text-transform:uppercase;color:var(--orange);margin-bottom:.3rem">Encouraged Initiative</div>
+      <div style="font-family:var(--disp);font-weight:700;font-size:1.2rem;letter-spacing:-.02em">Pitch an initiative</div>
+      <div style="font-size:.78rem;color:var(--card-muted);margin-top:.3rem">Approved pitches earn initiative credit toward your LPI and get lab access + a consultant.</div>
+      <div style="font-size:.78rem;color:var(--card-muted);margin:1rem 0 .3rem;font-weight:600">Type</div>
+      <div class="role-list" id="initTypes"></div>
+      <input id="initTitle" placeholder="Give it a name — e.g. 'Drone Drag Race Night'" style="width:100%;border:1px solid var(--card-line);border-radius:10px;padding:.7rem;font-family:var(--body);font-size:.82rem;color:var(--card-ink);margin-bottom:.8rem">
+      <button class="modal-btn" style="background:var(--orange)" onclick="submitInit()">Submit pitch to DRL</button>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ── view routing ── */
+const items=document.querySelectorAll('.nav-item[data-view]');
+function go(v){
+  document.querySelectorAll('.view').forEach(s=>s.classList.remove('active'));
+  document.getElementById('view-'+v).classList.add('active');
+  items.forEach(i=>i.classList.toggle('active', i.dataset.view===v));
+  document.querySelector('.main').scrollTo(0,0);
+  window.scrollTo(0,0);
+  document.getElementById('side').classList.remove('open');
+  document.getElementById('scrim').classList.remove('show');
+}
+items.forEach(i=>i.addEventListener('click',()=>go(i.dataset.view)));
+document.querySelectorAll('[data-go]').forEach(b=>b.addEventListener('click',()=>go(b.dataset.go)));
+
+/* ── mobile menu ── */
+const side=document.getElementById('side'),scrim=document.getElementById('scrim');
+document.getElementById('menuToggle').addEventListener('click',()=>{side.classList.add('open');scrim.classList.add('show')});
+scrim.addEventListener('click',()=>{side.classList.remove('open');scrim.classList.remove('show')});
+
+/* ── QR render (random-ish but stable pattern) ── */
+const pattern=[1,1,1,0,1,1,1, 1,0,1,1,0,0,1, 1,0,1,0,1,1,1, 0,1,1,0,1,0,1, 1,1,0,1,0,1,0, 1,0,1,1,0,0,1, 1,1,1,0,1,1,1];
+const qb=document.getElementById('qrBox');
+pattern.forEach(p=>{const i=document.createElement('i');if(!p)i.className='off';qb.appendChild(i)});
+document.getElementById('checkinBtn').addEventListener('click',function(){
+  this.textContent='✓ Checked In — 4:02 PM';this.style.background='#fff';this.style.color='#0a5c52';
+});
+
+/* ── clubs ── */
+const clubs=[
+  {n:'Aerospace Club',d:'Aerospace',e:'✈️',c:'linear-gradient(135deg,#003594,#0a5c52)',desc:'Fixed-wing UAVs, CanSat, and rover challenge teams pushing the limits of flight.',m:32,p:4,open:true,h:'#00C7B1',hl:'Healthy'},
+  {n:'Robotics & AI',d:'Robotics',e:'🤖',c:'linear-gradient(135deg,#0a1b52,#7c5cff)',desc:'Autonomous systems, RoboSub, and Formula SAE — intelligent machines that move.',m:41,p:5,open:true,h:'#00C7B1',hl:'Healthy'},
+  {n:'Mechanical Club',d:'Mechanical',e:'⚙️',c:'linear-gradient(135deg,#003594,#0046c4)',desc:'High-performance mechanical systems for Baja SAE and Shell Eco-marathon.',m:28,p:3,open:false,h:'#FF8200',hl:'Watch'},
+  {n:'Energy Club',d:'Energy',e:'⚡',c:'linear-gradient(135deg,#FF8200,#003594)',desc:'Sustainable energy systems for Solar Decathlon and ASHRAE competitions.',m:19,p:2,open:true,h:'#00C7B1',hl:'Healthy'},
+  {n:'Digital & Cyber',d:'Digital',e:'💻',c:'linear-gradient(135deg,#0a1b52,#00C7B1)',desc:'ML pipelines, IoT, and security — building and defending the digital future.',m:36,p:6,open:true,h:'#00C7B1',hl:'Healthy'},
+  {n:'Materials Club',d:'Materials',e:'🧪',c:'linear-gradient(135deg,#003594,#7c5cff)',desc:'Advanced materials research enabling the next generation of technology.',m:14,p:2,open:false,h:'#FF8200',hl:'Watch'},
+];
+document.getElementById('clubGrid').innerHTML=clubs.map(c=>`
+  <div class="club">
+    <div class="club-banner" style="background:${c.c}">
+      ${c.open?'<span class="club-open">OPEN ROLES</span>':''}
+      <div class="club-emoji">${c.e}</div>
+    </div>
+    <div class="club-body">
+      <div class="club-name">${c.n}</div>
+      <div class="club-domain">${c.d}</div>
+      <div class="club-desc">${c.desc}</div>
+      <div class="club-foot">
+        <div class="cf-item"><b>${c.m}</b> members</div>
+        <div class="cf-item"><b>${c.p}</b> projects</div>
+        <div class="cf-health" style="color:${c.h}"><span class="hd" style="background:${c.h}"></span>${c.hl}</div>
+      </div>
+    </div>
+  </div>`).join('');
+
+/* ── leaderboard ── */
+const lb=[
+  {n:'Robotics & AI',e:'🤖',att:94,ini:12,s:91},
+  {n:'Digital & Cyber',e:'💻',att:90,ini:10,s:88},
+  {n:'Aerospace Club',e:'✈️',att:91,ini:9,s:86},
+  {n:'Energy Club',e:'⚡',att:82,ini:7,s:78},
+  {n:'Mechanical Club',e:'⚙️',att:74,ini:5,s:69},
+  {n:'Materials Club',e:'🧪',att:68,ini:4,s:62},
+];
+document.getElementById('lbBody').innerHTML=lb.map((c,i)=>{
+  const tag=c.s>=85?['Top quartile','#0a5c52','rgba(0,199,177,.14)']:c.s>=70?['Stable','#003594','rgba(0,53,148,.08)']:['Support plan','#8a4a00','rgba(255,130,0,.12)'];
+  return `<div class="lb-row">
+    <span class="lb-rank ${i===0?'top':''}">${i+1}</span>
+    <div class="lb-club"><span class="lb-em">${c.e}</span>${c.n}</div>
+    <span class="lb-hide"><div style="display:flex;align-items:center;gap:.5rem"><div class="lb-bar"><span style="width:${c.att}%"></span></div>${c.att}%</div></span>
+    <span class="lb-hide" style="font-family:var(--mono)">${c.ini} this sem</span>
+    <span><span class="lb-score">${c.s}</span> <span class="lb-tag" style="color:${tag[1]};background:${tag[2]}">${tag[0]}</span></span>
+  </div>`;
+}).join('');
+
+/* ── calendar (Oct 2026 starts Thursday) ── */
+const events={
+  2:['Aero Kickoff','#003594'],5:['CAD Workshop','#003594'],8:['Robotics Sprint','#FF8200'],
+  9:['Social Night','#00C7B1'],14:['CDR Review','#003594'],17:['SUAS Heat','#FF8200'],
+  20:['Wiki Jam','#00C7B1'],23:['Energy Demo','#FF8200'],28:['Inter-Club Mixer','#00C7B1'],30:['Build Day','#003594']
+};
+const cg=document.getElementById('calGrid');
+['Su','Mo','Tu','We','Th','Fr','Sa'].forEach(d=>cg.innerHTML+=`<div class="cal-h">${d}</div>`);
+const startDay=4; // Thursday
+for(let i=0;i<startDay;i++)cg.innerHTML+=`<div class="cal-d empty"></div>`;
+for(let d=1;d<=31;d++){
+  const ev=events[d];
+  cg.innerHTML+=`<div class="cal-d ${d===14?'today':''}">
+    <div class="cal-dn">${d}</div>
+    ${ev?`<div class="cal-ev" style="background:${ev[1]}">${ev[0]}</div>`:''}
+  </div>`;
+}
+
+/* ── filter chips (visual toggle only) ── */
+document.querySelectorAll('.filters').forEach(f=>{
+  f.querySelectorAll('.chip').forEach(ch=>ch.addEventListener('click',()=>{
+    f.querySelectorAll('.chip').forEach(x=>x.classList.remove('active'));ch.classList.add('active');
+  }));
+});
+
+/* ── toast ── */
+let toastT;
+function toast(msg){
+  const t=document.getElementById('toast');t.innerHTML='✓ '+msg;t.classList.add('show');
+  clearTimeout(toastT);toastT=setTimeout(()=>t.classList.remove('show'),3200);
+}
+
+/* ── role switching ── */
+const roles={
+  member:{name:'Abdulrahman S.',role:'Active Member · Aero',av:'AS',avc:'linear-gradient(135deg,#FF8200,#ffae52)',avt:'#3a1e00',view:'dashboard'},
+  leader:{name:'Abdulrahman S.',role:'Chief Engineer · Aero',av:'AS',avc:'linear-gradient(135deg,#003594,#0046c4)',avt:'#fff',view:'dashboard'},
+  drl:{name:'Dr. Hassan Iqbal',role:'DRL Staff · Oversight',av:'HI',avc:'linear-gradient(135deg,#003594,#0a5c52)',avt:'#fff',view:'admin'},
+  sponsor:{name:'Saudi Aramco',role:'Titanium Partner',av:'SA',avc:'linear-gradient(135deg,#00C7B1,#003594)',avt:'#fff',view:'sponsor'},
+};
+function setRole(r){
+  const d=roles[r];
+  document.getElementById('ucName').textContent=d.name;
+  document.getElementById('ucRole').textContent=d.role;
+  const av=document.getElementById('ucAvatar');av.textContent=d.av;av.style.background=d.avc;av.style.color=d.avt;
+  document.querySelector('.nav-dash-label').textContent = r==='drl'?'DRL Home':'Dashboard';
+  document.querySelectorAll('.role-opt').forEach(o=>o.classList.toggle('active',o.dataset.role===r));
+  // toggle nav groups
+  document.querySelectorAll('.nav-group[data-roles]').forEach(g=>{
+    g.classList.toggle('show', g.dataset.roles.split(',').includes(r));
+  });
+  go(d.view);
+}
+document.querySelectorAll('.role-opt').forEach(o=>o.addEventListener('click',()=>setRole(o.dataset.role)));
+
+/* ── apply modal ── */
+const clubMap={};clubs.forEach(c=>clubMap[c.n]=c);
+const openRoles={
+  'Aerospace Club':[['Structures Lead','Composite layup · FEA',1],['Avionics Engineer','Firmware · sensor fusion',0],['Business Dev','Sponsorship pipeline',0]],
+  'Robotics & AI':[['Perception Engineer','CV · ROS2',1],['Manufacturing Lead','CNC · assembly',0],['Knowledge Manager','Docs · wiki',0]],
+  'Energy Club':[['Powertrain Engineer','Motor · battery',1],['Sim Lead','CFD · thermal',0]],
+  'Digital & Cyber':[['ML Engineer','PyTorch · pipelines',1],['Security Lead','Pentest · CTF',0],['Frontend Dev','Dashboards',0]],
+};
+let pickedRole=null;
+function openApply(name){
+  const c=clubMap[name];if(!c)return;
+  document.getElementById('modalBanner').style.background=c.c;
+  document.getElementById('modalEm').textContent=c.e;
+  document.getElementById('modalDomain').textContent=c.d.toUpperCase();
+  document.getElementById('modalName').textContent=c.n;
+  const rl=openRoles[name]||[['General Member','Open application',0]];
+  pickedRole=null;
+  document.getElementById('modalRoles').innerHTML=rl.map((r,i)=>`
+    <div class="role-pick" data-i="${i}" data-name="${r[0]}">
+      <div class="rp-ic">${r[2]?'★':'◈'}</div>
+      <div><div class="rp-name">${r[0]}</div><div class="rp-meta">${r[1]}</div></div>
+      <div class="rp-check">✓</div>
+    </div>`).join('');
+  document.querySelectorAll('.role-pick').forEach(p=>p.addEventListener('click',()=>{
+    document.querySelectorAll('.role-pick').forEach(x=>x.classList.remove('sel'));
+    p.classList.add('sel');pickedRole=p.dataset.name;
+  }));
+  document.getElementById('modal').classList.add('show');
+}
+function closeModal(){document.getElementById('modal').classList.remove('show')}
+function submitApp(){
+  if(!pickedRole){toast('Pick a role first');return;}
+  closeModal();toast('Applied for <b>'+pickedRole+'</b> — Training Director notified');
+}
+document.getElementById('modal').addEventListener('click',e=>{if(e.target.id==='modal')closeModal()});
+// make club cards open the modal
+function wireClubs(){
+  document.querySelectorAll('#clubGrid .club').forEach((el,i)=>{
+    el.addEventListener('click',()=>openApply(clubs[i].n));
+  });
+}
+wireClubs();
+
+/* ── lab booking grid ── */
+const machines=['3D Printer A','3D Printer B','CNC Mill','Laser Cutter','PCB Mill','Soldering','VR Bay','Assembly'];
+const times=['9:00','10:00','11:00','12:00','1:00','2:00','3:00','4:00','5:00'];
+const lg=document.getElementById('labGrid');
+lg.innerHTML='<div></div>'+machines.map(m=>`<div class="lab-mh">${m}</div>`).join('');
+let selSlot=null;
+times.forEach((t,ti)=>{
+  lg.innerHTML+=`<div class="lab-time">${t}</div>`;
+  machines.forEach((m,mi)=>{
+    const seed=(ti*7+mi*13)%10;
+    let cls='free';
+    if(seed<3)cls='booked'; else if(ti===6&&mi===2)cls='mine';
+    lg.innerHTML+=`<div class="slot ${cls}" data-t="${t}" data-m="${m}"></div>`;
+  });
+});
+document.querySelectorAll('#labGrid .slot.free').forEach(s=>s.addEventListener('click',()=>{
+  document.querySelectorAll('#labGrid .slot.sel').forEach(x=>{x.classList.remove('sel');x.classList.add('free')});
+  s.classList.remove('free');s.classList.add('sel');selSlot=s;
+  document.getElementById('labMsg').innerHTML=`Selected <b>${s.dataset.m}</b> at <b>${s.dataset.t} PM</b> · 1 hour`;
+  const cb=document.getElementById('labConfirm');cb.style.opacity='1';cb.style.pointerEvents='auto';
+}));
+document.getElementById('labConfirm').addEventListener('click',()=>{
+  if(!selSlot)return;
+  selSlot.classList.remove('sel');selSlot.classList.add('mine');
+  toast(`Booked <b>${selSlot.dataset.m}</b> · ${selSlot.dataset.t} PM — added to calendar`);
+  selSlot=null;document.getElementById('labMsg').textContent='Tap an available slot to reserve it.';
+  const cb=document.getElementById('labConfirm');cb.style.opacity='.5';cb.style.pointerEvents='none';
+});
+
+/* ── wiki ── */
+const wiki=[
+  {t:'FEA setup for thin-wall composite parts',tag:'Guide',c:'#003594',a:'Aero',v:142,d:'2d'},
+  {t:'CanSat telemetry board — KiCad template',tag:'CAD Template',c:'#00C7B1',a:'Aero',v:88,d:'1w'},
+  {t:'RoboSub 2025 — what broke and why',tag:'Lessons Learned',c:'#FF8200',a:'Robotics',v:210,d:'3w'},
+  {t:'Standard PID firmware for BLDC drives',tag:'Firmware',c:'#7c5cff',a:'Robotics',v:167,d:'2w'},
+  {t:'Composite layup checklist (wet + prepreg)',tag:'Guide',c:'#003594',a:'Aero',v:94,d:'5d'},
+  {t:'Shell Eco chassis — weld jig drawings',tag:'CAD Template',c:'#00C7B1',a:'Energy',v:61,d:'1mo'},
+  {t:'Onboarding: DRL machine certification path',tag:'Guide',c:'#003594',a:'DRL',v:303,d:'1mo'},
+  {t:'Budget request → PO → receipt walkthrough',tag:'Guide',c:'#FF8200',a:'All clubs',v:120,d:'2mo'},
+];
+document.getElementById('wikiGrid').innerHTML=wiki.map(w=>`
+  <div class="wiki-card" style="--wc:${w.c}" onclick="toast('Opening <b>${w.t.slice(0,28)}…</b>')">
+    <div class="wiki-tag">${w.tag}</div>
+    <div class="wiki-title">${w.t}</div>
+    <div class="wiki-meta"><span>◷ ${w.d} ago</span><span>👁 ${w.v}</span><span>${w.a}</span></div>
+  </div>`).join('');
+
+/* ── suggest initiative ── */
+const initTypes=[
+  ['🏁','Mini-Competition','Drone races, coding sprints, design derbies','Initiative Credit','#FF8200'],
+  ['🎙️','Knowledge Session','Tech talk, tool tutorial, or paper review','Knowledge Credit','#00C7B1'],
+  ['🎉','Social / Cultural Event','Team outing, cultural day, inter-club mixer','Engagement Credit','#003594'],
+  ['🔬','Side Project','Pitch a build — get lab access & a mentor','Project Credit','#00C7B1'],
+  ['🌐','Community Outreach','School STEM session, public demo, hackathon','Community Credit','#FF8200'],
+  ['📝','Open Source / Docs','GitHub contribution or a technical guide','Portfolio Credit','#7c5cff'],
+];
+let pickedInit=null;
+document.getElementById('initTypes').innerHTML=initTypes.map((t,i)=>`
+  <div class="role-pick" data-i="${i}" data-name="${t[1]}">
+    <div class="rp-ic">${t[0]}</div>
+    <div><div class="rp-name">${t[1]}</div><div class="rp-meta">${t[2]}</div></div>
+    <span class="lpi-cert" style="margin:0;font-size:.58rem;color:${t[4]};background:${t[4]}1a;border-color:${t[4]}55">${t[3]}</span>
+    <div class="rp-check">✓</div>
+  </div>`).join('');
+document.querySelectorAll('#initTypes .role-pick').forEach(p=>p.addEventListener('click',()=>{
+  document.querySelectorAll('#initTypes .role-pick').forEach(x=>x.classList.remove('sel'));
+  p.classList.add('sel');pickedInit=p.dataset.name;
+}));
+document.getElementById('initBtn').addEventListener('click',()=>document.getElementById('initModal').classList.add('show'));
+function closeInit(){document.getElementById('initModal').classList.remove('show')}
+function submitInit(){
+  if(!pickedInit){toast('Pick an initiative type');return;}
+  const title=document.getElementById('initTitle').value.trim();
+  if(!title){toast('Give your initiative a name');return;}
+  closeInit();
+  toast('Pitched <b>'+pickedInit+'</b> — sent to DRL consultant for approval');
+  document.getElementById('initTitle').value='';pickedInit=null;
+  document.querySelectorAll('#initTypes .role-pick').forEach(x=>x.classList.remove('sel'));
+}
+document.getElementById('initModal').addEventListener('click',e=>{if(e.target.id==='initModal')closeInit()});
+
+/* ── admin heatmap ── */
+const adminClubs=[
+  {n:'Robotics & AI',e:'🤖',s:91},{n:'Digital & Cyber',e:'💻',s:88},{n:'Aerospace',e:'✈️',s:86},
+  {n:'Energy',e:'⚡',s:78},{n:'Mechanical',e:'⚙️',s:69},{n:'Materials',e:'🧪',s:62},
+];
+document.getElementById('adminHeat').innerHTML=adminClubs.map(c=>{
+  const col=c.s>=85?'linear-gradient(90deg,#003594,#00C7B1)':c.s>=70?'linear-gradient(90deg,#003594,#3a7bd5)':'linear-gradient(90deg,#FF8200,#ffae52)';
+  return `<div class="heatbar">
+    <div class="hb-name"><span>${c.e}</span>${c.n}</div>
+    <div class="hb-track"><div class="hb-fill" style="width:${c.s}%;background:${col}">${c.s}</div></div>
+  </div>`;
+}).join('');
+
+</script>
+</body>
+</html>
