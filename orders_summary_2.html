@@ -1,0 +1,1048 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>DRL - Order Summary Report</title>
+<style>
+  :root {
+    --primary: #224796;
+    --accent: #2bb5a0;
+    --accent2: #f07d00;
+    --success: #2bb5a0;
+    --warning: #f07d00;
+    --danger: #ef4444;
+    --bg: #f0f4f8;
+    --card: #ffffff;
+    --text: #224796;
+    --muted: #4a6080;
+    --border: #d0dbe8;
+    --navy: #224796;
+    --teal: #2bb5a0;
+    --orange: #f07d00;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { overflow-x: hidden; }
+  body { font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; background: var(--bg); color: var(--text); overflow-x: hidden; }
+
+  /* HEADER */
+  .report-header {
+    background: linear-gradient(145deg, #2f2f30 0%, #424344 45%, #383838 100%);
+    color: #fff;
+    padding: 28px 24px;
+    position: relative;
+    overflow: hidden;
+    min-height: 200px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .report-header-inner {
+    max-width: 820px;
+    width: 100%;
+    margin: 0 auto;
+    padding: 28px 44px 26px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 28px;
+    position: relative;
+    z-index: 2;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+    border: 1px solid rgba(255, 255, 255, 0.24);
+    border-radius: 20px;
+    box-shadow:
+      0 8px 32px rgba(0, 0, 0, 0.14),
+      inset 0 1px 0 rgba(255, 255, 255, 0.28);
+  }
+  .report-header-logo {
+    height: 100px;
+    width: auto;
+    flex-shrink: 0;
+    display: block;
+  }
+  .report-header-text {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    min-width: 0;
+  }
+  .report-header-title {
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: #fff;
+    letter-spacing: -0.3px;
+    line-height: 1.25;
+    margin: 0;
+  }
+
+  .report-header::after {
+    content: '';
+    position: absolute; inset: 0;
+    background:
+      radial-gradient(ellipse 80% 120% at 50% 0%, rgba(255,255,255,0.12) 0%, transparent 55%),
+      linear-gradient(90deg, rgba(27,63,160,0.18) 0%, rgba(27,63,160,0.72) 50%, rgba(27,63,160,0.18) 100%);
+    z-index: 1;
+    pointer-events: none;
+  }
+  .header-pattern {
+    position: absolute;
+    top: 0;
+    width: min(62%, 680px);
+    height: 100%;
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.75;
+  }
+  .header-pattern--right {
+    right: 0;
+    left: auto;
+  }
+  .header-pattern--left {
+    left: 0;
+    right: auto;
+    transform: scaleX(-1);
+  }
+  .header-pattern .hp-line {
+    stroke-dasharray: var(--len, 400);
+    stroke-dashoffset: var(--len, 400);
+    animation: hp-draw 2.2s cubic-bezier(.4,0,.2,1) var(--d, 0ms) forwards,
+               hp-glow 3.5s ease-in-out calc(2.2s + var(--d, 0ms)) infinite;
+  }
+  @keyframes hp-draw { to { stroke-dashoffset: 0; } }
+  @keyframes hp-glow {
+    0%, 100% { opacity: var(--op, 0.7); }
+    50% { opacity: calc(var(--op, 0.7) * 1.45); }
+  }
+  .report-header p { margin-top: 6px; opacity: 0.88; font-size: 0.9rem; color: #3CBFB8; font-weight: 500; }
+  .report-header .badge {
+    display: inline-block; margin-top: 12px;
+    background: rgba(255, 255, 255, 0.12);
+    border: 1px solid rgba(255, 255, 255, 0.28);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border-radius: 20px; padding: 5px 16px; font-size: 0.78rem; position: relative; z-index: 1;
+    color: #e8f8f6;
+  }
+
+  /* LAYOUT */
+  .container { max-width: 1200px; margin: 0 auto; padding: 32px 24px; }
+  .section-title {
+    font-size: 1.1rem; font-weight: 700; color: #224796;
+    margin: 32px 0 16px; display: flex; align-items: center; gap: 10px;
+  }
+  .section-title::after {
+    content: ''; flex: 1; height: 1px; background: var(--border);
+  }
+  .section-icon { font-size: 1.2rem; }
+
+  /* KPI GRID */
+  .kpi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; }
+  .kpi-card {
+    background: var(--card); border-radius: 14px; padding: 22px 20px;
+    border: 1px solid var(--border); position: relative; overflow: hidden;
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .kpi-card:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,0.08); }
+  .kpi-card .accent-bar {
+    position: absolute; top: 0; left: 0; right: 0; height: 3px;
+    border-radius: 14px 14px 0 0;
+  }
+  .kpi-label { font-size: 0.75rem; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; }
+  .kpi-value { font-size: 2rem; font-weight: 800; margin: 6px 0 2px; color: var(--primary); line-height: 1; }
+  .kpi-sub { font-size: 0.78rem; color: var(--muted); }
+
+  svg.riyal {
+    display: inline-block;
+    width: 0.82em;
+    height: 0.92em;
+    vertical-align: -0.1em;
+    margin-left: 0.12em;
+    fill: currentColor;
+    flex-shrink: 0;
+  }
+  svg.riyal.riyal--lg {
+    width: 1.05em;
+    height: 1.18em;
+    vertical-align: -0.12em;
+  }
+  .riyal-amount {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.2em;
+    white-space: nowrap;
+  }
+
+  /* CARDS */
+  .card { background: var(--card); border-radius: 14px; border: 1px solid var(--border); padding: 24px; }
+  .card-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .card-grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+
+  /* BAR CHART */
+  .bar-chart { display: flex; flex-direction: column; gap: 12px; }
+  .bar-row { display: flex; align-items: center; gap: 10px; }
+  .bar-label { width: 150px; font-size: 0.82rem; color: var(--text); flex-shrink: 0; text-align: right; }
+  .bar-track { flex: 1; background: var(--bg); border-radius: 6px; height: 22px; overflow: hidden; }
+  .bar-fill {
+    height: 100%; border-radius: 6px;
+    display: flex; align-items: center; padding-left: 8px;
+    font-size: 0.75rem; font-weight: 700; color: #fff; white-space: nowrap;
+    transition: width 1s ease;
+  }
+  .bar-count { font-size: 0.8rem; color: var(--muted); width: 45px; text-align: right; flex-shrink: 0; }
+
+  /* DONUT */
+  .donut-wrap { display: flex; align-items: center; gap: 28px; }
+  .donut-legend { display: flex; flex-direction: column; gap: 10px; }
+  .legend-item { display: flex; align-items: center; gap: 8px; font-size: 0.82rem; }
+  .legend-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+  .legend-val { font-weight: 700; margin-left: auto; min-width: 28px; text-align: right; }
+
+  /* STATUS PILLS */
+  .pill {
+    display: inline-block; padding: 3px 10px; border-radius: 20px;
+    font-size: 0.72rem; font-weight: 700; letter-spacing: 0.3px;
+  }
+  .pill-completed { background: #d4f0ec; color: #0a4a42; }
+  .pill-rejected  { background: #fee2e2; color: #991b1b; }
+  .pill-pending   { background: #fef3c7; color: #92400e; }
+  .pill-progress  { background: #e6f7f5; color: #0e5c52; }
+  .pill-cancelled { background: #f1f5f9; color: #475569; }
+  .pill-accepted  { background: #fff4e6; color: #8a4500; }
+
+  /* TABLE */
+  table { width: 100%; border-collapse: collapse; font-size: 0.83rem; }
+  thead th { text-align: left; font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; color: var(--muted); padding: 0 12px 10px; border-bottom: 2px solid var(--border); }
+  tbody tr { border-bottom: 1px solid var(--border); }
+  tbody tr:last-child { border-bottom: none; }
+  tbody td { padding: 10px 12px; color: var(--text); }
+  tbody tr:hover { background: var(--bg); }
+
+  /* MONTHLY TIMELINE */
+  .timeline { display: flex; gap: 0; align-items: flex-end; height: 120px; }
+  .t-col { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 4px; }
+  .t-bar-wrap { flex: 1; display: flex; align-items: flex-end; width: 100%; justify-content: center; }
+  .t-bar { width: 60%; border-radius: 6px 6px 0 0; min-height: 4px; }
+  .t-label { font-size: 0.7rem; color: var(--muted); text-align: center; }
+  .t-count { font-size: 0.72rem; font-weight: 700; color: var(--primary); }
+
+  /* HIGHLIGHT BOX */
+  .highlight-box {
+    background: linear-gradient(135deg, #e6f7f5, #e8f0f8);
+    border: 1px solid #9dd8d0; border-radius: 12px; padding: 20px 22px;
+    display: flex; gap: 16px; align-items: flex-start;
+  }
+  .highlight-icon { font-size: 2rem; flex-shrink: 0; }
+  .highlight-text h3 { font-size: 0.95rem; font-weight: 700; color: #224796; }
+  .highlight-text p { font-size: 0.83rem; color: #1a6b5f; margin-top: 4px; line-height: 1.5; }
+
+  /* INSIGHT TAG */
+  .insight-tag {
+    display: inline-block; background: #fff4e6; color: #a05000;
+    border: 1px solid #f5bb70; border-radius: 6px; padding: 2px 8px;
+    font-size: 0.72rem; font-weight: 600;
+  }
+
+  /* STAFF TABLE */
+  .staff-bar { background: #d0e8e4; border-radius: 4px; height: 8px; overflow: hidden; }
+  .staff-fill { background: var(--teal); height: 100%; border-radius: 4px; }
+
+  /* FOOTER */
+  .report-footer {
+    text-align: center; padding: 32px 24px; color: var(--muted);
+    font-size: 0.78rem; border-top: 2px solid #d0e8e4; margin-top: 40px;
+  }
+
+  @media (max-width: 700px) {
+    .report-header { padding: 20px 16px; min-height: auto; }
+    .report-header-inner { padding: 22px 20px 20px; gap: 16px; flex-direction: column; border-radius: 16px; }
+    .report-header-logo { height: 58px; }
+    .report-header-title { font-size: 1.25rem; }
+    .report-header p { font-size: 0.82rem; }
+    .report-header .badge { font-size: 0.68rem; padding: 4px 12px; line-height: 1.45; }
+    .header-pattern { width: 72%; opacity: 0.85; }
+    .container { padding: 20px 14px; }
+    .card-grid-2, .card-grid-3, .kpi-grid { grid-template-columns: 1fr; }
+    .card { padding: 18px 16px; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+    table { min-width: 480px; font-size: 0.78rem; }
+    thead th, tbody td { padding: 8px 10px; }
+    .bar-label { width: 88px; font-size: 0.72rem; }
+    .bar-count { width: 36px; font-size: 0.72rem; }
+    .kpi-value { font-size: 1.6rem; }
+    .kpi-card { padding: 18px 16px; }
+    .donut-wrap { flex-direction: column; align-items: flex-start; gap: 16px; }
+    .highlight-box { flex-direction: column; padding: 16px; }
+    .timeline { height: 100px; }
+    .t-label { font-size: 0.62rem; }
+    .section-title { font-size: 1rem; margin: 24px 0 12px; }
+    .report-footer { padding: 24px 16px; font-size: 0.72rem; }
+  }
+  @media (max-width: 400px) {
+    .report-header-title { font-size: 1.1rem; }
+    .bar-row { flex-wrap: wrap; gap: 6px; }
+    .bar-label { width: 100%; text-align: left; }
+    .bar-track { width: 100%; flex: none; }
+    .bar-count { width: auto; margin-left: auto; }
+  }
+</style>
+</head>
+<body>
+<script>
+(function () {
+  var fromLoader = false;
+  try {
+    fromLoader = sessionStorage.getItem('dtv-from-loader') === '1';
+    if (fromLoader) sessionStorage.removeItem('dtv-from-loader');
+  } catch (e) {}
+  if (fromLoader) return;
+
+  var nav = performance.getEntriesByType('navigation')[0];
+  if (nav && nav.type === 'reload') {
+    window.location.replace('loader.html');
+    return;
+  }
+  window.location.replace('loader.html');
+})();
+</script>
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display:none" aria-hidden="true">
+  <symbol id="riyal-symbol" viewBox="0 0 1124.14 1256.39">
+    <path d="M699.62,1113.02h0c-20.06,44.48-33.32,92.75-38.4,143.37l424.51-90.24c20.06-44.47,33.31-92.75,38.4-143.37l-424.51,90.24Z"/>
+    <path d="M1085.73,895.8c20.06-44.47,33.32-92.75,38.4-143.37l-330.68,70.33v-135.2l292.27-62.11c20.06-44.47,33.32-92.75,38.4-143.37l-330.68,70.27V66.13c-50.67,28.45-95.67,66.32-132.25,110.99v403.35l-132.25,28.11V0c-50.67,28.44-95.67,66.32-132.25,110.99v525.69l-295.91,62.88c-20.06,44.47-33.33,92.75-38.42,143.37l334.33-71.05v170.26l-358.3,76.14c-20.06,44.47-33.32,92.75-38.4,143.37l375.04-79.7c30.53-6.35,56.77-24.4,73.83-49.24l68.78-101.97v-.02c7.14-10.55,11.3-23.27,11.3-36.97v-149.98l132.25-28.11v270.4l424.53-90.28Z"/>
+  </symbol>
+</svg>
+
+<div class="report-header">
+  <svg class="header-pattern header-pattern--left" viewBox="0 0 640 168" xmlns="http://www.w3.org/2000/svg" fill="none" preserveAspectRatio="xMaxYMin slice" aria-hidden="true">
+    <path class="hp-line" d="M640 28 L380 28 L358 50 L358 168" stroke="#3CBFB8" stroke-width="18" stroke-linecap="square" style="--len:520;--d:0ms;--op:0.85"/>
+    <line class="hp-line" x1="520" y1="0" x2="520" y2="120" stroke="#F47920" stroke-width="16" stroke-linecap="square" style="--len:120;--d:180ms;--op:0.8"/>
+    <line class="hp-line" x1="640" y1="95" x2="300" y2="95" stroke="#ffffff" stroke-width="14" stroke-linecap="square" style="--len:340;--d:120ms;--op:0.35"/>
+    <path class="hp-line" d="M640 140 L420 140 L398 162 L398 168" stroke="#F47920" stroke-width="12" stroke-linecap="square" style="--len:280;--d:280ms;--op:0.65"/>
+  </svg>
+  <svg class="header-pattern header-pattern--right" viewBox="0 0 640 168" xmlns="http://www.w3.org/2000/svg" fill="none" preserveAspectRatio="xMaxYMin slice" aria-hidden="true">
+    <path class="hp-line" d="M640 28 L380 28 L358 50 L358 168" stroke="#3CBFB8" stroke-width="18" stroke-linecap="square" style="--len:520;--d:0ms;--op:0.85"/>
+    <line class="hp-line" x1="520" y1="0" x2="520" y2="120" stroke="#F47920" stroke-width="16" stroke-linecap="square" style="--len:120;--d:180ms;--op:0.8"/>
+    <line class="hp-line" x1="640" y1="95" x2="300" y2="95" stroke="#ffffff" stroke-width="14" stroke-linecap="square" style="--len:340;--d:120ms;--op:0.35"/>
+    <path class="hp-line" d="M640 140 L420 140 L398 162 L398 168" stroke="#F47920" stroke-width="12" stroke-linecap="square" style="--len:280;--d:280ms;--op:0.65"/>
+  </svg>
+  <div class="report-header-inner">
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAyAAAAGNCAYAAADpbRVxAAABCGlDQ1BJQ0MgUHJvZmlsZQAAeJxjYGA8wQAELAYMDLl5JUVB7k4KEZFRCuwPGBiBEAwSk4sLGHADoKpv1yBqL+viUYcLcKakFicD6Q9ArFIEtBxopAiQLZIOYWuA2EkQtg2IXV5SUAJkB4DYRSFBzkB2CpCtkY7ETkJiJxcUgdT3ANk2uTmlyQh3M/Ck5oUGA2kOIJZhKGYIYnBncAL5H6IkfxEDg8VXBgbmCQixpJkMDNtbGRgkbiHEVBYwMPC3MDBsO48QQ4RJQWJRIliIBYiZ0tIYGD4tZ2DgjWRgEL7AwMAVDQsIHG5TALvNnSEfCNMZchhSgSKeDHkMyQx6QJYRgwGDIYMZAKbWPz9HbOBQAAD77ElEQVR42uy9d5wcWXnv/XvOqeo4Oc8oraTVrlbaXWlzYMmwZAMOXGNj4wTGOVwwL/a9vs4X2zhiX2ecjW2wjU3ywhKXZXPOQTlrcuhUVec87x9V1dMjjaQeTfXMdM/z/bBImlBddeqE53fOEwBBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBEARBWF+QNIEgCIIgCEICRhURiKI/AXD8jfgvxAtML2YGc/inIIgAEQRBEARBEC6IUgQiAjPD2osTEkSAUmpZ1xAEESCCIAiCIAitajxFgsFaXnB60d6WwZaRTt68sQsbhzsx2JdHR1sa6ZQCEcEPLApFH2OTRRw7OYvDxyZx4OgUjY7N1VyboBRgjAgRQQSIIAiCIAiCCA+lYIytfu3y7QP80hs34yXXb8LO7f3o780im3XhqPBUhBG6WVWNLgKIFJiBimcwOV3CiwencM9DR/Dlu/fj0aePV20zpUhORAQRIIIgCIIgCOuRWjGQy6bwhlddxt/+hitw7VVD6GxLI7AWlUoAP7CwJhQedJa5xTX/ZihF0FohnXaQcjUKxQAPP3kC//ipJ/HpLzxDxlqoWMiIDhFEgAiCIAiCIKwDQykKLLeWkUo5eOdbr+Lv+4692Lm9F4ExKBb98ESECCoKQF8KcRC6ZUArQj7nwtEaDz1+Ar/959/E1+49QACgiGBFhQgiQARBEARBEFqX2lOPV7/kUv65H7kVe64YQKnso1T2o3iNhabUfFxIKFxCkcHR9RQupE/i32/Lp0Gk8DeffAy/8Ydfp1LFE5csQQSIIAiCIAhCq6J1GOvRns/gf/3ky/i73n4lrLGYK4ZCQJ2hJIxlKArds1IpBWujQHICHK0AMEplD+WyjTJnXViIAIye7hzuefg4fvTnP0vHT01Hwe9WXpAgAkQQBEEQBKFVcLRCYCyu2jnEv/t/3oCrL+/FxFQRwNknHmF8BqOjPYOKZ/Dwk6dw78NH8PzBcUxPVaAUYbC/DXt2DeGlN23G9s2dKBY9VDwLrS9shvmBQXdnFgcOz+B7fvrfceDIBMlJiCACRBAEQRAEoUWITz7e8KrL+Xf/9+uQzyrM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" class="report-header-logo" alt="DTV Ventures" />
+    <div class="report-header-text">
+      <h1 class="report-header-title">Order Summary Report</h1>
+      <p>Comprehensive analytics across all services and customer segments</p>
+      <span class="badge">📅 Feb 12, 2026 → Jul 9, 2026 &nbsp;|&nbsp; 340 Total Orders &nbsp;|&nbsp; 79 Active Days &nbsp;|&nbsp; Generated Jul 12, 2026</span>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+
+  <!-- ======= KPI OVERVIEW ======= -->
+  <div class="section-title"><span class="section-icon">🔢</span> Key Performance Indicators</div>
+  <div class="kpi-grid">
+    <div class="kpi-card">
+      <div class="accent-bar" style="background: linear-gradient(90deg,#224796,#1a3577);"></div>
+      <div class="kpi-label">Total Orders</div>
+      <div class="kpi-value">340</div>
+      <div class="kpi-sub">Since Feb 12, 2026</div>
+    </div>
+    <div class="kpi-card">
+      <div class="accent-bar" style="background: linear-gradient(90deg,#2bb5a0,#3dd9c2);"></div>
+      <div class="kpi-label">Total Revenue</div>
+      <div class="kpi-value">177,801</div>
+      <div class="kpi-sub"><svg class="riyal" aria-hidden="true" focusable="false"><use href="#riyal-symbol"/></svg> (3D Printing + Consultations + Scanning)</div>
+    </div>
+    <div class="kpi-card">
+      <div class="accent-bar" style="background: linear-gradient(90deg,#f07d00,#f5a840);"></div>
+      <div class="kpi-label">Completion Rate</div>
+      <div class="kpi-value">74.4%</div>
+      <div class="kpi-sub">Completed, accepted &amp; in-progress</div>
+    </div>
+    <div class="kpi-card">
+      <div class="accent-bar" style="background: linear-gradient(90deg,#2bb5a0,#5ecfc1);"></div>
+      <div class="kpi-label">Avg. Order Value</div>
+      <div class="kpi-value">889</div>
+      <div class="kpi-sub"><svg class="riyal" aria-hidden="true" focusable="false"><use href="#riyal-symbol"/></svg> per order (with amount)</div>
+    </div>
+    <div class="kpi-card">
+      <div class="accent-bar" style="background: linear-gradient(90deg,#f07d00,#f5a840);"></div>
+      <div class="kpi-label">Active Operating Days</div>
+      <div class="kpi-value">79</div>
+      <div class="kpi-sub">79 days actively operating</div>
+    </div>
+    <div class="kpi-card">
+      <div class="accent-bar" style="background: linear-gradient(90deg,#224796,#1a3577);"></div>
+      <div class="kpi-label">Urgent Orders</div>
+      <div class="kpi-value">178</div>
+      <div class="kpi-sub">52.4% of all orders</div>
+    </div>
+  </div>
+
+  <!-- ======= PEAK ACTIVITY ======= -->
+  <div class="section-title"><span class="section-icon">📈</span> Peak Activity</div>
+  <div class="card-grid-2">
+    <div class="highlight-box">
+      <div class="highlight-icon">🗓️</div>
+      <div class="highlight-text">
+        <h3>Busiest Single Day</h3>
+        <p><strong>May 3, 2026</strong> — 25 orders placed in one day. That's nearly 1 order every hour of the workday!</p>
+      </div>
+    </div>
+    <div class="highlight-box" style="background: linear-gradient(135deg,#fff4e6,#fef3e2); border-color:#f5bb70;">
+      <div class="highlight-icon">📅</div>
+      <div class="highlight-text">
+        <h3>Busiest Month</h3>
+        <p style="color:#8a4500;"><strong>April 2026</strong> — 147 orders, accounting for <strong>43.2%</strong> of all orders. Fueled by 2 weeks of heavy marketing that kicked in before semester end.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ======= MONTHLY TREND ======= -->
+  <div class="section-title"><span class="section-icon">📅</span> Monthly Order Volume</div>
+  <div class="card">
+    <div style="position:relative;height:200px;display:flex;align-items:flex-end;gap:12px;padding:0 16px 0 16px;">
+      <!-- Feb: 1 → 1/147 * 160 ≈ 1px -->
+      <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:6px;height:100%;justify-content:flex-end;">
+        <span style="font-size:0.78rem;font-weight:800;color:#64748b;">1</span>
+        <div style="width:100%;background:#94a3b8;border-radius:6px 6px 0 0;height:1px;min-height:3px;"></div>
+        <span style="font-size:0.75rem;color:var(--muted);">Feb</span>
+      </div>
+      <!-- Mar: 22 → 24px -->
+      <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:6px;height:100%;justify-content:flex-end;">
+        <span style="font-size:0.78rem;font-weight:800;color:#818cf8;">22</span>
+        <div style="width:100%;background:#2bb5a0;border-radius:6px 6px 0 0;height:24px;"></div>
+        <span style="font-size:0.75rem;color:var(--muted);">Mar</span>
+      </div>
+      <!-- Apr: 147 → 160px -->
+      <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:6px;height:100%;justify-content:flex-end;">
+        <span style="font-size:0.78rem;font-weight:800;color:#4f46e5;">147 ⭐</span>
+        <div style="width:100%;background:#224796;border-radius:6px 6px 0 0;height:160px;"></div>
+        <span style="font-size:0.75rem;color:var(--muted);">Apr</span>
+      </div>
+      <!-- May: 106 → 115px -->
+      <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:6px;height:100%;justify-content:flex-end;">
+        <span style="font-size:0.78rem;font-weight:800;color:#06b6d4;">106</span>
+        <div style="width:100%;background:#2bb5a0;border-radius:6px 6px 0 0;height:115px;"></div>
+        <span style="font-size:0.75rem;color:var(--muted);">May</span>
+      </div>
+      <!-- Jun: 51 → 56px -->
+      <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:6px;height:100%;justify-content:flex-end;">
+        <span style="font-size:0.78rem;font-weight:800;color:#2bb5a0;">51</span>
+        <div style="width:100%;background:#2bb5a0;border-radius:6px 6px 0 0;height:56px;"></div>
+        <span style="font-size:0.75rem;color:var(--muted);">Jun</span>
+      </div>
+      <!-- Jul: 13 → 14px (partial month) -->
+      <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:6px;height:100%;justify-content:flex-end;">
+        <span style="font-size:0.78rem;font-weight:800;color:#94a3b8;">13</span>
+        <div style="width:100%;background:#94a3b8;border-radius:6px 6px 0 0;height:14px;"></div>
+        <span style="font-size:0.75rem;color:var(--muted);">Jul*</span>
+      </div>
+    </div>
+    <p style="font-size:0.72rem;color:var(--muted);margin-top:14px;">* July is in progress (data through Jul 9). The April surge followed 2 weeks of heavy marketing — even before semester end — driving a 568% month-over-month jump from March (22 → 147 orders). Volume has since normalized to a steady 50–110 orders/month.</p>
+  </div>
+
+  <!-- ======= ORDER STATUS ======= -->
+  <div class="section-title"><span class="section-icon">✅</span> Order Status Breakdown</div>
+  <div class="card-grid-2">
+    <div class="card">
+      <div class="bar-chart">
+        <div class="bar-row">
+          <div class="bar-label">Completed</div>
+          <div class="bar-track"><div class="bar-fill" style="width:72.4%;background:#2bb5a0;">246</div></div>
+          <div class="bar-count">72.4%</div>
+        </div>
+        <div class="bar-row">
+          <div class="bar-label">Rejected</div>
+          <div class="bar-track"><div class="bar-fill" style="width:23.8%;background:#c0392b;">81</div></div>
+          <div class="bar-count">23.8%</div>
+        </div>
+        <div class="bar-row">
+          <div class="bar-label">Pending</div>
+          <div class="bar-track"><div class="bar-fill" style="width:1.5%;background:#f07d00;min-width:28px;">5</div></div>
+          <div class="bar-count">1.5%</div>
+        </div>
+        <div class="bar-row">
+          <div class="bar-label">In Progress</div>
+          <div class="bar-track"><div class="bar-fill" style="width:0.3%;background:#2bb5a0;min-width:22px;">1</div></div>
+          <div class="bar-count">0.3%</div>
+        </div>
+        <div class="bar-row">
+          <div class="bar-label">Cancelled</div>
+          <div class="bar-track"><div class="bar-fill" style="width:1.2%;background:#94a3b8;min-width:24px;">4</div></div>
+          <div class="bar-count">1.2%</div>
+        </div>
+        <div class="bar-row">
+          <div class="bar-label">Accepted</div>
+          <div class="bar-track"><div class="bar-fill" style="width:0.9%;background:#2bb5a0;min-width:22px;">3</div></div>
+          <div class="bar-count">0.9%</div>
+        </div>
+      </div>
+    </div>
+    <div class="card" style="display:flex;flex-direction:column;justify-content:center;gap:14px;">
+      <div style="background:#e6f7f5;border-radius:10px;padding:16px 18px;border:1px solid #9dd8d0;">
+        <div style="font-size:0.75rem;font-weight:700;color:#0a4a42;text-transform:uppercase;">Completion Rate</div>
+        <div style="font-size:2.4rem;font-weight:800;color:#0e6b5e;">74.4%</div>
+        <div style="font-size:0.78rem;color:#0a4a42;">250 orders completed, accepted, or in-progress out of 336 non-cancelled</div>
+      </div>
+      <div style="background:#fef2f2;border-radius:10px;padding:16px 18px;border:1px solid #fecaca;">
+        <div style="font-size:0.75rem;font-weight:700;color:#991b1b;text-transform:uppercase;">Rejection Rate</div>
+        <div style="font-size:2.4rem;font-weight:800;color:#dc2626;">23.8%</div>
+        <div style="font-size:0.78rem;color:#991b1b;">81 orders rejected — review common rejection reasons</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ======= SERVICES ======= -->
+  <div class="section-title"><span class="section-icon">🛠️</span> Services Analysis</div>
+  <div class="card-grid-3">
+
+    <!-- 3D Printing -->
+    <div class="kpi-card">
+      <div class="accent-bar" style="background:linear-gradient(90deg,#224796,#1a3577);"></div>
+      <div class="kpi-label">3D Printing Orders</div>
+      <div class="kpi-value">198</div>
+      <div class="kpi-sub">58.2% of all orders</div>
+      <div style="margin-top:12px;padding-top:12px;border-top:1px solid var(--border);">
+        <div style="font-size:0.72rem;color:var(--muted);">Total Revenue</div>
+        <div style="font-weight:800;font-size:1.1rem;color:var(--primary);"><span class="riyal-amount">95,751 <svg class="riyal" aria-hidden="true" focusable="false"><use href="#riyal-symbol"/></svg></span></div>
+        <div style="font-size:0.72rem;color:var(--muted);margin-top:4px;">Avg per order: <strong><span class="riyal-amount">725.39 <svg class="riyal" aria-hidden="true" focusable="false"><use href="#riyal-symbol"/></svg></span></strong></div>
+      </div>
+    </div>
+
+    <!-- PCB -->
+    <div class="kpi-card">
+      <div class="accent-bar" style="background:linear-gradient(90deg,#2bb5a0,#3dd9c2);"></div>
+      <div class="kpi-label">PCB Fabrication Orders</div>
+      <div class="kpi-value">59</div>
+      <div class="kpi-sub">17.4% of all orders</div>
+      <div style="margin-top:12px;padding-top:12px;border-top:1px solid var(--border);">
+        <div style="font-size:0.78rem;color:var(--muted);">Pricing not yet recorded — revenue tracking pending for this service</div>
+      </div>
+    </div>
+
+    <!-- Laser -->
+    <div class="kpi-card">
+      <div class="accent-bar" style="background:linear-gradient(90deg,#f07d00,#f5a840);"></div>
+      <div class="kpi-label">Laser Cutting Orders</div>
+      <div class="kpi-value">6</div>
+      <div class="kpi-sub">1.8% of all orders</div>
+      <div style="margin-top:12px;padding-top:12px;border-top:1px solid var(--border);">
+        <div style="font-size:0.72rem;color:var(--muted);">Service</div>
+        <div style="font-size:0.82rem;color:var(--primary);margin-top:2px;">KERN OptiFlex 60120</div>
+        <div style="font-size:0.72rem;color:var(--muted);margin-top:4px;">Low volume — growth opportunity</div>
+      </div>
+    </div>
+
+    <!-- Scanning -->
+    <div class="kpi-card">
+      <div class="accent-bar" style="background:linear-gradient(90deg,#2bb5a0,#5ecfc1);"></div>
+      <div class="kpi-label">3D Scanning Orders</div>
+      <div class="kpi-value">2</div>
+      <div class="kpi-sub">Creality Scanner</div>
+      <div style="margin-top:12px;padding-top:12px;border-top:1px solid var(--border);">
+        <div style="font-size:0.72rem;color:var(--muted);">Total Revenue</div>
+        <div style="font-weight:800;font-size:1.1rem;color:var(--primary);"><span class="riyal-amount">5,000 <svg class="riyal" aria-hidden="true" focusable="false"><use href="#riyal-symbol"/></svg></span></div>
+        <div style="font-size:0.72rem;color:var(--muted);margin-top:4px;">1 of 2 orders priced so far — still low volume</div>
+      </div>
+    </div>
+
+    <!-- Consultation -->
+    <div class="kpi-card">
+      <div class="accent-bar" style="background:linear-gradient(90deg,#224796,#1a3577);"></div>
+      <div class="kpi-label">Consultation Orders</div>
+      <div class="kpi-value">70</div>
+      <div class="kpi-sub">3D design, PCB, embedded, etc.</div>
+      <div style="margin-top:12px;padding-top:12px;border-top:1px solid var(--border);">
+        <div style="font-size:0.72rem;color:var(--muted);">Total Revenue</div>
+        <div style="font-weight:800;font-size:1.1rem;color:var(--primary);"><span class="riyal-amount">77,050 <svg class="riyal" aria-hidden="true" focusable="false"><use href="#riyal-symbol"/></svg></span></div>
+        <div style="font-size:0.72rem;color:var(--muted);margin-top:4px;">Avg per order: <strong><span class="riyal-amount">1,150 <svg class="riyal" aria-hidden="true" focusable="false"><use href="#riyal-symbol"/></svg></span></strong></div>
+      </div>
+    </div>
+
+    <!-- Component Soldering -->
+    <div class="kpi-card">
+      <div class="accent-bar" style="background:linear-gradient(90deg,#f07d00,#f5a840);"></div>
+      <div class="kpi-label">Component Soldering</div>
+      <div class="kpi-value">5</div>
+      <div class="kpi-sub">1.5% of all orders</div>
+      <div style="margin-top:12px;padding-top:12px;border-top:1px solid var(--border);">
+        <div style="font-size:0.78rem;color:var(--muted);">Niche service with growing demand alongside PCB fabrication</div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Top services detailed -->
+  <div class="card" style="margin-top:16px;">
+    <div style="font-weight:700;font-size:0.9rem;margin-bottom:16px;color:var(--primary);">Service Volume Breakdown</div>
+    <div class="bar-chart">
+      <div class="bar-row">
+        <div class="bar-label">3D Printing</div>
+        <div class="bar-track"><div class="bar-fill" style="width:100%;background:#224796;">163</div></div>
+        <div class="bar-count">163</div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-label">PCB Fabrication</div>
+        <div class="bar-track"><div class="bar-fill" style="width:33.7%;background:#2bb5a0;">55</div></div>
+        <div class="bar-count">55</div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-label">3D Design Consult</div>
+        <div class="bar-track"><div class="bar-fill" style="width:20.9%;background:#2bb5a0;">34</div></div>
+        <div class="bar-count">34</div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-label">FDM Printer - P2S</div>
+        <div class="bar-track"><div class="bar-fill" style="width:11.0%;background:#2bb5a0;">18</div></div>
+        <div class="bar-count">18</div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-label">PCB Consultation</div>
+        <div class="bar-track"><div class="bar-fill" style="width:9.2%;background:#f07d00;">15</div></div>
+        <div class="bar-count">15</div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-label">Embedded Design</div>
+        <div class="bar-track"><div class="bar-fill" style="width:8.6%;background:#f07d00;">14</div></div>
+        <div class="bar-count">14</div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-label">FDM - Ultimaker S5</div>
+        <div class="bar-track"><div class="bar-fill" style="width:4.9%;background:#2bb5a0;">8</div></div>
+        <div class="bar-count">8</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ======= CUSTOMER SEGMENTS ======= -->
+  <div class="section-title"><span class="section-icon">👥</span> Customer Segments</div>
+  <div class="card">
+    <div class="bar-chart">
+      <div class="bar-row">
+        <div class="bar-label">S2021 &amp; Earlier<br><small style="color:var(--muted);">Senior / Last Year</small></div>
+        <div class="bar-track"><div class="bar-fill" style="width:100%;background:#224796;">90</div></div>
+        <div class="bar-count">90</div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-label">Researchers &amp; External</div>
+        <div class="bar-track"><div class="bar-fill" style="width:87.8%;background:#2bb5a0;">79</div></div>
+        <div class="bar-count">79</div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-label">Graduate (g20…)</div>
+        <div class="bar-track"><div class="bar-fill" style="width:80.0%;background:#2bb5a0;">72</div></div>
+        <div class="bar-count">72</div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-label">S2022</div>
+        <div class="bar-track"><div class="bar-fill" style="width:55.6%;background:#2bb5a0;">50</div></div>
+        <div class="bar-count">50</div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-label">S2023</div>
+        <div class="bar-track"><div class="bar-fill" style="width:32.2%;background:#f07d00;">29</div></div>
+        <div class="bar-count">29</div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-label">S2024 (Freshmen)</div>
+        <div class="bar-track"><div class="bar-fill" style="width:22.2%;background:#f07d00;">20</div></div>
+        <div class="bar-count">20</div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-label">S2025 (Orientation)</div>
+        <div class="bar-track"><div class="bar-fill" style="width:1%;background:#94a3b8;min-width:32px;">0</div></div>
+        <div class="bar-count">0</div>
+      </div>
+    </div>
+    <p style="margin-top:18px;font-size:0.78rem;color:var(--muted);line-height:1.6;">
+      <strong>Key insight:</strong> Senior students (S2021 &amp; earlier) remain the largest single user group with 90 orders — likely driven by graduation projects. Researchers &amp; External users have climbed to the #2 segment with 79 orders, edging out Graduate students (72), reflecting growing use outside the student body. S2025 orientation students still show 0 orders, as they've just started their first semester.
+    </p>
+  </div>
+
+  <!-- ======= CUSTOMER SEGMENT TABLE ======= -->
+  <div class="card" style="margin-top:16px;">
+    <table>
+      <thead>
+        <tr>
+          <th>Segment</th>
+          <th>Description</th>
+          <th>Orders</th>
+          <th>% Share</th>
+          <th>Insight</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>S2021 &amp; Earlier</strong></td>
+          <td>Last-year / senior students</td>
+          <td><strong>90</strong></td>
+          <td>26.5%</td>
+          <td><span class="insight-tag">Graduation Projects</span></td>
+        </tr>
+        <tr>
+          <td><strong>Researchers &amp; External</strong></td>
+          <td>Faculty, staff, non-KFUPM</td>
+          <td><strong>79</strong></td>
+          <td>23.2%</td>
+          <td><span class="insight-tag">Professional Use</span></td>
+        </tr>
+        <tr>
+          <td><strong>Graduate (g20…)</strong></td>
+          <td>Postgrad / MSc / PhD</td>
+          <td><strong>72</strong></td>
+          <td>21.2%</td>
+          <td><span class="insight-tag">Research Driven</span></td>
+        </tr>
+        <tr>
+          <td><strong>S2022</strong></td>
+          <td>3rd year students</td>
+          <td><strong>50</strong></td>
+          <td>14.7%</td>
+          <td><span class="insight-tag">Project Season</span></td>
+        </tr>
+        <tr>
+          <td><strong>S2023</strong></td>
+          <td>2nd year students</td>
+          <td><strong>29</strong></td>
+          <td>8.5%</td>
+          <td>—</td>
+        </tr>
+        <tr>
+          <td><strong>S2024</strong></td>
+          <td>Freshmen (1st year)</td>
+          <td><strong>20</strong></td>
+          <td>5.9%</td>
+          <td><span class="insight-tag">Exploring Services</span></td>
+        </tr>
+        <tr>
+          <td><strong>S2025</strong></td>
+          <td>Newest orientation batch</td>
+          <td><strong>0</strong></td>
+          <td>0%</td>
+          <td><span style="display:inline-block;background:#f1f5f9;color:#475569;border-radius:6px;padding:2px 8px;font-size:0.72rem;font-weight:600;">Just Enrolled</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ======= TOP CUSTOMERS ======= -->
+  <div class="section-title"><span class="section-icon">🏆</span> Top 10 Customers</div>
+  <div class="card">
+    <table>
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Email</th>
+          <th>Segment</th>
+          <th>Orders</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>1</td><td>g202427820@kfupm.edu.sa</td><td><span class="pill pill-progress">Graduate</span></td><td><strong>14</strong></td></tr>
+        <tr><td>2</td><td>abdelhady.esmaeel@kfupm.edu.sa</td><td><span class="pill pill-pending">Researcher</span></td><td><strong>12</strong></td></tr>
+        <tr><td>3</td><td>s202184350@kfupm.edu.sa</td><td><span class="pill pill-completed">S2021 or earlier</span></td><td><strong>12</strong></td></tr>
+        <tr><td>4</td><td>s202282240@kfupm.edu.sa</td><td><span class="pill pill-accepted">S2022</span></td><td><strong>11</strong></td></tr>
+        <tr><td>5</td><td>g202390490@kfupm.edu.sa</td><td><span class="pill pill-progress">Graduate</span></td><td><strong>10</strong></td></tr>
+        <tr><td>6</td><td>s202349850@kfupm.edu.sa</td><td><span class="pill pill-accepted">S2023</span></td><td><strong>7</strong></td></tr>
+        <tr><td>7</td><td>s202282780@kfupm.edu.sa</td><td><span class="pill pill-accepted">S2022</span></td><td><strong>7</strong></td></tr>
+        <tr><td>8</td><td>g202421540@kfupm.edu.sa</td><td><span class="pill pill-progress">Graduate</span></td><td><strong>7</strong></td></tr>
+        <tr><td>9</td><td>s202156030@kfupm.edu.sa</td><td><span class="pill pill-completed">S2021 or earlier</span></td><td><strong>7</strong></td></tr>
+        <tr><td>10</td><td>jprojas@kfupm.edu.sa</td><td><span class="pill pill-pending">Researcher</span></td><td><strong>7</strong></td></tr>
+      </tbody>
+    </table>
+    <p style="margin-top:14px;font-size:0.78rem;color:var(--muted);">Top 10 customers account for <strong>94 orders</strong> — 27.6% of all orders. High repeat-use indicates strong engagement.</p>
+  </div>
+
+  <!-- ======= STAFF WORKLOAD ======= -->
+  <div class="section-title"><span class="section-icon">👨‍🔧</span> Staff Workload Distribution</div>
+  <div class="card">
+    <table>
+      <thead>
+        <tr>
+          <th>Staff Member</th>
+          <th>Orders Handled</th>
+          <th>Workload Share</th>
+          <th>Load Bar</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Muhammad Mudasar Imam</strong></td>
+          <td>156</td>
+          <td>45.9%</td>
+          <td><div class="staff-bar"><div class="staff-fill" style="width:100%;"></div></div></td>
+        </tr>
+        <tr>
+          <td>Abdulrahman Sharqawi</td>
+          <td>55</td>
+          <td>16.2%</td>
+          <td><div class="staff-bar"><div class="staff-fill" style="width:35.3%;"></div></div></td>
+        </tr>
+        <tr>
+          <td>Jayjay Mendoza</td>
+          <td>45</td>
+          <td>13.2%</td>
+          <td><div class="staff-bar"><div class="staff-fill" style="width:28.8%;"></div></div></td>
+        </tr>
+        <tr>
+          <td>Saad Al Ghannam</td>
+          <td>36</td>
+          <td>10.6%</td>
+          <td><div class="staff-bar"><div class="staff-fill" style="width:23.1%;"></div></div></td>
+        </tr>
+        <tr>
+          <td>Fadhel Al Sadeq</td>
+          <td>21</td>
+          <td>6.2%</td>
+          <td><div class="staff-bar"><div class="staff-fill" style="width:13.5%;"></div></div></td>
+        </tr>
+        <tr>
+          <td>Hashim Al Sadah</td>
+          <td>14</td>
+          <td>4.1%</td>
+          <td><div class="staff-bar"><div class="staff-fill" style="width:9.0%;"></div></div></td>
+        </tr>
+        <tr>
+          <td>Hassan Iqbal</td>
+          <td>9</td>
+          <td>2.6%</td>
+          <td><div class="staff-bar"><div class="staff-fill" style="width:5.8%;"></div></div></td>
+        </tr>
+        <tr>
+          <td>Reda Al Hashem</td>
+          <td>3</td>
+          <td>0.9%</td>
+          <td><div class="staff-bar"><div class="staff-fill" style="width:1.9%;"></div></div></td>
+        </tr>
+        <tr>
+          <td>Abdulaziz Takrouni</td>
+          <td>1</td>
+          <td>0.3%</td>
+          <td><div class="staff-bar"><div class="staff-fill" style="width:0.6%;"></div></div></td>
+        </tr>
+      </tbody>
+    </table>
+    <p style="margin-top:14px;font-size:0.78rem;color:var(--muted);">
+      ⚠️ <strong>Workload imbalance detected:</strong> Muhammad Mudasar Imam handles nearly half of all orders (45.9%). Consider redistributing load to reduce bottleneck risk.
+    </p>
+  </div>
+
+  <!-- ======= WEEKDAY PATTERN ======= -->
+  <div class="section-title"><span class="section-icon">📆</span> Orders by Day of Week</div>
+  <div class="card">
+    <div class="bar-chart">
+      <div class="bar-row">
+        <div class="bar-label">Sunday</div>
+        <div class="bar-track"><div class="bar-fill" style="width:100%;background:#224796;">80</div></div>
+        <div class="bar-count">80 ⭐</div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-label">Thursday</div>
+        <div class="bar-track"><div class="bar-fill" style="width:77.5%;background:#2bb5a0;">62</div></div>
+        <div class="bar-count">62</div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-label">Tuesday</div>
+        <div class="bar-track"><div class="bar-fill" style="width:76.2%;background:#2bb5a0;">61</div></div>
+        <div class="bar-count">61</div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-label">Monday</div>
+        <div class="bar-track"><div class="bar-fill" style="width:75.0%;background:#2bb5a0;">60</div></div>
+        <div class="bar-count">60</div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-label">Wednesday</div>
+        <div class="bar-track"><div class="bar-fill" style="width:67.5%;background:#f07d00;">54</div></div>
+        <div class="bar-count">54</div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-label">Saturday</div>
+        <div class="bar-track"><div class="bar-fill" style="width:17.5%;background:#94a3b8;">14</div></div>
+        <div class="bar-count">14</div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-label">Friday</div>
+        <div class="bar-track"><div class="bar-fill" style="width:11.2%;background:#94a3b8;">9</div></div>
+        <div class="bar-count">9</div>
+      </div>
+    </div>
+    <p style="margin-top:14px;font-size:0.78rem;color:var(--muted);">Sunday remains the busiest day — the start of the Saudi work week drives the most order submissions. Friday and Saturday (weekend) see minimal activity.</p>
+  </div>
+
+  <!-- ======= URGENCY ======= -->
+  <div class="section-title"><span class="section-icon">⚡</span> Order Urgency</div>
+  <div class="card-grid-2">
+    <div class="card" style="display:flex;flex-direction:column;gap:16px;">
+      <div>
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+          <span style="font-size:0.82rem;font-weight:600;">Urgent</span>
+          <span style="font-weight:800;color:#f07d00;">178 (52.4%)</span>
+        </div>
+        <div style="background:var(--bg);border-radius:8px;height:16px;overflow:hidden;">
+          <div style="background:#c0392b;width:52.4%;height:100%;border-radius:8px;"></div>
+        </div>
+      </div>
+      <div>
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+          <span style="font-size:0.82rem;font-weight:600;">Standard</span>
+          <span style="font-weight:800;color:#2bb5a0;">162 (47.6%)</span>
+        </div>
+        <div style="background:var(--bg);border-radius:8px;height:16px;overflow:hidden;">
+          <div style="background:#2bb5a0;width:47.6%;height:100%;border-radius:8px;"></div>
+        </div>
+      </div>
+    </div>
+    <div class="card" style="background:#fff4e6;border-color:#f5bb70;display:flex;align-items:center;gap:16px;">
+      <div style="font-size:2.5rem;">⚠️</div>
+      <div>
+        <div style="font-weight:700;color:#8a4000;font-size:0.95rem;">Just over half of orders are urgent</div>
+        <div style="font-size:0.8rem;color:#a05000;margin-top:6px;line-height:1.5;">52.4% urgency rate suggests capacity or response-time pressure is easing slightly compared to earlier months. Consider defining SLAs and adding priority queue management.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ======= INTERESTING INSIGHTS ======= -->
+  <div class="section-title"><span class="section-icon">💡</span> Notable Insights</div>
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px;">
+
+    <div class="card" style="border-left:4px solid #224796;">
+      <div style="font-size:1.2rem;margin-bottom:8px;">🚀</div>
+      <div style="font-weight:700;font-size:0.9rem;">Marketing-Driven April Surge</div>
+      <div style="font-size:0.8rem;color:var(--muted);margin-top:6px;line-height:1.5;">2 weeks of heavy marketing before semester end triggered a 568% jump from March to April (22 → 147 orders). Volume has settled into a healthy 50–110 orders/month since, proving demand is durable — not just a one-time spike.</div>
+    </div>
+
+    <div class="card" style="border-left:4px solid #2bb5a0;">
+      <div style="font-size:1.2rem;margin-bottom:8px;">🎓</div>
+      <div style="font-weight:700;font-size:0.9rem;">Senior Students Still Lead, Researchers Rising</div>
+      <div style="font-size:0.8rem;color:var(--muted);margin-top:6px;line-height:1.5;">S2021-and-earlier students (90 orders) remain the #1 customer segment, driven by capstone and graduation projects. Researchers & External users (79 orders) have overtaken Graduate students (72) for the #2 spot — a sign DRL's reach is expanding beyond the student body.</div>
+    </div>
+
+    <div class="card" style="border-left:4px solid #f07d00;">
+      <div style="font-size:1.2rem;margin-bottom:8px;">📋</div>
+      <div style="font-weight:700;font-size:0.9rem;">Rejection Rate Improving</div>
+      <div style="font-size:0.8rem;color:var(--muted);margin-top:6px;line-height:1.5;">The rejection rate has dropped to 23.8% (from 25.5% previously) as submission guidelines mature and students learn what to submit. Continued monitoring through the summer term should show further improvement.</div>
+    </div>
+
+  </div>
+
+  <!-- ======= ORDERS BY SERVICE PIE CHART ======= -->
+  <div class="section-title"><span class="section-icon">🥧</span> Orders by Service Category</div>
+  <div class="card">
+    <div style="display:flex;align-items:center;gap:40px;flex-wrap:wrap;justify-content:center;padding:8px 0;">
+      <!-- SVG Pie Chart -->
+      <svg viewBox="0 0 200 200" width="220" height="220" style="flex-shrink:0;">
+        <!--
+          Total: 340
+          3D Printing: 198 → 58.2% → 209.65°
+          PCB Fabrication: 59 → 17.4% → 62.47°
+          Consultations: 70 → 20.6% → 74.12°
+          Laser Cutting: 6 → 1.8% → 6.35°
+          Other (Scan+Solder): 7 → 2.1% → 7.41°
+        -->
+        <!-- 3D Printing: -90° to 119.6° | large-arc=1 -->
+        <path d="M100,100 L100,20 A80,80 0 1,1 60.4,169.5 Z" fill="#224796"/>
+        <!-- PCB: 119.6° to 182.1° | large-arc=0 -->
+        <path d="M100,100 L60.4,169.5 A80,80 0 0,1 20.1,97.0 Z" fill="#2bb5a0"/>
+        <!-- Consultation: 182.1° to 256.2° | large-arc=0 -->
+        <path d="M100,100 L20.1,97.0 A80,80 0 0,1 81.0,22.3 Z" fill="#f07d00"/>
+        <!-- Laser: 256.2° to 262.6° | large-arc=0 -->
+        <path d="M100,100 L81.0,22.3 A80,80 0 0,1 89.7,20.7 Z" fill="#1a3577"/>
+        <!-- Other/Soldering+Scan: 262.6° to 270° | large-arc=0 -->
+        <path d="M100,100 L89.7,20.7 A80,80 0 0,1 100,20 Z" fill="#7ecfc5"/>
+        <!-- Center hole for donut effect -->
+        <circle cx="100" cy="100" r="44" fill="white"/>
+        <text x="100" y="96" text-anchor="middle" font-size="11" font-weight="800" fill="#1a1f36">340</text>
+        <text x="100" y="110" text-anchor="middle" font-size="8.5" fill="#64748b">total orders</text>
+      </svg>
+
+      <!-- Legend -->
+      <div style="display:flex;flex-direction:column;gap:14px;min-width:200px;">
+        <div style="display:flex;align-items:center;gap:12px;">
+          <div style="width:14px;height:14px;border-radius:3px;background:#224796;flex-shrink:0;"></div>
+          <div style="flex:1;">
+            <div style="font-size:0.83rem;font-weight:700;">3D Printing</div>
+            <div style="font-size:0.75rem;color:var(--muted);">198 orders &nbsp;·&nbsp; 58.2%</div>
+          </div>
+        </div>
+        <div style="display:flex;align-items:center;gap:12px;">
+          <div style="width:14px;height:14px;border-radius:3px;background:#2bb5a0;flex-shrink:0;"></div>
+          <div style="flex:1;">
+            <div style="font-size:0.83rem;font-weight:700;">PCB Fabrication</div>
+            <div style="font-size:0.75rem;color:var(--muted);">59 orders &nbsp;·&nbsp; 17.4%</div>
+          </div>
+        </div>
+        <div style="display:flex;align-items:center;gap:12px;">
+          <div style="width:14px;height:14px;border-radius:3px;background:#f07d00;flex-shrink:0;"></div>
+          <div style="flex:1;">
+            <div style="font-size:0.83rem;font-weight:700;">Consultations</div>
+            <div style="font-size:0.75rem;color:var(--muted);">70 orders &nbsp;·&nbsp; 20.6%</div>
+          </div>
+        </div>
+        <div style="display:flex;align-items:center;gap:12px;">
+          <div style="width:14px;height:14px;border-radius:3px;background:#1a3577;flex-shrink:0;"></div>
+          <div style="flex:1;">
+            <div style="font-size:0.83rem;font-weight:700;">Laser Cutting</div>
+            <div style="font-size:0.75rem;color:var(--muted);">6 orders &nbsp;·&nbsp; 1.8%</div>
+          </div>
+        </div>
+        <div style="display:flex;align-items:center;gap:12px;">
+          <div style="width:14px;height:14px;border-radius:3px;background:#7ecfc5;flex-shrink:0;"></div>
+          <div style="flex:1;">
+            <div style="font-size:0.83rem;font-weight:700;">Scanning &amp; Soldering</div>
+            <div style="font-size:0.75rem;color:var(--muted);">7 orders &nbsp;·&nbsp; 2.1%</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ======= REVENUE SUMMARY ======= -->
+  <div class="section-title"><span class="section-icon">💰</span> Revenue Summary</div>
+  <div class="card-grid-2">
+    <div class="card">
+      <div style="font-weight:700;font-size:0.9rem;margin-bottom:16px;color:var(--primary);">Revenue by Category (Recorded)</div>
+      <div class="bar-chart">
+        <div class="bar-row">
+          <div class="bar-label">3D Printing</div>
+          <div class="bar-track"><div class="bar-fill" style="width:100%;background:#224796;"><span class="riyal-amount">95,751 <svg class="riyal" aria-hidden="true" focusable="false"><use href="#riyal-symbol"/></svg></span></div></div>
+        </div>
+        <div class="bar-row">
+          <div class="bar-label">Consultations</div>
+          <div class="bar-track"><div class="bar-fill" style="width:80.5%;background:#2bb5a0;"><span class="riyal-amount">77,050 <svg class="riyal" aria-hidden="true" focusable="false"><use href="#riyal-symbol"/></svg></span></div></div>
+        </div>
+        <div class="bar-row">
+          <div class="bar-label">3D Scanning</div>
+          <div class="bar-track"><div class="bar-fill" style="width:5.2%;background:#f07d00;min-width:90px;"><span class="riyal-amount">5,000 <svg class="riyal" aria-hidden="true" focusable="false"><use href="#riyal-symbol"/></svg></span></div></div>
+        </div>
+        <div class="bar-row">
+          <div class="bar-label">PCB Fabrication</div>
+          <div class="bar-track"><div class="bar-fill" style="width:10%;background:#94a3b8;min-width:80px;">Pending</div></div>
+        </div>
+      </div>
+      <p style="font-size:0.72rem;color:var(--muted);margin-top:12px;">PCB and Laser/Soldering revenue not yet fully recorded. 3D Printing + Consultations + Scanning = <strong><span class="riyal-amount">177,801 <svg class="riyal" aria-hidden="true" focusable="false"><use href="#riyal-symbol"/></svg></span></strong> combined.</p>
+    </div>
+    <div class="card" style="display:flex;flex-direction:column;justify-content:center;gap:14px;">
+      <div style="text-align:center;padding:20px;background:linear-gradient(135deg,#224796,#1a316e);border-radius:12px;">
+        <div style="font-size:0.75rem;font-weight:700;color:#2bb5a0;text-transform:uppercase;letter-spacing:0.5px;">Confirmed Revenue (3D + Consultations + Scanning)</div>
+        <div style="font-size:2.8rem;font-weight:900;color:#ffffff;margin:8px 0;">177,801</div>
+        <div style="font-size:0.85rem;color:#9dd8d0;"><span class="riyal-amount">Saudi Riyals <svg class="riyal" aria-hidden="true" focusable="false"><use href="#riyal-symbol"/></svg></span></div>
+      </div>
+      <div style="text-align:center;font-size:0.78rem;color:var(--muted);">
+        PCB Fabrication revenue (59 orders) pending pricing entry
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div class="report-footer">
+  Generated on July 12, 2026 &nbsp;|&nbsp; Data source: DRL Purchase Orders Report &nbsp;|&nbsp; 340 total orders analyzed
+</div>
+
+</body>
+</html>
